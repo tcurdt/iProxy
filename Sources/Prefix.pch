@@ -1,0 +1,13 @@
+//
+// Prefix header for all source files of the 'iProxy' target in the 'iProxy' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+    #import <UIKit/UIKit.h>
+#endif
+
+#define HAVE_SOCKADDR_DL_STRUCT
+#define MACOSX
+#define HAVE_UINT32_T
+#define HAVE_SOCKLEN_T

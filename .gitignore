@@ -1,0 +1,13 @@
+Research/*
+build/*
+.DS_Store
+*~.nib
+*.mode1v3
+*.mode1
+*.mode2
+*.pbxuser
+*.perspective
+*.perspectivev3
+*.pbxproj -crlf -diff -merge
+*.tar.gz
+*.gz
