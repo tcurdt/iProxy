@@ -26,14 +26,13 @@ int local_main(int ac, char **av);
     [window addSubview:viewController.view];
     [window makeKeyAndVisible];
 
-    char *args[4] = {
+    char *args[3] = {
         "local",
         "-i",
         "127.0.0.1:8888",
-        "-f"
     };
 
-    local_main(4, args);
+    local_main(3, args);
     
 //    if (serv_init("127.0.0.1:8888") < 0) {
 //        NSLog(@"failed to init server");
