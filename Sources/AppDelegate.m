@@ -29,7 +29,7 @@ int serv_init(char *ifs);
 int queue_init();
 int local_main(int ac, char **av);
 
-- (NSString *)getIPAddress
+- (NSString *)getIPAddressForInterface:(NSString*)ifname
 {
     NSString *address = nil;
 
@@ -45,7 +45,7 @@ int local_main(int ac, char **av);
 
             if(temp_addr->ifa_addr->sa_family == AF_INET) {
 
-                if([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en1"]) {
+                if([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:ifname]) {
 
                     address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
                 }
@@ -66,7 +66,18 @@ int local_main(int ac, char **av);
     [window addSubview:statusViewController.view];
     [window makeKeyAndVisible];
 
-    NSString *ip = [self getIPAddress];
+#if TARGET_IPHONE_SIMULATOR
+    NSString *ip = [self getIPAddressForInterface:@"en1"];
+#else
+    NSString *ip = [self getIPAddressForInterface:@"en0"];
+#endif
+
+    if (ip == nil) {
+        statusViewController.ipLabel.text = @"";
+        statusViewController.portLabel.text = @"";
+        return;
+    }
+    
     NSUInteger port = 8888;
 
     NSLog(@"ip = %@", ip);

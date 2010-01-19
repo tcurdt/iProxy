@@ -34,8 +34,8 @@ diff -u srelay-0.4.7p3.orig/init.c srelay-0.4.7p3/init.c
      if (str_serv_sock == NULL)
 diff -u srelay-0.4.7p3.orig/main.c srelay-0.4.7p3/main.c
 --- srelay-0.4.7p3.orig/main.c	2009-12-17 15:57:16.000000000 +0100
-+++ srelay-0.4.7p3/main.c	2010-01-14 04:18:46.000000000 +0100
-@@ -99,7 +99,7 @@
++++ srelay-0.4.7p3/main.c	2010-01-19 14:23:53.000000000 +0100
+@@ -99,10 +99,10 @@
    exit(1);
  }
  
@@ -43,7 +43,11 @@ diff -u srelay-0.4.7p3.orig/main.c srelay-0.4.7p3/main.c
 +int local_main(int ac, char **av)
  {
    int     ch, i=0;
-   pid_t   pid;
+-  pid_t   pid;
++//  pid_t   pid;
+   FILE    *fp;
+   uid_t   uid;
+ #ifdef USE_THREAD
 @@ -279,50 +279,51 @@
    }
  #endif
