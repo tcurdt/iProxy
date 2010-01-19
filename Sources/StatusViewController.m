@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "StatusViewController.h"
 
-int main(int argc, char *argv[]) {
-    
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-    int retVal = UIApplicationMain(argc, argv, nil, nil);
-    [pool release];
-    return retVal;
-}
+@implementation StatusViewController
+
+@synthesize ipLabel;
+@synthesize portLabel;
+
+@end

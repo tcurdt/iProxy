@@ -16,10 +16,15 @@
 
 #import <UIKit/UIKit.h>
 
-int main(int argc, char *argv[]) {
-    
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-    int retVal = UIApplicationMain(argc, argv, nil, nil);
-    [pool release];
-    return retVal;
+@interface StatusViewController : UIViewController {
+
+    IBOutlet UILabel *ipLabel;
+    IBOutlet UILabel *portLabel;
+
 }
+
+@property (nonatomic, retain) UILabel *ipLabel;
+@property (nonatomic, retain) UILabel *portLabel;
+
+@end
+

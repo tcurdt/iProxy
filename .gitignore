@@ -11,3 +11,5 @@ build/*
 *.pbxproj -crlf -diff -merge
 *.tar.gz
 *.gz
+*.psd
+*.orig

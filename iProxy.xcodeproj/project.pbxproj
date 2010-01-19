@@ -10,6 +10,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
+		9D5B3C5F1103D4E2003C8FCF /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D5B3C5E1103D4E2003C8FCF /* Icon.png */; };
 		9D63172B10FEAC6C0041EE37 /* auth-pwd.c in Sources */ = {isa = PBXBuildFile; fileRef = 9D63172110FEAC6C0041EE37 /* auth-pwd.c */; };
 		9D63172C10FEAC6C0041EE37 /* get-bind.c in Sources */ = {isa = PBXBuildFile; fileRef = 9D63172210FEAC6C0041EE37 /* get-bind.c */; };
 		9D63172D10FEAC6C0041EE37 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = 9D63172310FEAC6C0041EE37 /* init.c */; };
@@ -18,11 +19,12 @@
 		9D63173010FEAC6C0041EE37 /* relay.c in Sources */ = {isa = PBXBuildFile; fileRef = 9D63172610FEAC6C0041EE37 /* relay.c */; };
 		9D63173110FEAC6C0041EE37 /* socks.c in Sources */ = {isa = PBXBuildFile; fileRef = 9D63172710FEAC6C0041EE37 /* socks.c */; };
 		9D63173210FEAC6C0041EE37 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 9D63172910FEAC6C0041EE37 /* util.c */; };
-		9D63173810FEAC8B0041EE37 /* iProxyAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D63173410FEAC8B0041EE37 /* iProxyAppDelegate.m */; };
-		9D63173910FEAC8B0041EE37 /* iProxyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D63173610FEAC8B0041EE37 /* iProxyViewController.m */; };
+		9D63173810FEAC8B0041EE37 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D63173410FEAC8B0041EE37 /* AppDelegate.m */; };
+		9D63173910FEAC8B0041EE37 /* StatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D63173610FEAC8B0041EE37 /* StatusViewController.m */; };
 		9D63173C10FEAC980041EE37 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D63173A10FEAC980041EE37 /* main.m */; };
-		9D63174910FEACD30041EE37 /* iProxyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D63174610FEACD30041EE37 /* iProxyViewController.xib */; };
+		9D63174910FEACD30041EE37 /* StatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D63174610FEACD30041EE37 /* StatusViewController.xib */; };
 		9D63174A10FEACD30041EE37 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D63174710FEACD30041EE37 /* MainWindow.xib */; };
+		9DB0CF66110551F6001F4119 /* Status.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DB0CF65110551F6001F4119 /* Status.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,7 @@
 		1D6058910D05DD3D006BFB54 /* iProxy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iProxy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		9D5B3C5E1103D4E2003C8FCF /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		9D63172110FEAC6C0041EE37 /* auth-pwd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "auth-pwd.c"; path = "Frameworks/srelay-0.4.7p3/auth-pwd.c"; sourceTree = "<group>"; };
 		9D63172210FEAC6C0041EE37 /* get-bind.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "get-bind.c"; path = "Frameworks/srelay-0.4.7p3/get-bind.c"; sourceTree = "<group>"; };
 		9D63172310FEAC6C0041EE37 /* init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = init.c; path = "Frameworks/srelay-0.4.7p3/init.c"; sourceTree = "<group>"; };
@@ -40,16 +43,17 @@
 		9D63172810FEAC6C0041EE37 /* srelay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = srelay.h; path = "Frameworks/srelay-0.4.7p3/srelay.h"; sourceTree = "<group>"; };
 		9D63172910FEAC6C0041EE37 /* util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = util.c; path = "Frameworks/srelay-0.4.7p3/util.c"; sourceTree = "<group>"; };
 		9D63172A10FEAC6C0041EE37 /* v6defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = v6defs.h; path = "Frameworks/srelay-0.4.7p3/v6defs.h"; sourceTree = "<group>"; };
-		9D63173310FEAC8B0041EE37 /* iProxyAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iProxyAppDelegate.h; path = Sources/iProxyAppDelegate.h; sourceTree = "<group>"; };
-		9D63173410FEAC8B0041EE37 /* iProxyAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iProxyAppDelegate.m; path = Sources/iProxyAppDelegate.m; sourceTree = "<group>"; };
-		9D63173510FEAC8B0041EE37 /* iProxyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iProxyViewController.h; path = Sources/iProxyViewController.h; sourceTree = "<group>"; };
-		9D63173610FEAC8B0041EE37 /* iProxyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iProxyViewController.m; path = Sources/iProxyViewController.m; sourceTree = "<group>"; };
+		9D63173310FEAC8B0041EE37 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Sources/AppDelegate.h; sourceTree = "<group>"; };
+		9D63173410FEAC8B0041EE37 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Sources/AppDelegate.m; sourceTree = "<group>"; };
+		9D63173510FEAC8B0041EE37 /* StatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatusViewController.h; path = Sources/StatusViewController.h; sourceTree = "<group>"; };
+		9D63173610FEAC8B0041EE37 /* StatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatusViewController.m; path = Sources/StatusViewController.m; sourceTree = "<group>"; };
 		9D63173710FEAC8B0041EE37 /* route.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = route.h; path = Sources/route.h; sourceTree = "<group>"; };
 		9D63173A10FEAC980041EE37 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Sources/main.m; sourceTree = "<group>"; };
 		9D63173B10FEAC980041EE37 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = Sources/Prefix.pch; sourceTree = "<group>"; };
 		9D63174510FEACD30041EE37 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = "<group>"; };
-		9D63174610FEACD30041EE37 /* iProxyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = iProxyViewController.xib; path = Resources/iProxyViewController.xib; sourceTree = "<group>"; };
+		9D63174610FEACD30041EE37 /* StatusViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = StatusViewController.xib; path = Resources/StatusViewController.xib; sourceTree = "<group>"; };
 		9D63174710FEACD30041EE37 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = "<group>"; };
+		9DB0CF65110551F6001F4119 /* Status.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Status.png; path = Resources/Status.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,8 +103,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9D5B3C5E1103D4E2003C8FCF /* Icon.png */,
+				9DB0CF65110551F6001F4119 /* Status.png */,
 				9D63174510FEACD30041EE37 /* Info.plist */,
-				9D63174610FEACD30041EE37 /* iProxyViewController.xib */,
+				9D63174610FEACD30041EE37 /* StatusViewController.xib */,
 				9D63174710FEACD30041EE37 /* MainWindow.xib */,
 			);
 			name = Resources;
@@ -120,10 +126,10 @@
 		9D63174410FEACBE0041EE37 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				9D63173310FEAC8B0041EE37 /* iProxyAppDelegate.h */,
-				9D63173410FEAC8B0041EE37 /* iProxyAppDelegate.m */,
-				9D63173510FEAC8B0041EE37 /* iProxyViewController.h */,
-				9D63173610FEAC8B0041EE37 /* iProxyViewController.m */,
+				9D63173310FEAC8B0041EE37 /* AppDelegate.h */,
+				9D63173410FEAC8B0041EE37 /* AppDelegate.m */,
+				9D63173510FEAC8B0041EE37 /* StatusViewController.h */,
+				9D63173610FEAC8B0041EE37 /* StatusViewController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -187,8 +193,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D63174910FEACD30041EE37 /* iProxyViewController.xib in Resources */,
+				9D63174910FEACD30041EE37 /* StatusViewController.xib in Resources */,
 				9D63174A10FEACD30041EE37 /* MainWindow.xib in Resources */,
+				9D5B3C5F1103D4E2003C8FCF /* Icon.png in Resources */,
+				9DB0CF66110551F6001F4119 /* Status.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,8 +215,8 @@
 				9D63173010FEAC6C0041EE37 /* relay.c in Sources */,
 				9D63173110FEAC6C0041EE37 /* socks.c in Sources */,
 				9D63173210FEAC6C0041EE37 /* util.c in Sources */,
-				9D63173810FEAC8B0041EE37 /* iProxyAppDelegate.m in Sources */,
-				9D63173910FEAC8B0041EE37 /* iProxyViewController.m in Sources */,
+				9D63173810FEAC8B0041EE37 /* AppDelegate.m in Sources */,
+				9D63173910FEAC8B0041EE37 /* StatusViewController.m in Sources */,
 				9D63173C10FEAC980041EE37 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

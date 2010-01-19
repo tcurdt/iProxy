@@ -1,0 +1,289 @@
+Only in srelay-0.4.7p3: .git
+diff -u srelay-0.4.7p3.orig/get-bind.c srelay-0.4.7p3/get-bind.c
+--- srelay-0.4.7p3.orig/get-bind.c	2009-12-09 05:07:53.000000000 +0100
++++ srelay-0.4.7p3/get-bind.c	2010-01-08 02:11:46.000000000 +0100
+@@ -39,7 +39,7 @@
+ #include <sys/ioctl.h>
+ #include <sys/sockio.h>
+ #include <net/if.h>
+-#include <net/route.h>
++#include "route.h"
+ #ifdef	HAVE_SOCKADDR_DL_STRUCT
+ # include <net/if_dl.h>
+ #endif
+@@ -65,6 +65,7 @@
+ #define RTAX_IFA         5
+ #define RTAX_AUTHOR      6
+ #define RTAX_BRD         7
++#define RTA_NUMBITS 8
+ #define RTAX_MAX        RTA_NUMBITS /* Number of bits used in RTA_* */
+ #endif
+ 
+diff -u srelay-0.4.7p3.orig/init.c srelay-0.4.7p3/init.c
+--- srelay-0.4.7p3.orig/init.c	2009-12-09 05:07:53.000000000 +0100
++++ srelay-0.4.7p3/init.c	2010-01-08 02:44:15.000000000 +0100
+@@ -55,6 +55,9 @@
+   char   tmp_str_serv_sock[NI_MAXHOST+NI_MAXSERV+1];
+   const  int on = 1;
+ 
++str_serv_sock = malloc(sizeof(char *) * MAX_SOCKS);
++    serv_sock = malloc(sizeof(int) * MAX_SOCKS);
++
+   if (ifs == NULL || *ifs == '\0') {
+     str_serv_sock = malloc(sizeof(char *) * MAX_SOCKS);
+     if (str_serv_sock == NULL)
+diff -u srelay-0.4.7p3.orig/main.c srelay-0.4.7p3/main.c
+--- srelay-0.4.7p3.orig/main.c	2009-12-17 15:57:16.000000000 +0100
++++ srelay-0.4.7p3/main.c	2010-01-14 04:18:46.000000000 +0100
+@@ -99,7 +99,7 @@
+   exit(1);
+ }
+ 
+-int main(int ac, char **av)
++int local_main(int ac, char **av)
+ {
+   int     ch, i=0;
+   pid_t   pid;
+@@ -279,50 +279,51 @@
+   }
+ #endif
+ 
+-  if (!fg) {
+-    /* force stdin/out/err allocate to /dev/null */
+-    fclose(stdin);
+-    fp = fopen("/dev/null", "w+");
+-    if (fileno(fp) != STDIN_FILENO) {
+-      msg_out(crit, "fopen: %m");
+-      exit(1);
+-    }
+-    if (dup2(STDIN_FILENO, STDOUT_FILENO) == -1) {
+-      msg_out(crit, "dup2-1: %m");
+-      exit(1);
+-    }
+-    if (dup2(STDIN_FILENO, STDERR_FILENO) == -1) {
+-      msg_out(crit, "dup2-2: %m");
+-      exit(1);
+-    }
+-
+-    switch(fork()) {
+-    case -1:
+-      msg_out(crit, "fork: %m");
+-      exit(1);
+-    case 0:
+-      /* child */
+-      pid = setsid();
+-      if (pid == -1) {
+-	msg_out(crit, "setsid: %m");
+-	exit(1);
+-      }
+-      break;
+-    default:
+-      /* parent */
+-      exit(0);
+-    }
+-  }
+-
+-  master_pid = getpid();
+-  umask(S_IWGRP|S_IWOTH);
+-  if ((fp = fopen(pidfile, "w")) != NULL) {
+-    fprintf(fp, "%u\n", (unsigned)master_pid);
+-    fchown(fileno(fp), PROCUID, PROCGID);
+-    fclose(fp);
+-  } else {
+-    msg_out(warn, "cannot open pidfile %s", pidfile);
+-  }
++//  if (!fg) {
++//    /* force stdin/out/err allocate to /dev/null */
++//    fclose(stdin);
++//    fp = fopen("/dev/null", "w+");
++//    if (fileno(fp) != STDIN_FILENO) {
++//      msg_out(crit, "fopen: %m");
++//      exit(1);
++//    }
++//    if (dup2(STDIN_FILENO, STDOUT_FILENO) == -1) {
++//      msg_out(crit, "dup2-1: %m");
++//      exit(1);
++//    }
++//    if (dup2(STDIN_FILENO, STDERR_FILENO) == -1) {
++//      msg_out(crit, "dup2-2: %m");
++//      exit(1);
++//    }
++//
++//    switch(fork()) {
++//    case -1:
++//      msg_out(crit, "fork failed: %m");
++//      exit(1);
++//    case 0:
++//      /* child */
++//      pid = setsid();
++//      if (pid == -1) {
++//	msg_out(crit, "setsid: %m");
++////	exit(1);
++//      }
++//      break;
++//    default:
++//      /* parent */
++//      return 0;
++////      exit(0);
++//    }
++//  }
++//
++//  master_pid = getpid();
++//  umask(S_IWGRP|S_IWOTH);
++//  if ((fp = fopen(pidfile, "w")) != NULL) {
++//    fprintf(fp, "%u\n", (unsigned)master_pid);
++//    fchown(fileno(fp), PROCUID, PROCGID);
++//    fclose(fp);
++//  } else {
++//    msg_out(warn, "cannot open pidfile %s", pidfile);
++//  }
+ 
+   setsignal(SIGHUP, reload);
+   setsignal(SIGINT, SIG_IGN);
+@@ -381,10 +382,10 @@
+ 			 (void *)&serv_loop, (void *)NULL) != 0)
+         exit(1);
+     }
+-    main_thread = pthread_self();   /* store main thread ID */
+-    for (;;) {
+-      pause();
+-    }
++//    main_thread = pthread_self();   /* store main thread ID */
++//    for (;;) {
++//      pause();
++//    }
+   } else {
+ #endif
+     setsignal(SIGCHLD, reapchild);
+diff -u srelay-0.4.7p3.orig/readconf.c srelay-0.4.7p3/readconf.c
+--- srelay-0.4.7p3.orig/readconf.c	2009-12-17 15:49:50.000000000 +0100
++++ srelay-0.4.7p3/readconf.c	2010-01-19 01:18:35.000000000 +0100
+@@ -242,7 +242,7 @@
+   }
+ 
+   if ( new_proxy_tbl_ind <= 0 ) { /* no valid entries */
+-    parse_err(warn, n, "no valid entries found. using default.");
++    // parse_err(warn, n, "no valid entries found. using default.");
+     new_proxy_tbl_ind = 1;
+     memset(tmp_tbl, 0, sizeof(struct rtbl));
+     tmp_tbl[0].port_l = PORT_MIN; tmp_tbl[0].port_h = PORT_MAX;
+diff -u srelay-0.4.7p3.orig/relay.c srelay-0.4.7p3/relay.c
+--- srelay-0.4.7p3.orig/relay.c	2009-12-17 15:49:50.000000000 +0100
++++ srelay-0.4.7p3/relay.c	2010-01-14 04:14:42.000000000 +0100
+@@ -422,26 +422,29 @@
+       blocksignal(SIGCHLD);
+       pid = fork();
+       switch (pid) {
+-      case -1:  /* fork child failed */
+-	break;
+-      case 0:   /* i am child */
+-	for ( i = 0; i < serv_sock_ind; i++ ) {
+-	  close(serv_sock[i]);
+-	}
+-	setsignal(SIGCHLD, SIG_DFL);
+-        setsignal(SIGHUP, SIG_DFL);
+-        releasesignal(SIGCHLD);
+-        releasesignal(SIGHUP);
+-	ss = proto_socks(cs);
+-	if ( ss == -1 ) {
+-	  close(cs);  /* may already be closed */
+-	  exit(1);
+-	}
+-	relay(cs, ss);
+-	exit(0);
++        case -1:  /* fork child failed */
++            printf("\nfork failed\n");
++            break;
++        case 0:   /* i am child */
++            for ( i = 0; i < serv_sock_ind; i++ ) {
++              close(serv_sock[i]);
++            }
++            setsignal(SIGCHLD, SIG_DFL);
++                setsignal(SIGHUP, SIG_DFL);
++                releasesignal(SIGCHLD);
++                releasesignal(SIGHUP);
++            ss = proto_socks(cs);
++            if ( ss == -1 ) {
++              close(cs);  /* may already be closed */
++              exit(1);
++            }
++            printf("\nrelaying\n");
++            relay(cs, ss);
++            exit(0);
+       default: /* may be parent */
+-	proclist_add(pid);
+-	break;
++            printf("\nadding proc\n");
++            proclist_add(pid);
++            break;
+       }
+       close(cs);
+       releasesignal(SIGHUP);
+@@ -450,8 +453,8 @@
+     } else {
+       ss = proto_socks(cs);
+       if ( ss == -1 ) {
+-	close(cs);  /* may already be closed */
+-	continue;
++        close(cs);  /* may already be closed */
++        continue;
+       }
+       relay(cs, ss);
+     }
+Common subdirectories: srelay-0.4.7p3.orig/scripts and srelay-0.4.7p3/scripts
+diff -u srelay-0.4.7p3.orig/util.c srelay-0.4.7p3/util.c
+--- srelay-0.4.7p3.orig/util.c	2009-12-09 05:07:53.000000000 +0100
++++ srelay-0.4.7p3/util.c	2010-01-19 01:13:55.000000000 +0100
+@@ -53,28 +53,34 @@
+ 
+ void msg_out(int severity, const char *fmt, ...)
+ {
++    if (severity == norm) return;
++
+   va_list ap;
+-  int priority;
++//  int priority;
+ 
+-  switch (severity) {
+-  case crit:
+-    priority = SYSLOGFAC|LOG_ERR;
+-    break;
+-  case warn:
+-    priority = SYSLOGFAC|LOG_WARNING;
+-    break;
+-  case norm:
+-  default:
+-    priority = SYSLOGFAC|LOG_INFO;
+-    break;
+-  }
++//  switch (severity) {
++//  case crit:
++//    priority = SYSLOGFAC|LOG_ERR;
++//    break;
++//  case warn:
++//    priority = SYSLOGFAC|LOG_WARNING;
++//    break;
++//  case norm:
++//  default:
++//    priority = SYSLOGFAC|LOG_INFO;
++//    break;
++//  }
+ 
+   va_start(ap, fmt);
+-  if (!forcesyslog && isatty(fileno(stderr))) {
+-    vfprintf(stderr, fmt, ap);
+-  } else {
+-    vsyslog(priority, fmt, ap);
+-  }
++//  if (!forcesyslog && isatty(fileno(stderr))) {
++//    vfprintf(stderr, fmt, ap);
++//  } else {
++//    vsyslog(priority, fmt, ap);
++//  }
++  vfprintf(stdout, fmt, ap);
++
++  printf("\n");
++
+   va_end(ap);
+ }
+ 

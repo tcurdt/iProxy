@@ -13,13 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+ 
 #import <UIKit/UIKit.h>
 
-int main(int argc, char *argv[]) {
-    
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-    int retVal = UIApplicationMain(argc, argv, nil, nil);
-    [pool release];
-    return retVal;
+@class StatusViewController;
+
+@interface AppDelegate : NSObject <UIApplicationDelegate> {
+
+    IBOutlet UIWindow *window;
+    IBOutlet StatusViewController *statusViewController;
+
 }
+
+@property (nonatomic, retain) UIWindow *window;
+@property (nonatomic, retain) StatusViewController *statusViewController;
+
+@end
+

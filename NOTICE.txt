@@ -1,0 +1,2 @@
+iProxy itself is originally written by Torsten Curdt and released under the Apache 2.0 License
+iProxy is using srelay written by Tomo.M and released under the BSD License
