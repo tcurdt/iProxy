@@ -164,6 +164,7 @@
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
+				9D2225261105EC06003F4E04 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -205,6 +206,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9D2225261105EC06003F4E04 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ROOT=`pwd`\nrm -f $ROOT/build/$PRODUCT_NAME.zip\nzip $ROOT/build/$PRODUCT_NAME.zip Distribution.mobileprovision\ncd $TARGET_BUILD_DIR\nzip $ROOT/build/$PRODUCT_NAME.zip $PRODUCT_NAME.* ";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1D60588E0D05DD3D006BFB54 /* Sources */ = {
