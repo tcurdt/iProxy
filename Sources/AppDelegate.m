@@ -62,9 +62,10 @@ int local_main(int ac, char **av);
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
           
-    // Override point for customization after app launch    
     [window addSubview:statusViewController.view];
     [window makeKeyAndVisible];
+
+    application.idleTimerDisabled = YES;
 
 #if TARGET_IPHONE_SIMULATOR
     NSString *ip = [self getIPAddressForInterface:@"en1"];

@@ -10,6 +10,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
+		9D211196110637FB009C3C7C /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 9D211195110637FB009C3C7C /* iTunesArtwork */; };
 		9D2224E51105E6A6003F4E04 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D2224E41105E6A6003F4E04 /* Entitlements.plist */; };
 		9D5B3C5F1103D4E2003C8FCF /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D5B3C5E1103D4E2003C8FCF /* Icon.png */; };
 		9D63172B10FEAC6C0041EE37 /* auth-pwd.c in Sources */ = {isa = PBXBuildFile; fileRef = 9D63172110FEAC6C0041EE37 /* auth-pwd.c */; };
@@ -33,6 +34,7 @@
 		1D6058910D05DD3D006BFB54 /* iProxy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iProxy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		9D211195110637FB009C3C7C /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; name = iTunesArtwork; path = Resources/iTunesArtwork; sourceTree = "<group>"; };
 		9D2224E41105E6A6003F4E04 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Entitlements.plist; path = Resources/Entitlements.plist; sourceTree = "<group>"; };
 		9D5B3C5E1103D4E2003C8FCF /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		9D63172110FEAC6C0041EE37 /* auth-pwd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "auth-pwd.c"; path = "Frameworks/srelay-0.4.7p3/auth-pwd.c"; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9D211195110637FB009C3C7C /* iTunesArtwork */,
 				9D5B3C5E1103D4E2003C8FCF /* Icon.png */,
 				9DB0CF65110551F6001F4119 /* Status.png */,
 				9D63174510FEACD30041EE37 /* Info.plist */,
@@ -202,6 +205,7 @@
 				9D5B3C5F1103D4E2003C8FCF /* Icon.png in Resources */,
 				9DB0CF66110551F6001F4119 /* Status.png in Resources */,
 				9D2224E51105E6A6003F4E04 /* Entitlements.plist in Resources */,
+				9D211196110637FB009C3C7C /* iTunesArtwork in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,7 +223,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ROOT=`pwd`\nrm -f $ROOT/build/$PRODUCT_NAME.zip\nzip $ROOT/build/$PRODUCT_NAME.zip Distribution.mobileprovision\ncd $TARGET_BUILD_DIR\nzip $ROOT/build/$PRODUCT_NAME.zip $PRODUCT_NAME.* ";
+			shellScript = "ROOT=`pwd`\nVERSION=`/usr/libexec/PlistBuddy -c \"Print :CFBundleVersion\" Resources/Info.plist`\n\nrm -f $ROOT/build/$PRODUCT_NAME.zip\n\ncp $ROOT/Distribution.mobileprovision $TARGET_BUILD_DIR\n\nditto -c -k --sequesterRsrc $TARGET_BUILD_DIR $ROOT/build/$PRODUCT_NAME-$VERSION.zip";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -286,12 +290,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos3.1;
 			};
 			name = "Ad-hoc";
