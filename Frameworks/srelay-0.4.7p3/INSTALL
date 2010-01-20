@@ -1,0 +1,148 @@
+The srelay Installation Tips.
+    $Id: INSTALL,v 1.4 2009/09/04 08:29:40 bulkstream Exp $
+
+o How to build and install
+
+    Unpack the source.
+
+	% gzip -dc srelay-X.Y.Z.tar.gz | tar xvf -
+	% cd srelay-X.Y.Z
+
+    Run configure.
+      To see configuration options,
+	% ./configure --help
+
+      Configuration options.
+	 --disable-thread               disable pthread feature.
+	srelay configures to use pthread by default. if you prefer not
+	to use pthread (to use forking server), disable it.
+
+	 --with-libbind[=PATH]          to use libbind.
+	If your system does not have IPv6 compatible name resolving API;
+	getaddrinfo, getnameinfo,...etc.(e.g. Solaris 2.6), you have to
+	prepare libbind library prior to configure srelay.
+	Please See LIBBIND INSTALL.
+
+	 --with-libwrap[=PATH|yes|no]   with tcp_wrapper access control.
+	If your system has libwrap, you can use the same access control
+	base.
+
+	 --with-syslog-fac=FACILITY     syslog facility (LOG_DAEMON).
+	Srelay logs through syslog. the default facility is LOG_DAEMON.
+
+    Make
+	If configure works without any errors, run make.
+
+	% make
+
+	( currently I have no 'install' target in Makefile. )
+
+o MacOSX
+    MacOSX(10.4 or newer) users can setup daemon using Apple's new
+    launchd mechanism.
+    After building the srelay binary, put it in appropriate directry.
+    e.g.)
+	$cp srelay /usr/local/sbin/.
+
+    then, prepare the file called 'launchd plist'. Example is in 
+    scripts directry, 'local.srelay.plist'.
+    put this file into 
+    	/Library/LaunchDaemons/.
+
+    you should not put it into /System/Library/LaunchDaemons.
+    Try these command and see ps or syslog output. launchd errors are
+    reported in /var/log/system.log. srelay's errors are syslog
+    daemon.* facility by default. please check your syslog.conf setting.
+
+    	$ cd /Library/LaunchDaemons
+	$ launchctl load -F local.srelay.plist
+
+	    Sample plist file disables start up by default.
+	    '-F' option ignores this property and 'force' start up
+	    the daemon.
+	    If some running test being well, and if you would
+	    like the daemon starts at the system start up,
+	    reload the plist like,
+
+	$ launchctl unload local.srelay.plist
+    	$ launchctl load -w local.srelay.plist
+
+
+o Solaris 10
+    Solaris 10 has SMF to control system start up daemons. you can
+    setup srelay as service (daemon) under control of this facility.
+
+    copy a file from scripts directory to appropriate place.
+    	 # cp scripts/svc-srelay /lib/svc/method/.
+
+    svc-srelay is just a start up shell and called from SMF.
+    type svccfg command to register the service.
+    	 # svccfg import scripts/srelay.xml
+
+    srelay.xml is a sample SMF service manifest description (may be).
+
+    if no error, srelay process should be seen in ps result.
+    Log outputs are syslog daemon.* facility.
+
+    daemon stop/start operations.
+    	 start srelay
+    	 # svcadm enable network/srelay
+	 stop srelay
+	 # svcadm disable network/srelay
+
+    unregister from SMF
+    	 # svcadm disable network/srelay
+	 # svccfg delete network/srelay
+
+o FreeBSD
+    scripts/srelay.sh is a sample startup script for FreeBSD.
+    don't forget setting srelay_enable="Yes" to rc.conf. Or you
+    can avoid this check comment out or removing
+    	rcvar=`set_rcvar`
+    line.
+
+o Linux
+    scripts/rc.srelay is a sample for Linux. you can register
+    srelay as 'srelay' service,
+    	 # cp rc.srelay /etc/init.d/srelay
+	 # cd /etc/init.d
+	 # chkconfig --add srelay
+    starting service,
+         # /sbin/service srelay start
+    stopping service,
+         # /sbin/service srelay stop
+
+    unregister it,
+    	 # chkconfig --del srelay
+
+
+o LIBBIND INSTALL
+    (currently not tested. you may not need unless using ancient OSs
+    nor try running on arduino ;-)
+
+    To install libbind, you have to get source code from outside this
+    package. ISC libbind may be handy for it.
+    Or, You could have installed BIND with its libraries, please check
+    the installation pathes of BIND before these steps.
+
+    To get ISC libbind source, see
+       	https://www.isc.org/software/libbind
+	and fetch/wget, etc.
+	ftp://ftp.isc.org/isc/libbind/6.0/libbind-6.0.tar.gz
+
+    And, build.
+	% gzip -dc libbind-6.0.tar.gz | tar xvf -
+	% cd libbind-6.0
+	% ./configure
+	% make
+	% make DESTDIR=/path/to/temp install
+
+    check the includes and libbind.a are there in
+	/path/to/temp/usr/local/bind/inclue
+	/path/to/temp/usr/local/lib
+
+    Then, you can configure the srelay.
+	% cd /path/of/srelay-X.Y.Z
+	% env LIBS="-L/path/to/temp/usr/local/lib" \
+	  ./configure --with-libbind=/path/to/temp/usr/local/bind
+	% make

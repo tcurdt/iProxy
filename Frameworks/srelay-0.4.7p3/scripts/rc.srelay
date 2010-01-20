@@ -1,0 +1,66 @@
+#!/bin/bash
+#     startup script for srelay
+#							Tomo.M
+#  $Id: rc.srelay,v 1.1 2009/09/02 13:41:40 bulkstream Exp $
+# chkconfig: 345 99 0
+# description: Srelay is a SOCKS proxy.
+
+# source function library
+. /etc/init.d/functions
+
+RETVAL=0
+prog=srelay
+
+SRELAY=/usr/local/sbin/srelay
+CONF_FILE=/usr/local/etc/srelay.conf
+LOCK_FILE=/var/lock/subsys/srelay
+
+function start()
+{
+    echo -n $"Starting ${prog}: "
+    ${SRELAY} -c ${CONF_FILE} && success || failure
+    RETVAL=$?
+    [ ${RETVAL} -eq 0 ] && touch ${LOCK_FILE}
+    echo
+}
+
+function stop()
+{
+    echo -n $"Stopping ${prog}: "
+    killproc ${SRELAY} -TERM
+    RETVAL=$?
+    [ ${RETVAL} -eq 0 ] && rm -f ${LOCK_FILE}
+    echo
+}
+
+function restart()
+{
+    stop && sleep 5 && start
+}
+
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart|reload)
+        restart
+        ;;
+    condrestart)
+        [ -f ${LOCK_FILE} ] && restart
+        ;;
+    status)
+        status ${ENMA}
+        RETVAL=$?
+        ;;
+    *)
+        echo "Usage: ${prog} {start|stop|restart|reload|condrestart|status}"
+        RETVAL=1
+        ;;
+esac
+
+exit ${RETVAL}
+

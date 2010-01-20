@@ -1,0 +1,50 @@
+#!/bin/sh
+#   startup script for srelay
+#   $Id: svc-srelay,v 1.1 2009/09/02 13:41:40 bulkstream Exp $
+#							Tomo.M
+
+name="srelay"
+command="/usr/local/sbin/srelay"
+pid_file="/var/run/srelay.pid"
+start_cmd="start_${name}"
+stop_cmd="stop_${name}"
+
+start_srelay ()
+{
+    #echo -n "Starting ${name}"
+    if [ -x ${command} ]; then
+        ${command}
+    fi
+    echo "."
+}
+
+stop_srelay ()
+{
+    #echo -n "Stopping ${name}"
+    if [ -f ${pid_file} ]; then
+        /bin/kill `cat ${pid_file}`
+    fi
+    echo "."
+}
+
+case "$1" in
+    start)
+	if [ -x $command ]; then
+	    start_srelay
+	fi
+	;;
+    stop)
+	if [ -f $pid_file ]; then
+	    stop_srelay
+	fi
+	;;
+    restart)
+	if [ -x $command -a -f $pid_file ]; then
+	    stop_srelay
+	    start_srelay
+	fi
+	;;
+	*)
+	echo "Usage: $0 (start|stop|restart)"
+	;;
+esac

@@ -1,0 +1,6 @@
+#
+#  srelay proxy passwd.
+#  $Id: srelay.passwd,v 1.2 2002/12/06 02:15:01 bulkstream Exp $
+#
+# proxy		user		passwd
+192.168.1.1	hogahoge	%"aXhe

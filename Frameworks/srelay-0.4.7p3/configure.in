@@ -1,0 +1,232 @@
+dnl Process this file with autoconf to produce a configure script.
+dnl $Id: configure.in,v 1.8 2009/08/30 13:06:32 bulkstream Exp $
+AC_INIT(main.c)
+AC_CONFIG_HEADER(config.h)
+AC_CANONICAL_TARGET
+
+case "$build_os" in
+  freebsd*)
+	OS=FREEBSD
+	AC_DEFINE(FREEBSD)
+	;;
+  solaris*)
+	OS=SOLARIS
+	AC_DEFINE(SOLARIS)
+	;;
+  linux*)
+	case "$build_cpu" in
+	  i*86)
+	    OS=LINUX
+	    AC_DEFINE(LINUX)
+	    ;;
+        esac
+	;;
+  darwin*)
+	OS=MACOSX
+	AC_DEFINE(MACOSX)
+	;;
+esac
+
+CFLAGS="$CFLAGS -O2 -Wall"
+dnl LDFLAGS="$LDFLAGS -s"
+
+dnl Local libralies.
+if test -d /usr/local/lib; then
+    LIBS="-L/usr/local/lib $LIBS"
+fi
+
+dnl Solaris 2.6 depends libbind.
+dnl libbind default installation base directory.
+LIBBIND="/usr/local/bind"
+
+dnl Checks for programs.
+GCC=yes
+AC_PROG_CC
+
+
+#dnl Checks for libraries.
+
+AC_ARG_WITH(libbind,
+[ --with-libbind[[=PATH]]		to use libbind.],
+libbind="$withval",
+libbind="no")
+if test "$libbind" = "yes"; then
+  if test -d "$LIBBIND/include"; then
+    CFLAGS="-I$LIBBIND/include $CFLAGS"
+  fi
+elif test "$libbind" != "no"; then
+  if test -d "$libbind"/lib; then
+    LIBS="-L${libbind}/lib $LIBS"
+  fi
+  if test -d "$libbind"/include; then
+    CFLAGS="-I${libbind}/include $CFLAGS"
+  fi
+fi
+
+if test "$OS" = "SOLARIS"; then
+  if test "$libbind" = "no"; then
+    AC_CHECK_LIB(socket, socket)
+  else
+    AC_CHECK_LIB(xnet, socket)
+  fi
+  AC_CHECK_LIB(nsl, getaddrinfo,,
+	if test "$libbind" != "no"; then
+	  AC_CHECK_LIB(bind_r, getaddrinfo,,
+	    AC_CHECK_LIB(bind, getaddrinfo,,
+	      AC_MSG_ERROR("required functions may not work", -1)))
+        else
+	  AC_MSG_ERROR("required functions may not work", -1)
+	fi
+      )
+fi
+
+AC_ARG_WITH(libwrap,
+[ --with-libwrap[[=PATH|yes|no]]	with tcp_wrapper access control.],
+libwrap="$withval",
+libwrap="yes")
+if test "$libwrap" != "no"; then
+   if test "$libwrap" != "yes"; then
+      if test -d "$libwrap"; then
+         LIBS="-L$libwrap $LIBS"
+      fi
+   fi
+   AC_CHECK_HEADER(tcpd.h, AC_DEFINE(HAVE_TCPD_H), tcpdh="no")
+   if test "$tcpdh" != "no"; then
+#      if test "$OS" = "LINUX" -o "$OS" = "SOLARIS"; then
+#          AC_MSG_CHECKING([for hosts_ctl in -lwrap])
+#          saveLIBS="$LIBS"
+#	  LIBS="-lwrap -lnsl $LIBS"
+#	  AC_COMPILE_IFELSE(
+#	      AC_LANG_PROGRAM([
+#[int allow_severity;]
+#[int deny_severity;]],
+#[[hosts_ctl();]]),
+#	AC_DEFINE(HAVE_LIBWRAP)
+#	AC_MSG_RESULT([yes]),
+#	LIBS="$saveLIBS"
+#	AC_MSG_RESULT([no]))
+#      else
+	  AC_CHECK_LIB(wrap, hosts_ctl)
+#      fi
+   fi
+fi
+
+AC_ARG_WITH(syslog-fac,
+[ --with-syslog-fac=FACILITY	syslog facility (LOG_DAEMON).],
+syslogfac="$withval",
+syslogfac="no")
+if test "$syslogfac" != "no"; then
+  if test "$syslogfac" != "yes"; then
+    AC_MSG_CHECKING([syslog facility is])
+    AC_MSG_RESULT("$withval")
+    echo "$withval" |grep "LOG_LOCAL" > /dev/null 2>&1
+    r=$?
+    if test $r -eq 0; then
+      AC_DEFINE_UNQUOTED(LOCAL_FAC, $withval)
+    else
+      AC_DEFINE_UNQUOTED(SYSLOG_FAC, $withval)
+    fi
+  fi
+fi
+
+AC_ARG_ENABLE(thread,
+[ --disable-thread		disable pthread feature.],
+thread="$enableval",
+thread="yes")
+if test "$thread" != "no"; then
+    AC_CHECK_HEADER(pthread.h, header_ok="yes", header_ok="no")
+    if test "$header_ok" = "yes"; then
+	AC_MSG_CHECKING([whether enabling thread])
+	save_CFLAGS="$CFLAGS";
+	if test "$OS" = "FREEBSD" -o "$OS" = "MACOSX"; then
+	    CFLAGS="$CFLAGS -pthread"
+	fi
+	save_LDFLAGS="$LDFLAGS"
+	if test "$OS" = "FREEBSD" -o "$OS" = "LINUX" -o "$OS" = "MACOSX"; then
+	    LDFLAGS="$LDFLAGS -pthread"
+	elif test "$OS" = "SOLARIS"; then
+	    LDFLAGS="$LDFLAGS -lpthread"
+	fi
+	AC_RUN_IFELSE([AC_LANG_SOURCE([
+[#include <pthread.h>
+void
+init_routine()
+{
+    return(0);
+}
+main()
+{
+    pthread_once_t once_control = PTHREAD_ONCE_INIT;
+    pthread_once(&once_control, &init_routine);
+    return(0);
+}]])],
+	AC_DEFINE(USE_THREAD) AC_MSG_RESULT([yes]),
+	CFLAGS="$save_CFLAGS"; LDFLAGS="$save_LDFLAGS"; AC_MSG_RESULT([no])
+	)
+    fi
+fi
+
+AC_CHECK_LIB(crypt, crypt)
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_HEADER_SYS_WAIT
+AC_CHECK_HEADERS(fcntl.h sys/time.h limits.h syslog.h unistd.h\
+	sys/resource.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_CHECK_TYPES(socklen_t,,,
+	[#include <sys/types.h>
+#include <sys/socket.h>])
+
+AC_CHECK_TYPES([u_int8_t, u_int16_t, u_int32_t, uint8_t, uint16_t, uint32_t],,,
+	[#include <sys/types.h>
+#include <netdb.h>])
+
+AC_HEADER_TIME
+
+AC_CHECK_MEMBER(struct sockaddr_dl.sdl_family,
+	[AC_DEFINE(HAVE_SOCKADDR_DL_STRUCT)],,
+	[#include <sys/types.h>
+#include <net/if_dl.h>])
+
+AC_CHECK_MEMBER(struct sockaddr.sa_len,
+	[AC_DEFINE(HAVE_SOCKADDR_SA_LEN)],,
+	[#include <sys/types.h>
+#include <sys/socket.h>])
+
+dnl Checks for library functions.
+AC_TYPE_SIGNAL
+AC_CHECK_FUNCS(\
+		select\
+		socket\
+		getaddrinfo\
+		getnameinfo\
+		freeaddrinfo\
+		)
+
+AC_OUTPUT(Makefile)
+
+dnl from acconfig.h
+AH_TEMPLATE([FREEBSD],
+	[Define if the build system is FreeBSD])
+AH_TEMPLATE([SOLARIS],
+	[Define if the build system is Solaris])
+AH_TEMPLATE([LINUX],
+	[Define if the build system is Linux])
+AH_TEMPLATE([MACOSX],
+	[Define if the build system is MacOSX])
+AH_TEMPLATE([HAVE_LIMITS_H],
+	[Define if you have the <limits.h> header file.])
+AH_TEMPLATE([HAVE_TCPD_H],
+	[Define if you have the <tcpd.h> header file.])
+AH_TEMPLATE([SYSLOG_FAC],
+	[Define if you indicate your favor syslog facility.])
+AH_TEMPLATE([LOCAL_FAC],
+	[Define if you indicate LOG_LOCALx syslog facility.])
+AH_TEMPLATE([USE_THREAD],
+	[Define if you build a POSIX threading version.])
+AH_TEMPLATE([HAVE_SOCKADDR_DL_STRUCT],
+	[Define if you have the sockaddr_dl structure.])
+AH_TEMPLATE([HAVE_SOCKADDR_SA_LEN],
+	[Define if `sa_len' is member of `struct sockaddr'.])

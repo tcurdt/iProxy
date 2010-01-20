@@ -1,0 +1,205 @@
+#
+#  Changes
+#  $Id: Changes,v 1.15 2009/12/17 14:49:50 bulkstream Exp $
+#
+0.4.7p3 (2009/12/17)
+  + can set the version of Next Hop socks in config.
+  + tcp_wrapper is enabled with -w command line option (disabled by default).
+0.4.7p2 (2009/12/17)
+  + socks5 auth method nego with next-hop be more appropriate.
+    (will not use user/pass when -u option wasn't specified.)
+0.4.7p1 (2009/12/09)
+  + fix socks.c for DEEP forward.
+  + some manpage descriptions added.
+0.4.7 (2009/12/09)
+
+0.4.7b5 (2009/12/08)
+  + added DEEP forward (undocumented.)
+0.4.7b4 (2009/12/07)
+  + re-construct struct socks_req
+  + rewrite socks.c for future develop.
+0.4.7b3 (2009/12/01)
+  + fix bug. socks fqdn proxy relaying was not working.
+	(Thanks Markus Ferlitsch.)
+0.4.7b (2009/08/30)  Yeah! 6 year and more had passed.
+  + added feature of using same outgoing ip as incoming(-g)
+    	  (Thanks Comrade. testing will be needed.)
+  + fix compile errors on MacOSX for my own environment was shifted to it.
+
+0.4.6a (2003/04/22)
+  + bug fix - avoid compile error (may be) on Linux. (Thanks Michal.)
+  + adopt for more recent configure MACROs.
+
+0.4.6 (2003/04/13)
+  + bug fix
+
+0.4.5c (2003/04/10)
+  + Enabling Solaris 2.6/8 compilations. but not tested well :-p
+  + Add v6defs.h mainly for Solaris 2.6
+  + Add INSTALL file
+
+0.4.5a (2003/03/31)
+  + Bug Fix ... address masks, address compare, etc.
+  + TODO:
+	IPv6 site-local address consideration(scope id).
+
+0.4.5 (2003/03/27) - alpha to beta quality
+  + Almost all rewritten to support IPv6
+  + TODO:
+	SOCKS-BIND in IPv6 not implemented yet.
+	Solaris 2.6 support has gone for a while.
+	Solaris 8 support will be done for a while.
+	Connection Loop detection.
+	Bug Fix (may be :-p)
+
+0.4.0a (2003/01/16)
+  + remove unsed struct thread_tab.
+  + remove unsed argument of serv_loop().
+  + set signal behaviors more properly.
+
+0.4.0 (2003/01/06)
+  + Ported to Linux (kernel 2.4.20/glibc-2.2.93-5 RedHat 8.0)
+    ... this needs a lot more testing ...
+  + Fixed against compile warnings/errors on Linux gcc.
+  + Renew autoconf and its source configure.in, etc.
+acconfig.h
+  - removed
+configure.in
+  + Added acconfig.h contents.
+  + Modified LINUX related checkings.
+srelay.h
+get-bind.c
+  + Added code for getting Linux routing table.
+
+0.3.3 (2003/01/02)
+relay.c
+  + Bugfix
+    Thread mode srelay consumes CPU nearly 100% on FreeBSD 4.7
+    and Solaris 8. rfds/xfds in relay() could be polluted by
+    something I could not make out.
+init.c
+main.c
+util.c
+relay.c
+srelay.h
+  + Added child process control
+    Child process control for Fork mode was full of imcompleteness.
+
+0.3.2 (2002/12/06)
+  + Bugfix
+    UDP associate request(which is not yet implemented;-) triggers
+    service unavailable entirely.
+socks.c
+auth-pwd.c
+srelay.h
+  timerd_read()
+    * Added parameter 'flags'. will be passed to recvfrom() directly.
+  wait_for_read()
+    * Added check FD_ISSET().
+  + Added CVS Id line.
+
+0.3.1 (2002/08/16)
+main.c
+  main()
+    * forcing allocate the file descriptor 0/1/2 to /dev/null.
+
+relay.c
+  readn()
+  writen()
+  forward()
+    * reduce settimer() call. saving CPU usage.
+
+0.3 (2002/06/14)
+auth-pwd.c
+  auth_pwd_server()
+    * log format
+    * make sure to cleanup username password storage.
+
+init.c
+relay.c
+  global array str_serv_sock added.
+  which is used in tcp_wrapper's validation control.
+  this array holds strings formed
+	nnn.nnn.nnn.nnn.ppppp
+  where nnn.... is IP address and ppppp is a port number.
+  this corresponds srelay server's listen socket, i.e. arguments
+  of 'i' option. this string can be used as "daemon list" of 
+  tcp_wrappers hosts_access(5) file.
+  when you started srelay
+
+  # srelay -i 123.223.100.10
+
+  you can put in 'hosts.allow' like,
+
+  123.223.100.10.1080: my.domain.com 123.223.100.
+
+  with no 'i' option,
+
+  0.0.0.0.1080: 123.123.123.
+
+  will be evaluated. in any case, the daemon list 'srelay' can
+
+  be evaluated as whole daemon sockets of srelay.
+
+relay.c
+  relay()
+  change some codes for collecting informations of transfer state
+  logging.
+
+main.c
+socks.c
+  command line '-b' option added.
+  this indicates SOCKS BIND sockets port restriction off.
+  the port restriction is impremented in my own way, because the
+  definition of BIND requested port is quite not sure.
+
+  RFC1928 says about BIND request's DST.PORT just, 
+
+  ... In(It ?) is expected that a SOCKS server will use DST.ADDR
+  and DST.PORT in evaluating the BIND request.
+
+  and, NEC's draft "draft-ietf-aft-socks-pro-v5-04, 22 February 1999"
+  (http://www.socks.nec.com/draft/draft-ietf-aft-socks-pro-v5-04.txt)
+  rewrites here by,
+
+  DST.ADDR must be the address of the primary connection's
+  destination.  DST.PORT should be the requested port (or 0 for a
+  random, unused port).  It is expected that a SOCKS server will
+  use DST.ADDR and DST.PORT in evaluating the BIND request.
+
+  there are some imprementation that setting this BIND request's 
+  DST.PORT to the same value as primary CONNECTion's requested
+  DST.PORT. (FFFTP 1.8 etc.)
+
+  my own rule:
+     BIND port selection priority.
+     1. requested port. (assuming dest->sin_port as requested port)
+     2. clients src port.
+     3. free port.
+     and, restriction:
+     if requested port or client's src port is less than
+     IPPORT_RESERVEDSTART(600), force selecting free port.
+
+socks.c
+
+  bug fix.
+  when using username/password auth in socks5 server mode, it was
+  still usable as socks4 server. this conflicts,
+	- user needs username/password in socks5
+    but,
+	- user doesn't need any authentication in using socks4.
+  fixed as if the srelay invoked using '-a' option, the socks4
+  requests are shut-offed.
+
+readconf.c
+  readconf()
+    make function durable in reloading config.
+
+main.c
+util.c
+  define SIGHUP handler 'reload'. you can reconfigure srelay.conf
+  (socks relay configuration) with "kill -HUP pid" operation.
+
+srelay.h
+  BUFSIZE 2048 -> 8192
+  a little blessing speed up.

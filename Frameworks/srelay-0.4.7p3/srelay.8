@@ -1,0 +1,225 @@
+'\"
+.\" Copyright (C) 2001-2009, Tomo.M
+.\" All Rights Reserved
+.\" $Id: srelay.8,v 1.5 2009/12/09 04:07:53 bulkstream Exp $
+.TH srelay 8 "27 Mar 2003"
+.if n .tr \--
+.SH NAME
+srelay \- socks protocol server.
+.SH SYNOPSIS
+.B srelay
+.RB [ options ]
+.SH DESCRIPTION
+The \fBsrelay\fP is socks version 5 server, including version 4 support.
+.br
+The \fBsrelay\fP has following features.
+.br
+- socks version 5 connect/bind operation for TCP relaying.
+.br
+- socks version 4 connect/bind operation, including FQDN extensions.
+.br
+- series of multiple socks servers relaying with both version 4 and 5 servers.
+.br
+- support username/password authentication.
+.br
+- connection control with tcp_wrappers(libwrap).
+.br
+- support IPv6 as well as IPv4 (hopefully).
+.br
+- You can build IPv4 <-> IPv6 gateway with the srelay.
+.br
+- nicely cope(relay) with NEC's SOCKSv5 reference implementation servers.
+.br
+- Free to use/distribute.
+.SH OPTIONS
+The options are as follows:
+.TP 10
+.B \-c \fI file \fP
+configuration file.
+.TP
+.B \-i \fI i/f \fP
+Interface, or listening port. See \fBListening Port\fP.
+.TP
+.B \-m \fI num \fP
+Maximum child process for non-threading daemon.
+Or, number of thread for threading daemon.
+.TP
+.B \-o \fI minutes \fP
+Idle transfer timeout in minutes. 0(zero) means no timeout(default.)
+.TP
+.B \-p \fI file \fP
+PID file; stores main process or main thread process ID. 
+.TP
+.B \-u \fI file \fP
+srelay password file used in intermediate SOCKS5 server.
+.TP
+.B \-a \fP[n|p]
+authentication method.
+.RS
+.TP
+.B n
+No Authentication.
+.TP
+.B p
+Username/Password authentication.
+.LP
+Authentication methods are evaluated in its placing order. If this option is not present, 'No Authentication' method is taken.
+.RE
+.TP 10
+.B \-f
+Run foreground. (not tested well :-p)
+.TP
+.B \-r
+Try resolve client ip to name on logging.
+.TP
+.B \-s
+Logging to syslog, even if running foreground.
+.TP
+.B \-t
+Disable threading. (valid in thread-enabled configuration)
+.TP
+.B \-b
+Avoid BIND port restriction.
+.TP
+.B \-g
+Use the same interface for outbound as inbound.
+.TP
+.B \-v
+Show version info.
+.TP
+.B \-h \-?
+Show help.
+.SS Listening Port
+.PP
+Specifing the server listening ports are in following format.
+.TP
+.B \-i \fI 192.168.1.5 \fP
+Single IP spec. If no port number is specified, defaults to 1080/tcp. Server socket will be 192.168.1.5 port 1080.
+.TP
+.B \-i \fI 192.168.1.5:9999 \fP
+Single IP with port. Server socket will be 192.168.1.5 port 9999.
+.TP
+.B \-i \fI my.socks.host:5432 \fP
+Hostname is also accepted.
+.TP
+.B \-i \fI :1234 \fP
+No host IP or hostname is specified. Server socket will be INADDR_ANY port 1234.
+.TP
+.B \-i \fI '[2003:268:1234:4321:250:8bff:fea8:1234]:1234'
+IPv6 address must be surrounded by '[' and ']'. In most of the cases, you have to escape '[' and ']' characters against your shell.
+.P
+\fB -i \fP options can be appear multiple times if you'd like to have a lot of holes.
+.P
+If no \fB -i \fP option is specified, default port is \fI INADDR_ANY/INADDR6_ANY port 1080 \fP.
+.SS Authentication method
+.P
+The socks version 5 authentication is mechanism for authenticate the server user.
+The \fBsrelay\fP only supports 'No Authentication' and 'Username/Password Authentication'.
+On the Username/Password authentication, the \fBsrelay\fP using the server host's account information. For instance, using UNIX host's password database. This is deprecated if you are in the network with full of sniffers :) Why ? er, plain text password is launched by the client every time at connecting the server.
+I recommend not to use \fB-a\fP\fIp\fP option.
+.P
+When the \fBsrelay\fP is working as the intermediate of socks servers chain, it is some time required to use socks authentication to connect to next-hop socks server. In this case, you can specify the username and password for the next-hop socks by using \fIsrelay.passwd\fP file.
+This is done whether you are specifing \fB-a\fP option or not.
+.SS srelay.conf
+.PP
+Configuration file format.
+.br
+# this line is comment.
+.br
+# destination			port range	next [next-p x-next x-next-p]
+.br
+# subnet length
+.br
+123.123.131.0/24		any		10.10.10.1
+.br
+# subnet mask in doted format	higher port is 65535
+.br
+223.224.2.128/255.255.255.128	512-		10.11.22.1 11080
+.br
+# 				lower port is 1
+.br
+223.224.2.128/25		-511		10.11.22.2
+.br
+# IPv6 destinations go through Gateway
+.br
+::				-		100.200.1.1
+.br
+# IPv4 destinations go through another Gateway
+.br
+0.0.0.0				-		100.200.1.2
+.br
+# (IPv6 to IPv4 destinations)
+.br
+0.0.0.0				-	3002::1:4321:250:8bff:ffa8:1234
+.br
+# no next-hop means connect direct.
+.br
+1.2.3.4				-
+.br
+#---
+
+If a next-p (next-hop socks port) is ommitted, is defaulted to 1080, as you can guess.
+A next-hop socks port can be like, 8080/H or 8080/S, where H, S means HTTP, SOCKS, respectively. this also defaults to SOCKS.
+.br
+HTTP relaying method is experimental, and supports minimized spec of HTTP Proxying.
+
+ 
+You can be on your network environment like this.
+.br
+[Client]-->(socks)[srelay]-->(http)[FireWall] -->(socks)[Socks_Island]-->[Dest]
+
+srelay.conf setting could have the third Host, [FilreWall] like this.
+
+# dest  dest-port proxy        proxy-p   proxy2    proxy2-p  
+.br
+Dest    any       Socks-Island 1080      FireWall  8080/H
+
+The listing order of proxy and proxy2 is farthest first order.
+
+
+
+
+.br
+.SS srelay.passwd
+Username/Password information for connecting next-hop socks server.
+.br
+# this line is comment.
+.br
+# next-hop server	username	password
+.br
+123.234.0.1		hogehoga	xyz$12#
+.br
+10.11.22.1		opopop		tutut555
+.SH FILES
+.TP
+.B /usr/local/etc/srelay.conf
+default configuration file.
+.TP
+.B /usr/local/etc/srelay.passwd
+username/password information using in connecting to the next-hop socks v5 server.
+.TP
+.B /var/run/srelay.pid
+default PID file.
+.TP
+.B /etc/hosts.allow /etc/hosts.deny
+(if supported in compile time,) tcp_wrappers configuration. TAG name is '\fBsrelay\fP'.
+.SH SIGNALS
+.P
+The following signals are meaningful:
+.TP
+.B SIGHUP
+reload srelay.conf.
+.TP
+.B SIGTERM
+Exit.
+.SH SEE ALSO
+.B hosts_access(5),
+.br
+.B RFC 1928 SOCKS Protocol Version 5,
+.br
+.B RFC 1929 Username/Password Authentication for SOCKS V5,
+.br
+.B http://www.socks.nec.com/socksproto.html
+.SH AUTHOR
+.B Tomo.M
+<tomoyuki@pobox.com>
