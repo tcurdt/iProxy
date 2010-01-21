@@ -223,7 +223,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ROOT=`pwd`\nVERSION=`/usr/libexec/PlistBuddy -c \"Print :CFBundleVersion\" Resources/Info.plist`\n\nrm -f $ROOT/build/$PRODUCT_NAME.zip\n\nif [ -f \"$ROOT/Distribution.mobileprovision\" ]; then\n  cp $ROOT/Distribution.mobileprovision $TARGET_BUILD_DIR\nfi\n\nditto -c -k --sequesterRsrc $TARGET_BUILD_DIR $ROOT/build/$PRODUCT_NAME-$VERSION.zip";
+			shellScript = "ROOT=`pwd`\nVERSION=`/usr/libexec/PlistBuddy -c \"Print :CFBundleVersion\" Resources/Info.plist`\n\nrm -f $ROOT/build/$PRODUCT_NAME.zip\n\nif [ -f \"$ROOT/Distribution.mobileprovision\" ]; then\n  cp $ROOT/Distribution.mobileprovision $TARGET_BUILD_DIR\nfi\n\n/usr/bin/ditto -c -k --sequesterRsrc $TARGET_BUILD_DIR $ROOT/build/$PRODUCT_NAME-$VERSION.zip";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
