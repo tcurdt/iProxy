@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface InstructionsViewController : UITableViewController {
+@interface InstructionsViewController : UIViewController {
 }
 
 @end
