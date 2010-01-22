@@ -15,10 +15,20 @@
  */
 
 #import "StatusViewController.h"
+#import "InstructionsViewController.h"
 
 @implementation StatusViewController
 
 @synthesize ipLabel;
 @synthesize portLabel;
+
+
+- (IBAction)showInstructions{
+  NSLog(@"touched");
+  InstructionsViewController *ivc = [[InstructionsViewController alloc] init];
+  UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:ivc];
+
+  [self presentModalViewController:nc animated:YES];
+}
 
 @end
