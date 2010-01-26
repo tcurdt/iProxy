@@ -28,8 +28,8 @@
 		9D63174A10FEACD30041EE37 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D63174710FEACD30041EE37 /* MainWindow.xib */; };
 		9D94CB80110E727700F8C260 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D94CB7F110E727700F8C260 /* Default.png */; };
 		9DB0CF66110551F6001F4119 /* Status.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DB0CF65110551F6001F4119 /* Status.png */; };
-		E0FC1E0F110A4F3600F18553 /* instructions.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E0FC1E0E110A4F3600F18553 /* instructions.jpg */; };
-		E0FC1E13110A4F4F00F18553 /* InstructionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FC1E12110A4F4F00F18553 /* InstructionsViewController.m */; };
+		9DE52B14110E77650035266A /* Instructions.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9DE52B13110E77650035266A /* Instructions.jpg */; };
+		9DE52B17110E77760035266A /* InstructionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE52B16110E77760035266A /* InstructionsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,9 +62,9 @@
 		9D63174710FEACD30041EE37 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = "<group>"; };
 		9D94CB7F110E727700F8C260 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
 		9DB0CF65110551F6001F4119 /* Status.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Status.png; path = Resources/Status.png; sourceTree = "<group>"; };
-		E0FC1E0E110A4F3600F18553 /* instructions.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = instructions.jpg; sourceTree = "<group>"; };
-		E0FC1E11110A4F4F00F18553 /* InstructionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionsViewController.h; sourceTree = "<group>"; };
-		E0FC1E12110A4F4F00F18553 /* InstructionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstructionsViewController.m; sourceTree = "<group>"; };
+		9DE52B13110E77650035266A /* Instructions.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Instructions.jpg; path = Resources/Instructions.jpg; sourceTree = "<group>"; };
+		9DE52B15110E77760035266A /* InstructionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InstructionsViewController.h; path = Sources/InstructionsViewController.h; sourceTree = "<group>"; };
+		9DE52B16110E77760035266A /* InstructionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InstructionsViewController.m; path = Sources/InstructionsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,14 +114,12 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9DE52B1A110E77920035266A /* Nibs */,
+				9DE52B19110E77810035266A /* Images */,
 				9D211195110637FB009C3C7C /* iTunesArtwork */,
+				9D63174510FEACD30041EE37 /* Info.plist */,
 				9D5B3C5E1103D4E2003C8FCF /* Icon.png */,
 				9D94CB7F110E727700F8C260 /* Default.png */,
-				9DB0CF65110551F6001F4119 /* Status.png */,
-				9D63174510FEACD30041EE37 /* Info.plist */,
-				9D63174610FEACD30041EE37 /* StatusViewController.xib */,
-				9D63174710FEACD30041EE37 /* MainWindow.xib */,
-				E0FC1E0E110A4F3600F18553 /* instructions.jpg */,
 				9D2224E41105E6A6003F4E04 /* Entitlements.plist */,
 			);
 			name = Resources;
@@ -145,8 +143,8 @@
 				9D63173410FEAC8B0041EE37 /* AppDelegate.m */,
 				9D63173510FEAC8B0041EE37 /* StatusViewController.h */,
 				9D63173610FEAC8B0041EE37 /* StatusViewController.m */,
-				E0FC1E11110A4F4F00F18553 /* InstructionsViewController.h */,
-				E0FC1E12110A4F4F00F18553 /* InstructionsViewController.m */,
+				9DE52B15110E77760035266A /* InstructionsViewController.h */,
+				9DE52B16110E77760035266A /* InstructionsViewController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -166,6 +164,24 @@
 				9D63172A10FEAC6C0041EE37 /* v6defs.h */,
 			);
 			name = srelay;
+			sourceTree = "<group>";
+		};
+		9DE52B19110E77810035266A /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				9DB0CF65110551F6001F4119 /* Status.png */,
+				9DE52B13110E77650035266A /* Instructions.jpg */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		9DE52B1A110E77920035266A /* Nibs */ = {
+			isa = PBXGroup;
+			children = (
+				9D63174610FEACD30041EE37 /* StatusViewController.xib */,
+				9D63174710FEACD30041EE37 /* MainWindow.xib */,
+			);
+			name = Nibs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,7 +234,7 @@
 				9D2224E51105E6A6003F4E04 /* Entitlements.plist in Resources */,
 				9D211196110637FB009C3C7C /* iTunesArtwork in Resources */,
 				9D94CB80110E727700F8C260 /* Default.png in Resources */,
-				E0FC1E0F110A4F3600F18553 /* instructions.jpg in Resources */,
+				9DE52B14110E77650035266A /* Instructions.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,7 +273,7 @@
 				9D63173810FEAC8B0041EE37 /* AppDelegate.m in Sources */,
 				9D63173910FEAC8B0041EE37 /* StatusViewController.m in Sources */,
 				9D63173C10FEAC980041EE37 /* main.m in Sources */,
-				E0FC1E13110A4F4F00F18553 /* InstructionsViewController.m in Sources */,
+				9DE52B17110E77760035266A /* InstructionsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

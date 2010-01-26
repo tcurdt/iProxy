@@ -14,23 +14,10 @@
  * limitations under the License.
  */
 
-#import "StatusViewController.h"
-#import "InstructionsViewController.h"
+#import <UIKit/UIKit.h>
 
-@implementation StatusViewController
 
-@synthesize ipLabel;
-@synthesize portLabel;
-
-- (IBAction)showInstructions
-{
-    InstructionsViewController *viewController = [[InstructionsViewController alloc] init];
-    UINavigationController *navigationConroller = [[UINavigationController alloc] initWithRootViewController:viewController];
-
-    [self presentModalViewController:navigationConroller animated:YES];
-
-    [navigationConroller release];
-    [viewController release];
+@interface InstructionsViewController : UIViewController {
 }
 
 @end
