@@ -26,5 +26,7 @@
 @property (nonatomic, retain) UILabel *ipLabel;
 @property (nonatomic, retain) UILabel *portLabel;
 
+-(IBAction)showInstructions;
+
 @end
 
