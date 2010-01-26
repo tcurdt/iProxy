@@ -28,6 +28,8 @@
 		9D63174A10FEACD30041EE37 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D63174710FEACD30041EE37 /* MainWindow.xib */; };
 		9D94CB80110E727700F8C260 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D94CB7F110E727700F8C260 /* Default.png */; };
 		9DB0CF66110551F6001F4119 /* Status.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DB0CF65110551F6001F4119 /* Status.png */; };
+		E0FC1E0F110A4F3600F18553 /* instructions.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E0FC1E0E110A4F3600F18553 /* instructions.jpg */; };
+		E0FC1E13110A4F4F00F18553 /* InstructionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FC1E12110A4F4F00F18553 /* InstructionsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +62,9 @@
 		9D63174710FEACD30041EE37 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = "<group>"; };
 		9D94CB7F110E727700F8C260 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
 		9DB0CF65110551F6001F4119 /* Status.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Status.png; path = Resources/Status.png; sourceTree = "<group>"; };
+		E0FC1E0E110A4F3600F18553 /* instructions.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = instructions.jpg; sourceTree = "<group>"; };
+		E0FC1E11110A4F4F00F18553 /* InstructionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionsViewController.h; sourceTree = "<group>"; };
+		E0FC1E12110A4F4F00F18553 /* InstructionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstructionsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +121,7 @@
 				9D63174510FEACD30041EE37 /* Info.plist */,
 				9D63174610FEACD30041EE37 /* StatusViewController.xib */,
 				9D63174710FEACD30041EE37 /* MainWindow.xib */,
+				E0FC1E0E110A4F3600F18553 /* instructions.jpg */,
 				9D2224E41105E6A6003F4E04 /* Entitlements.plist */,
 			);
 			name = Resources;
@@ -139,6 +145,8 @@
 				9D63173410FEAC8B0041EE37 /* AppDelegate.m */,
 				9D63173510FEAC8B0041EE37 /* StatusViewController.h */,
 				9D63173610FEAC8B0041EE37 /* StatusViewController.m */,
+				E0FC1E11110A4F4F00F18553 /* InstructionsViewController.h */,
+				E0FC1E12110A4F4F00F18553 /* InstructionsViewController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -210,6 +218,7 @@
 				9D2224E51105E6A6003F4E04 /* Entitlements.plist in Resources */,
 				9D211196110637FB009C3C7C /* iTunesArtwork in Resources */,
 				9D94CB80110E727700F8C260 /* Default.png in Resources */,
+				E0FC1E0F110A4F3600F18553 /* instructions.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,6 +257,7 @@
 				9D63173810FEAC8B0041EE37 /* AppDelegate.m in Sources */,
 				9D63173910FEAC8B0041EE37 /* StatusViewController.m in Sources */,
 				9D63173C10FEAC980041EE37 /* main.m in Sources */,
+				E0FC1E13110A4F4F00F18553 /* InstructionsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
