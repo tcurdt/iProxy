@@ -12,3 +12,16 @@ Feel free to give some feedback via twitter.
 
 Torsten
 @tcurdt
+
+
+Addition for iPad "fake" tethering
+
+Added a small http server that served a .pac file automatically. This simplifies 
+fake-tethering for the iPad.
+
+Create a network and give the iPhone the IP nr 10.0.0.1 (Google will help you find out how)
+
+Enter "http://10.0.0.1:8080/socks.pac" on the iPad in the URL field for the
+networks HTTP Proxy Auto configuration.
+
+Edward Patel
