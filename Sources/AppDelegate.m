@@ -16,6 +16,7 @@
 
 #import "AppDelegate.h"
 #import "StatusViewController.h"
+#import "AppTextFileResponse.h"
 #import "HTTPServer.h"
 
 #import <ifaddrs.h>
@@ -80,6 +81,8 @@ int local_main(int ac, char **av);
         statusViewController.portLabel.text = @"";
         return;
     }
+    
+    [AppTextFileResponse setIP:ip];
     
     NSUInteger port = 8888;
 

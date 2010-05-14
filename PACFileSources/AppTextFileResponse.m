@@ -15,6 +15,8 @@
 #import "AppTextFileResponse.h"
 #import "HTTPServer.h"
 
+static NSString *ip = nil;
+
 @implementation AppTextFileResponse
 
 //
@@ -59,7 +61,7 @@
 //
 - (void)startResponse
 {
-    NSData *fileData = [[NSString stringWithString:@"function FindProxyForURL(url, host) { return \"SOCKS 10.0.0.1:8888\"; }"] dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *fileData = [[NSString stringWithFormat:@"function FindProxyForURL(url, host) { return \"SOCKS %@:8888\"; }", ip] dataUsingEncoding:NSUTF8StringEncoding];
     //	NSData *fileData =
     //		[NSData dataWithContentsOfFile:[AppTextFileResponse pathForFile]];
 	CFHTTPMessageRef response =
@@ -96,6 +98,13 @@
 		CFRelease(headerData);
 		[server closeHandler:self];
 	}
+}
+
++ (void)setIP:(NSString*)_ip
+{
+    if (ip)
+        [ip release];
+    ip = [_ip copy];
 }
 
 #if 0
