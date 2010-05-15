@@ -21,7 +21,10 @@ fake-tethering for the iPad.
 
 Create a network and give the iPhone the IP nr 10.0.0.1 (Google will help you find out how)
 
-Enter "http://10.0.0.1:8080/socks.pac" on the iPad in the URL field for the
+Enter ''http://10.0.0.1:8080/socks.pac'' on the iPad in the URL field for the
 networks HTTP Proxy Auto configuration.
 
-Edward Patel
+I have written a little about this here http://www.memention.com/blog/2010/05/15/Removing-a-step.html
+
+Edward
+@e_patel
