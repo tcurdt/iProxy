@@ -327,6 +327,7 @@
 				PREBINDING = NO;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos3.1;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = "Ad-hoc";
 		};
