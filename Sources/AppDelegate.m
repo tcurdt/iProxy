@@ -16,6 +16,9 @@
 
 #import "AppDelegate.h"
 #import "StatusViewController.h"
+#import "AppTextFileResponse.h"
+#import "HTTPServer.h"
+
 #import <ifaddrs.h>
 #import <arpa/inet.h>
 
@@ -79,6 +82,8 @@ int local_main(int ac, char **av);
         return;
     }
     
+    [AppTextFileResponse setIP:ip];
+    
     NSUInteger port = 8888;
 
     NSLog(@"ip = %@", ip);
@@ -98,8 +103,13 @@ int local_main(int ac, char **av);
 
     local_main(4, args);
     
+	[[HTTPServer sharedHTTPServer] start];
 }
 
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+	[[HTTPServer sharedHTTPServer] stop];
+}
 
 - (void)dealloc {
     [statusViewController release];

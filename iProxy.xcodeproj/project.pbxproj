@@ -10,6 +10,10 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
+		3A18D6AE119DC7D400C56A7A /* AppTextFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A18D6A8119DC7D400C56A7A /* AppTextFileResponse.m */; };
+		3A18D6AF119DC7D400C56A7A /* HTTPResponseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A18D6AA119DC7D400C56A7A /* HTTPResponseHandler.m */; };
+		3A18D6B0119DC7D400C56A7A /* HTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A18D6AC119DC7D400C56A7A /* HTTPServer.m */; };
+		3A18D6B4119DC7E300C56A7A /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A18D6B3119DC7E300C56A7A /* CFNetwork.framework */; };
 		9D211196110637FB009C3C7C /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 9D211195110637FB009C3C7C /* iTunesArtwork */; };
 		9D2224E51105E6A6003F4E04 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D2224E41105E6A6003F4E04 /* Entitlements.plist */; };
 		9D5B3C5F1103D4E2003C8FCF /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D5B3C5E1103D4E2003C8FCF /* Icon.png */; };
@@ -37,6 +41,14 @@
 		1D6058910D05DD3D006BFB54 /* iProxy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iProxy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		3A18D6A7119DC7D400C56A7A /* AppTextFileResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppTextFileResponse.h; path = PACFileSources/AppTextFileResponse.h; sourceTree = "<group>"; };
+		3A18D6A8119DC7D400C56A7A /* AppTextFileResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppTextFileResponse.m; path = PACFileSources/AppTextFileResponse.m; sourceTree = "<group>"; };
+		3A18D6A9119DC7D400C56A7A /* HTTPResponseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTTPResponseHandler.h; path = PACFileSources/HTTPResponseHandler.h; sourceTree = "<group>"; };
+		3A18D6AA119DC7D400C56A7A /* HTTPResponseHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTTPResponseHandler.m; path = PACFileSources/HTTPResponseHandler.m; sourceTree = "<group>"; };
+		3A18D6AB119DC7D400C56A7A /* HTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTTPServer.h; path = PACFileSources/HTTPServer.h; sourceTree = "<group>"; };
+		3A18D6AC119DC7D400C56A7A /* HTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTTPServer.m; path = PACFileSources/HTTPServer.m; sourceTree = "<group>"; };
+		3A18D6AD119DC7D400C56A7A /* SynthesizeSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SynthesizeSingleton.h; path = PACFileSources/SynthesizeSingleton.h; sourceTree = "<group>"; };
+		3A18D6B3119DC7E300C56A7A /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		9D211195110637FB009C3C7C /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; name = iTunesArtwork; path = Resources/iTunesArtwork; sourceTree = "<group>"; };
 		9D2224E41105E6A6003F4E04 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Entitlements.plist; path = Resources/Entitlements.plist; sourceTree = "<group>"; };
 		9D5B3C5E1103D4E2003C8FCF /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
@@ -75,6 +87,7 @@
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
+				3A18D6B4119DC7E300C56A7A /* CFNetwork.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,11 +105,13 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				3A18D67F119DC6F700C56A7A /* PACFileServer */,
 				9D63174410FEACBE0041EE37 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				3A18D6B3119DC7E300C56A7A /* CFNetwork.framework */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -134,6 +149,20 @@
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3A18D67F119DC6F700C56A7A /* PACFileServer */ = {
+			isa = PBXGroup;
+			children = (
+				3A18D6A7119DC7D400C56A7A /* AppTextFileResponse.h */,
+				3A18D6A8119DC7D400C56A7A /* AppTextFileResponse.m */,
+				3A18D6A9119DC7D400C56A7A /* HTTPResponseHandler.h */,
+				3A18D6AA119DC7D400C56A7A /* HTTPResponseHandler.m */,
+				3A18D6AB119DC7D400C56A7A /* HTTPServer.h */,
+				3A18D6AC119DC7D400C56A7A /* HTTPServer.m */,
+				3A18D6AD119DC7D400C56A7A /* SynthesizeSingleton.h */,
+			);
+			name = PACFileServer;
 			sourceTree = "<group>";
 		};
 		9D63174410FEACBE0041EE37 /* Classes */ = {
@@ -274,6 +303,9 @@
 				9D63173910FEAC8B0041EE37 /* StatusViewController.m in Sources */,
 				9D63173C10FEAC980041EE37 /* main.m in Sources */,
 				9DE52B17110E77760035266A /* InstructionsViewController.m in Sources */,
+				3A18D6AE119DC7D400C56A7A /* AppTextFileResponse.m in Sources */,
+				3A18D6AF119DC7D400C56A7A /* HTTPResponseHandler.m in Sources */,
+				3A18D6B0119DC7D400C56A7A /* HTTPServer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
