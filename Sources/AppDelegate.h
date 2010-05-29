@@ -28,5 +28,8 @@
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) StatusViewController *statusViewController;
 
+- (void)setUploadLabel:(NSNumber*)amount;
+- (void)setDownloadLabel:(NSNumber*)amount;
+
 @end
 

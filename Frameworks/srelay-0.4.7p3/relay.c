@@ -79,6 +79,23 @@ int validate_access __P((char *, char *));
 int set_sock_info __P((loginfo *, int, int));
 void relay __P((int, int));
 int log_transfer __P((loginfo *));
+void upload_amount(ssize_t len);
+void download_amount(ssize_t len);
+
+/* Breakout functions to track relay amounts
+ 
+void upload_amount(ssize_t len)
+{
+  static ssize_t total_len = 0;
+  total_len += len;
+}
+
+void download_amount(ssize_t len)
+{
+  static ssize_t total_len = 0;
+  total_len += len;
+}
+*/
 
 void readn(rlyinfo *ri)
 {
@@ -222,8 +239,10 @@ void relay(int cs, int ss)
 	ri.from = ss; ri.to = cs; ri.oob = 0;
 	if ((wc = forward(&ri)) <= 0)
 	  done++;
-	else
+	else {
 	  li.bc += wc; li.dnl += wc;
+      download_amount(wc);
+    }
 
 	FD_CLR(ss, &rfds);
       }
@@ -231,24 +250,30 @@ void relay(int cs, int ss)
 	ri.from = ss; ri.to = cs; ri.oob = 1;
 	if ((wc = forward(&ri)) <= 0)
 	  done++;
-	else
+	else {
 	  li.bc += wc; li.dnl += wc;
+      download_amount(wc);
+    }
 	FD_CLR(ss, &xfds);
       }
       if (FD_ISSET(cs, &rfds)) {
 	ri.from = cs; ri.to = ss; ri.oob = 0;
 	if ((wc = forward(&ri)) <= 0)
 	  done++;
-	else
+	else {
 	  li.bc += wc; li.upl += wc;
+      upload_amount(wc);
+    }
 	FD_CLR(cs, &rfds);
       }
       if (FD_ISSET(cs, &xfds)) {
 	ri.from = cs; ri.to = ss; ri.oob = 1;
 	if ((wc = forward(&ri)) <= 0)
 	  done++;
-	else
+	else {
 	  li.bc += wc; li.upl += wc;
+      upload_amount(wc);
+    }
 	FD_CLR(cs, &xfds);
       }
       if (done > 0)
