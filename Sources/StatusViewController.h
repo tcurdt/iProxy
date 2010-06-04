@@ -20,11 +20,15 @@
 
     IBOutlet UILabel *ipLabel;
     IBOutlet UILabel *portLabel;
+    IBOutlet UILabel *uploadLabel;
+    IBOutlet UILabel *downloadLabel;
 
 }
 
 @property (nonatomic, retain) UILabel *ipLabel;
 @property (nonatomic, retain) UILabel *portLabel;
+@property (nonatomic, retain) UILabel *uploadLabel;
+@property (nonatomic, retain) UILabel *downloadLabel;
 
 -(IBAction)showInstructions;
 

@@ -21,6 +21,8 @@
 
 @synthesize ipLabel;
 @synthesize portLabel;
+@synthesize uploadLabel;
+@synthesize downloadLabel;
 
 - (IBAction)showInstructions
 {

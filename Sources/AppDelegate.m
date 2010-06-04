@@ -22,6 +22,29 @@
 #import <ifaddrs.h>
 #import <arpa/inet.h>
 
+// Breakout functions from relay.c to track relay data amount 
+
+void upload_amount(ssize_t len)
+{
+    static ssize_t total_len = 0;
+    total_len += len;
+    [(NSObject*)[[UIApplication sharedApplication] delegate] 
+     performSelectorOnMainThread:@selector(setUploadLabel:)
+     withObject:[NSNumber numberWithLongLong:total_len]
+     waitUntilDone:NO];
+}
+
+void download_amount(ssize_t len)
+{
+    static ssize_t total_len = 0;
+    total_len += len;
+    [(NSObject*)[[UIApplication sharedApplication] delegate] 
+     performSelectorOnMainThread:@selector(setDownloadLabel:)
+     withObject:[NSNumber numberWithLongLong:total_len]
+     waitUntilDone:NO];
+}
+
+
 @implementation AppDelegate
 
 @synthesize window;
@@ -86,12 +109,12 @@ int local_main(int ac, char **av);
     
     NSUInteger port = 8888;
 
-    NSLog(@"ip = %@", ip);
-    NSLog(@"port = %d", port);
+    // NSLog(@"ip = %@", ip);
+    // NSLog(@"port = %d", port);
 
     statusViewController.ipLabel.text = ip;
     statusViewController.portLabel.text = [NSString stringWithFormat:@"%d", port];
-
+    
     NSString *connect = [NSString stringWithFormat:@"%@:%d", ip, port];
 
     char *args[4] = {
@@ -117,5 +140,14 @@ int local_main(int ac, char **av);
     [super dealloc];
 }
 
+- (void)setUploadLabel:(NSNumber*)amount
+{
+    statusViewController.uploadLabel.text = [NSString stringWithFormat:@"%ld ↑", [amount longLongValue]];
+}
+
+- (void)setDownloadLabel:(NSNumber*)amount
+{
+    statusViewController.downloadLabel.text = [NSString stringWithFormat:@"%ld ↓", [amount longLongValue]];
+}
 
 @end
