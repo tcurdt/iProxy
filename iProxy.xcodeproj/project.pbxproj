@@ -110,7 +110,6 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				3A18D6B3119DC7E300C56A7A /* CFNetwork.framework */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -143,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				9DB69CEA10E3E6E6004C5F4C /* srelay */,
+				3A18D6B3119DC7E300C56A7A /* CFNetwork.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
