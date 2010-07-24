@@ -22,6 +22,10 @@
 #import <ifaddrs.h>
 #import <arpa/inet.h>
 
+#define ONE_KiB (1024)
+#define ONE_MiB (ONE_KiB * ONE_KiB)
+#define ONE_GiB (ONE_KiB * ONE_MiB)
+
 // Breakout functions from relay.c to track relay data amount 
 
 void upload_amount(ssize_t len)
@@ -149,14 +153,14 @@ int local_main(int ac, char **av);
 
 - (NSString *)formatBytes:(NSNumber *)amount {
     unsigned long long amt = [amount unsignedLongLongValue];
-    if (amt >= 0 && amt < 1000) {
+    if (amt >= 0 && amt < ONE_KiB) {
         return [NSString stringWithFormat:@"%llu B", amt];
-    } else if (amt >= 1000 && amt < 1000000) {
-        return [NSString stringWithFormat:@"%.1f KiB", amt / 1000.0];
-    } else if (amt >= 1000000 && amt < 1000000000) {
-        return [NSString stringWithFormat:@"%.3f MiB", amt / 1000000.0];
+    } else if (amt >= ONE_KiB && amt < ONE_MiB) {
+        return [NSString stringWithFormat:@"%.1f KiB", amt / (double) ONE_KiB];
+    } else if (amt >= ONE_MiB && amt < ONE_GiB) {
+        return [NSString stringWithFormat:@"%.3f MiB", amt / (double) ONE_MiB];
     } else {
-        return [NSString stringWithFormat:@"%.5f GiB", amt / 1000000000.0];
+        return [NSString stringWithFormat:@"%.5f GiB", amt / (double) ONE_GiB];
     }
 }
 
