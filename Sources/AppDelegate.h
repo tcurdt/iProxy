@@ -23,10 +23,17 @@
     IBOutlet UIWindow *window;
     IBOutlet StatusViewController *statusViewController;
 
+    unsigned long long upBytes;
+    unsigned long long downBytes;
+
+    NSTimer *bytesTransferredUpdater;
 }
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) StatusViewController *statusViewController;
+
+@property unsigned long long upBytes;
+@property unsigned long long downBytes;
 
 - (void)setUploadLabel:(NSNumber*)amount;
 - (void)setDownloadLabel:(NSNumber*)amount;

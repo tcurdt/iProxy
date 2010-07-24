@@ -26,29 +26,20 @@
 
 void upload_amount(ssize_t len)
 {
-    static ssize_t total_len = 0;
-    total_len += len;
-    [(NSObject*)[[UIApplication sharedApplication] delegate] 
-     performSelectorOnMainThread:@selector(setUploadLabel:)
-     withObject:[NSNumber numberWithLongLong:total_len]
-     waitUntilDone:NO];
+    ((AppDelegate*) [UIApplication sharedApplication].delegate).upBytes += len;
 }
 
 void download_amount(ssize_t len)
 {
-    static ssize_t total_len = 0;
-    total_len += len;
-    [(NSObject*)[[UIApplication sharedApplication] delegate] 
-     performSelectorOnMainThread:@selector(setDownloadLabel:)
-     withObject:[NSNumber numberWithLongLong:total_len]
-     waitUntilDone:NO];
+    ((AppDelegate*) [UIApplication sharedApplication].delegate).downBytes += len;
 }
-
 
 @implementation AppDelegate
 
 @synthesize window;
 @synthesize statusViewController;
+@synthesize upBytes;
+@synthesize downBytes;
 
 int serv_loop();
 int serv_init(char *ifs);
@@ -86,8 +77,24 @@ int local_main(int ac, char **av);
     return address;
 }
 
+- (void)updateBytesTransferred:(NSTimer*)tmr {
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+    [delegate performSelectorOnMainThread:@selector(setUploadLabel:)
+                          withObject:[NSNumber numberWithUnsignedLongLong:upBytes]
+                       waitUntilDone:NO];
+    [delegate performSelectorOnMainThread:@selector(setDownloadLabel:)
+                          withObject:[NSNumber numberWithUnsignedLongLong:downBytes]
+                       waitUntilDone:NO];   
+}
+
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
-          
+
+    bytesTransferredUpdater = [NSTimer scheduledTimerWithTimeInterval:1 
+                                                               target:self
+                                                             selector:@selector(updateBytesTransferred:)
+                                                             userInfo:nil 
+                                                              repeats:YES];
+
     [window addSubview:statusViewController.view];
     [window makeKeyAndVisible];
 
@@ -140,14 +147,27 @@ int local_main(int ac, char **av);
     [super dealloc];
 }
 
+- (NSString *)formatBytes:(NSNumber *)amount {
+    unsigned long long amt = [amount unsignedLongLongValue];
+    if (amt >= 0 && amt < 1000) {
+        return [NSString stringWithFormat:@"%llu B", amt];
+    } else if (amt >= 1000 && amt < 1000000) {
+        return [NSString stringWithFormat:@"%.1f KiB", amt / 1000.0];
+    } else if (amt >= 1000000 && amt < 1000000000) {
+        return [NSString stringWithFormat:@"%.3f MiB", amt / 1000000.0];
+    } else {
+        return [NSString stringWithFormat:@"%.5f GiB", amt / 1000000000.0];
+    }
+}
+
 - (void)setUploadLabel:(NSNumber*)amount
 {
-    statusViewController.uploadLabel.text = [NSString stringWithFormat:@"%ld ↑", [amount longLongValue]];
+    statusViewController.uploadLabel.text = [self formatBytes:amount];
 }
 
 - (void)setDownloadLabel:(NSNumber*)amount
 {
-    statusViewController.downloadLabel.text = [NSString stringWithFormat:@"%ld ↓", [amount longLongValue]];
+    statusViewController.downloadLabel.text = [self formatBytes:amount];
 }
 
 @end
