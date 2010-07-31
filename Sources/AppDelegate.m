@@ -84,11 +84,11 @@ int local_main(int ac, char **av);
 - (void)updateBytesTransferred:(NSTimer*)tmr {
     AppDelegate *delegate = [UIApplication sharedApplication].delegate;
     [delegate performSelectorOnMainThread:@selector(setUploadLabel:)
-                          withObject:[NSNumber numberWithUnsignedLongLong:upBytes]
-                       waitUntilDone:NO];
+                               withObject:[NSNumber numberWithUnsignedLongLong:upBytes]
+                            waitUntilDone:NO];
     [delegate performSelectorOnMainThread:@selector(setDownloadLabel:)
-                          withObject:[NSNumber numberWithUnsignedLongLong:downBytes]
-                       waitUntilDone:NO];   
+                               withObject:[NSNumber numberWithUnsignedLongLong:downBytes]
+                            waitUntilDone:NO];
 }
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
@@ -125,7 +125,10 @@ int local_main(int ac, char **av);
 
     statusViewController.ipLabel.text = ip;
     statusViewController.portLabel.text = [NSString stringWithFormat:@"%d", port];
-    
+
+    NSString *pacUrl = [NSString stringWithFormat:@"http://%@:8080/socks.pac", ip];
+    statusViewController.pacLabel.text = pacUrl;
+
     NSString *connect = [NSString stringWithFormat:@"%@:%d", ip, port];
 
     char *args[4] = {
