@@ -59,7 +59,7 @@
 					<object class="IBUILabel" id="1057681166">
 						<reference key="NSNextResponder" ref="774585933"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{124, 297}, {176, 21}}</string>
+						<string key="NSFrame">{{124, 253}, {176, 21}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="896195690">
 							<int key="NSColorSpace">3</int>
@@ -70,19 +70,42 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">192.168.1.10</string>
-						<object class="NSColor" key="IBUITextColor" id="157006074">
+						<object class="NSColor" key="IBUITextColor" id="1053088554">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4yNzE3MzkxMyAwLjI3MTczOTEzIDAuMjcxNzM5MTMAA</bytes>
+							<bytes key="NSRGB">MCAwIDAAA</bytes>
 						</object>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">10</float>
 						<int key="IBUITextAlignment">2</int>
 					</object>
+					<object class="IBUILabel" id="707634031">
+						<reference key="NSNextResponder" ref="774585933"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{108, 336}, {192, 21}}</string>
+						<reference key="NSSuperview" ref="774585933"/>
+						<reference key="IBUIBackgroundColor" ref="896195690"/>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<string key="IBUIText">http://000.000.000.000:8080/socks.pac</string>
+						<object class="NSFont" key="IBUIFont" id="8902882">
+							<string key="NSName">Helvetica</string>
+							<double key="NSSize">17</double>
+							<int key="NSfFlags">16</int>
+						</object>
+						<reference key="IBUITextColor" ref="1053088554"/>
+						<nil key="IBUIHighlightedColor"/>
+						<int key="IBUIBaselineAdjustment">0</int>
+						<float key="IBUIMinimumFontSize">10</float>
+						<int key="IBUITextAlignment">2</int>
+						<int key="IBUILineBreakMode">3</int>
+					</object>
 					<object class="IBUILabel" id="514428748">
 						<reference key="NSNextResponder" ref="774585933"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{210, 336}, {90, 21}}</string>
+						<string key="NSFrame">{{210, 296}, {90, 21}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<reference key="IBUIBackgroundColor" ref="896195690"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -90,7 +113,7 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">8888</string>
-						<reference key="IBUITextColor" ref="157006074"/>
+						<reference key="IBUITextColor" ref="1053088554"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">10</float>
@@ -99,7 +122,7 @@
 					<object class="IBUILabel" id="988302108">
 						<reference key="NSNextResponder" ref="774585933"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 336}, {90, 21}}</string>
+						<string key="NSFrame">{{20, 296}, {90, 21}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<reference key="IBUIBackgroundColor" ref="896195690"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -107,7 +130,7 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">Port:</string>
-						<reference key="IBUITextColor" ref="157006074"/>
+						<reference key="IBUITextColor" ref="1053088554"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">10</float>
@@ -115,7 +138,7 @@
 					<object class="IBUILabel" id="79676381">
 						<reference key="NSNextResponder" ref="774585933"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 297}, {90, 21}}</string>
+						<string key="NSFrame">{{20, 253}, {90, 21}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<reference key="IBUIBackgroundColor" ref="896195690"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -123,7 +146,7 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">IP Address:</string>
-						<reference key="IBUITextColor" ref="157006074"/>
+						<reference key="IBUITextColor" ref="1053088554"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">10</float>
@@ -131,7 +154,7 @@
 					<object class="IBUITextView" id="53937794">
 						<reference key="NSNextResponder" ref="774585933"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 20}, {280, 224}}</string>
+						<string key="NSFrame">{{13, 15}, {296, 203}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -146,11 +169,7 @@
 						<bool key="IBUIBouncesZoom">NO</bool>
 						<bool key="IBUIEditable">NO</bool>
 						<string key="IBUIText">Make sure your iPhone is connected via WiFi to your laptop and both share the same network. In an Ad-hoc network you might have to assign IPs manually. Then configure your browser or system to use the SOCKS5 proxy at the address and port specified below.</string>
-						<object class="NSFont" key="IBUIFont">
-							<string key="NSName">Helvetica</string>
-							<double key="NSSize">17</double>
-							<int key="NSfFlags">16</int>
-						</object>
+						<reference key="IBUIFont" ref="8902882"/>
 						<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 							<int key="IBUIAutocapitalizationType">2</int>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -191,7 +210,7 @@
 					<object class="IBUIButton" id="128279814">
 						<reference key="NSNextResponder" ref="774585933"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{282, 225}, {18, 19}}</string>
+						<string key="NSFrame">{{282, 186}, {18, 19}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -208,7 +227,7 @@
 						<reference key="IBUIHighlightedTitleColor" ref="763196868"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MyAwLjMwOTgwMzkzIDAuNTIxNTY4NjYAA</bytes>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzE0IDAuMzA5ODAzOTIxNiAwLjUyMTU2ODYyNzUAA</bytes>
 						</object>
 						<object class="NSColor" key="IBUINormalTitleShadowColor">
 							<int key="NSColorSpace">3</int>
@@ -324,6 +343,22 @@
 						<int key="IBUITextAlignment">2</int>
 						<int key="IBUILineBreakMode">1</int>
 					</object>
+					<object class="IBUILabel" id="185951945">
+						<reference key="NSNextResponder" ref="774585933"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{20, 336}, {79, 21}}</string>
+						<reference key="NSSuperview" ref="774585933"/>
+						<reference key="IBUIBackgroundColor" ref="896195690"/>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<string key="IBUIText">PAC URL:</string>
+						<reference key="IBUITextColor" ref="1053088554"/>
+						<nil key="IBUIHighlightedColor"/>
+						<int key="IBUIBaselineAdjustment">1</int>
+						<float key="IBUIMinimumFontSize">10</float>
+					</object>
 				</object>
 				<string key="NSFrameSize">{320, 460}</string>
 				<reference key="NSSuperview"/>
@@ -388,6 +423,14 @@
 					</object>
 					<int key="connectionID">25</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">pacLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="707634031"/>
+					</object>
+					<int key="connectionID">30</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -418,14 +461,16 @@
 							<reference ref="988302108"/>
 							<reference ref="1057681166"/>
 							<reference ref="514428748"/>
-							<reference ref="53937794"/>
-							<reference ref="128279814"/>
 							<reference ref="391037107"/>
 							<reference ref="624405585"/>
 							<reference ref="782586787"/>
 							<reference ref="45349635"/>
 							<reference ref="1003534155"/>
 							<reference ref="978878334"/>
+							<reference ref="53937794"/>
+							<reference ref="185951945"/>
+							<reference ref="707634031"/>
+							<reference ref="128279814"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -489,6 +534,16 @@
 						<reference key="object" ref="978878334"/>
 						<reference key="parent" ref="774585933"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">28</int>
+						<reference key="object" ref="185951945"/>
+						<reference key="parent" ref="774585933"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">29</int>
+						<reference key="object" ref="707634031"/>
+						<reference key="parent" ref="774585933"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -507,6 +562,8 @@
 					<string>23.IBPluginDependency</string>
 					<string>26.IBPluginDependency</string>
 					<string>27.IBPluginDependency</string>
+					<string>28.IBPluginDependency</string>
+					<string>29.IBPluginDependency</string>
 					<string>6.IBEditorWindowLastContentRect</string>
 					<string>6.IBPluginDependency</string>
 					<string>8.IBPluginDependency</string>
@@ -526,7 +583,9 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{350, 376}, {320, 480}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>{{364, 270}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -548,7 +607,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">27</int>
+			<int key="maxID">30</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -573,11 +632,13 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>downloadLabel</string>
 							<string>ipLabel</string>
+							<string>pacLabel</string>
 							<string>portLabel</string>
 							<string>uploadLabel</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
@@ -590,6 +651,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>downloadLabel</string>
 							<string>ipLabel</string>
+							<string>pacLabel</string>
 							<string>portLabel</string>
 							<string>uploadLabel</string>
 						</object>
@@ -601,6 +663,10 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">ipLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">pacLabel</string>
 								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">

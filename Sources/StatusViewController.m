@@ -21,6 +21,7 @@
 
 @synthesize ipLabel;
 @synthesize portLabel;
+@synthesize pacLabel;
 @synthesize uploadLabel;
 @synthesize downloadLabel;
 
