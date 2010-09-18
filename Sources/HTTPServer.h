@@ -36,10 +36,13 @@ typedef enum
 	HTTPServerState state;
 	CFMutableDictionaryRef incomingRequests;
 	NSMutableSet *responseHandlers;
+    NSNetService *netService;
 }
 
 @property (nonatomic, readonly, retain) NSError *lastError;
 @property (readonly, assign) HTTPServerState state;
+@property (readonly) UInt32 httpPort;
+@property (readonly) UInt32 proxyPort;
 
 + (HTTPServer *)sharedHTTPServer;
 

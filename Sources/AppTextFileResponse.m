@@ -61,7 +61,7 @@ static NSString *ip = nil;
 //
 - (void)startResponse
 {
-    NSData *fileData = [[NSString stringWithFormat:@"function FindProxyForURL(url, host) { return \"SOCKS %@:8888\"; }", ip] dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *fileData = [[NSString stringWithFormat:@"function FindProxyForURL(url, host) { return \"SOCKS %@:%d\"; }", ip, [HTTPServer sharedHTTPServer].proxyPort] dataUsingEncoding:NSUTF8StringEncoding];
     //	NSData *fileData =
     //		[NSData dataWithContentsOfFile:[AppTextFileResponse pathForFile]];
 	CFHTTPMessageRef response =

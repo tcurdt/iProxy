@@ -118,18 +118,16 @@ int local_main(int ac, char **av);
     
     [AppTextFileResponse setIP:ip];
     
-    NSUInteger port = 8888;
-
     // NSLog(@"ip = %@", ip);
     // NSLog(@"port = %d", port);
 
     statusViewController.ipLabel.text = ip;
-    statusViewController.portLabel.text = [NSString stringWithFormat:@"%d", port];
+    statusViewController.portLabel.text = [NSString stringWithFormat:@"%d", [HTTPServer sharedHTTPServer].proxyPort];
 
-    NSString *pacUrl = [NSString stringWithFormat:@"http://%@:8080/socks.pac", ip];
+    NSString *pacUrl = [NSString stringWithFormat:@"http://%@:%d/socks.pac", ip, [HTTPServer sharedHTTPServer].httpPort];
     statusViewController.pacLabel.text = pacUrl;
 
-    NSString *connect = [NSString stringWithFormat:@"%@:%d", ip, port];
+    NSString *connect = [NSString stringWithFormat:@"%@:%d", ip, [HTTPServer sharedHTTPServer].proxyPort];
 
     char *args[4] = {
         "local",
