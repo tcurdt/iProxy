@@ -67,6 +67,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 	return self;
 }
 
+-(void)startBonjourService
+{
+    netService = [[NSNetService alloc] initWithDomain:@"" type:@"_socks5._tcp."
+        name:@"" port:self.proxyPort];
+    netService.delegate = self;
+    [netService publish];
+}
+
+-(void)stopBonjourService
+{
+    [netService stop];
+    [netService release];
+    netService = nil;
+}
+
 //
 // setLastError:
 //
@@ -192,6 +207,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 	[listeningHandle acceptConnectionInBackgroundAndNotify];
 	
 	self.state = SERVER_STATE_RUNNING;
+    [self startBonjourService];
 }
 
 //
@@ -255,6 +271,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 	}
 
 	self.state = SERVER_STATE_IDLE;
+    [self stopBonjourService];
 }
 
 //

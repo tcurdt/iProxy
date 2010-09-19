@@ -28,7 +28,7 @@ typedef enum
 
 @class HTTPResponseHandler;
 
-@interface HTTPServer : NSObject
+@interface HTTPServer : NSObject <NSNetServiceDelegate>
 {
 	NSError *lastError;
 	NSFileHandle *listeningHandle;
