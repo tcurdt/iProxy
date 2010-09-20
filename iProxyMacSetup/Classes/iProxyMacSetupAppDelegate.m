@@ -18,7 +18,7 @@
 
 @implementation iProxyMacSetupAppDelegate
 
-@synthesize browsing, resolvingServiceCount, proxyServiceList, interfaceList, automatic, proxyEnabled;
+@synthesize browsing, resolvingServiceCount, proxyServiceList, interfaceList, proxyEnabled;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -26,6 +26,7 @@
     interfaceList = [[NSMutableArray alloc] init];
     browsing = NO;
     resolvingServiceCount = 0;
+    self.automatic = [[[NSUserDefaults standardUserDefaults] valueForKey:@"AUTOMATIC"] boolValue];
     [self fetchInterfaceList];
     [self startBrowsingServices];
 }
@@ -34,6 +35,22 @@
 {
 	if (proxyEnabledInterfaceName) {
         [self disableProxyForInterface:proxyEnabledInterfaceName];
+    }
+}
+
+- (BOOL)automatic
+{
+	return automatic;
+}
+
+- (void)setAutomatic:(BOOL)value
+{
+	if (automatic != value) {
+    	[self willChangeValueForKey:@"automatic"];
+        automatic = value;
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:automatic] forKey:@"AUTOMATIC"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    	[self didChangeValueForKey:@"automatic"];
     }
 }
 
@@ -193,6 +210,9 @@ NSString *parseInterface(NSString *line, BOOL *enabled)
 {
 	if (!defaultInterface) {
     	defaultInterface = [[[NSUserDefaults standardUserDefaults] objectForKey:@"DEFAULT_INTERFACE"] retain];
+        if (!defaultInterface) {
+        	defaultInterface = [@"AirPort" retain];
+        }
     }
     return defaultInterface;
 }
