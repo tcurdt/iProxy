@@ -15,6 +15,7 @@
 	IBOutlet iProxyMacSetupAppDelegate *appDelegate;
     IBOutlet NSPopUpButton *proxyPopUpButton;
     IBOutlet NSPopUpButton *interfacePopUpButton;
+    IBOutlet NSButton *automaticButton;
     IBOutlet NSProgressIndicator *progressIndicator;
     IBOutlet NSButton *startButton;
 }

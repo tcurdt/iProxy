@@ -23,6 +23,7 @@
     [appDelegate addObserver:self forKeyPath:@"proxyServiceList" options:NSKeyValueObservingOptionNew context:nil];
     [appDelegate addObserver:self forKeyPath:@"interfaceList" options:NSKeyValueObservingOptionNew context:nil];
     [appDelegate addObserver:self forKeyPath:@"proxyEnabled" options:NSKeyValueObservingOptionNew context:nil];
+    [appDelegate addObserver:self forKeyPath:@"automatic" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -39,8 +40,12 @@
         [self updateInterfacePopUpButton];
     } else if ([keyPath isEqualToString:@"proxyEnabled"]) {
     	[self updateStartButton];
-        [proxyPopUpButton setEnabled:!appDelegate.proxyEnabled];
-        [interfacePopUpButton setEnabled:!appDelegate.proxyEnabled];
+        [self updateInterfacePopUpButton];
+        [self updateProxyPopUpButton];
+    } else if ([keyPath isEqualToString:@"automatic"]) {
+    	[self updateStartButton];
+        [self updateInterfacePopUpButton];
+        [self updateProxyPopUpButton];
     }
 }
 
@@ -56,7 +61,7 @@
 - (void)updateStartButton
 {
 	if ([appDelegate.proxyServiceList count] > 0 && [appDelegate.interfaceList count] > 0) {
-    	[startButton setEnabled:YES];
+    	[startButton setEnabled:!appDelegate.automatic];
         if (appDelegate.proxyEnabled) {
         	[startButton setTitle:@"Stop"];
         } else {
@@ -86,6 +91,7 @@
         }
         [title release];
     }
+    [proxyPopUpButton setEnabled:!appDelegate.proxyEnabled && !appDelegate.automatic];
     [self updateStartButton];
 }
 
@@ -104,6 +110,7 @@
         	[interfacePopUpButton selectItem:[interfacePopUpButton lastItem]];
         }
     }
+    [interfacePopUpButton setEnabled:!appDelegate.proxyEnabled && !appDelegate.automatic];
     [self updateStartButton];
 }
 
