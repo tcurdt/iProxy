@@ -67,19 +67,26 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 	return self;
 }
 
--(void)startBonjourService
+-(void)startBonjourServices
 {
-    netService = [[NSNetService alloc] initWithDomain:@"" type:@"_socks5._tcp."
+    socks5NetService = [[NSNetService alloc] initWithDomain:@"" type:@"_socks5._tcp."
         name:@"" port:self.proxyPort];
-    netService.delegate = self;
-    [netService publish];
+    socks5NetService.delegate = self;
+    [socks5NetService publish];
+    pacFileServerNetService = [[NSNetService alloc] initWithDomain:@"" type:@"_pacfileserver._tcp."
+        name:@"" port:self.httpPort];
+    pacFileServerNetService.delegate = self;
+    [pacFileServerNetService publish];
 }
 
--(void)stopBonjourService
+-(void)stopBonjourServices
 {
-    [netService stop];
-    [netService release];
-    netService = nil;
+    [socks5NetService stop];
+    [socks5NetService release];
+    socks5NetService = nil;
+    [pacFileServerNetService stop];
+    [pacFileServerNetService release];
+    pacFileServerNetService = nil;
 }
 
 //
@@ -207,7 +214,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 	[listeningHandle acceptConnectionInBackgroundAndNotify];
 	
 	self.state = SERVER_STATE_RUNNING;
-    [self startBonjourService];
+    [self startBonjourServices];
 }
 
 //
@@ -271,7 +278,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 	}
 
 	self.state = SERVER_STATE_IDLE;
-    [self stopBonjourService];
+    [self stopBonjourServices];
 }
 
 //
