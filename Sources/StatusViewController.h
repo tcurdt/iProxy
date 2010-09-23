@@ -15,14 +15,20 @@
  */
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MFMailComposeViewController.h>
 
-@interface StatusViewController : UIViewController {
+@interface StatusViewController : UIViewController <UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
 
     IBOutlet UILabel *ipLabel;
     IBOutlet UILabel *portLabel;
     IBOutlet UILabel *pacLabel;
     IBOutlet UILabel *uploadLabel;
     IBOutlet UILabel *downloadLabel;
+    IBOutlet UITableView *infoTableView;
+    
+    NSString* currentIp;
+    NSString* proxyPort;
+    NSString* pacURL;
 
 }
 
@@ -31,6 +37,10 @@
 @property (nonatomic, retain) UILabel *pacLabel;
 @property (nonatomic, retain) UILabel *uploadLabel;
 @property (nonatomic, retain) UILabel *downloadLabel;
+
+@property (nonatomic, retain) NSString *currentIp;
+@property (nonatomic, retain) NSString *proxyPort;
+@property (nonatomic, retain) NSString *pacURL;
 
 -(IBAction)showInstructions;
 

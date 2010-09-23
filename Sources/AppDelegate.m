@@ -105,7 +105,11 @@ int local_main(int ac, char **av);
     application.idleTimerDisabled = YES;
 
 #if TARGET_IPHONE_SIMULATOR
-    NSString *ip = [self getIPAddressForInterface:@"en1"];
+    NSString *ip;
+    ip = [self getIPAddressForInterface:@"en1"];
+    if (!ip) {
+	    ip = [self getIPAddressForInterface:@"en2"];
+    }
 #else
     NSString *ip = [self getIPAddressForInterface:@"en0"];
 #endif
@@ -121,6 +125,10 @@ int local_main(int ac, char **av);
     // NSLog(@"ip = %@", ip);
     // NSLog(@"port = %d", port);
 
+	statusViewController.currentIp = ip;
+	statusViewController.proxyPort = [NSString stringWithFormat:@"%d", [HTTPServer sharedHTTPServer].proxyPort];
+	statusViewController.pacURL = [NSString stringWithFormat:@"http://%@:%d/socks.pac", ip, [HTTPServer sharedHTTPServer].httpPort];
+    
     statusViewController.ipLabel.text = ip;
     statusViewController.portLabel.text = [NSString stringWithFormat:@"%d", [HTTPServer sharedHTTPServer].proxyPort];
 
