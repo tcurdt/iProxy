@@ -19,8 +19,6 @@
 
 }
 
-+ (void)setIP:(NSString*)_ip;
-
 #if 0
 + (NSString *)pathForFile;
 #endif

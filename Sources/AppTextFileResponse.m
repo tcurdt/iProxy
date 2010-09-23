@@ -14,8 +14,13 @@
 
 #import "AppTextFileResponse.h"
 #import "HTTPServer.h"
-
-static NSString *ip = nil;
+#import <ifaddrs.h>
+#import <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <stdio.h>
 
 @implementation AppTextFileResponse
 
@@ -61,12 +66,22 @@ static NSString *ip = nil;
 //
 - (void)startResponse
 {
-    NSData *fileData = [[NSString stringWithFormat:@"function FindProxyForURL(url, host) { return \"SOCKS %@:%d\"; }", ip, [HTTPServer sharedHTTPServer].proxyPort] dataUsingEncoding:NSUTF8StringEncoding];
+	int socket = [fileHandle fileDescriptor];
+    struct sockaddr_in address;
+    socklen_t address_len;
+    NSData *fileData = nil;
+    
+    address_len = sizeof(address);
+    if (getsockname(socket, (struct sockaddr *)&address, &address_len) == 0) {
+        fileData = [[NSString stringWithFormat:@"function FindProxyForURL(url, host) { return \"SOCKS %s:%d\"; }", inet_ntoa(address.sin_addr), [HTTPServer sharedHTTPServer].proxyPort] dataUsingEncoding:NSUTF8StringEncoding];
+    }
+     
+
     //	NSData *fileData =
     //		[NSData dataWithContentsOfFile:[AppTextFileResponse pathForFile]];
 	CFHTTPMessageRef response =
     CFHTTPMessageCreateResponse(kCFAllocatorDefault, 
-                                200, 
+                                fileData?200:505, 
                                 NULL, 
                                 kCFHTTPVersion1_1);
 	CFHTTPMessageSetHeaderFieldValue(response, 
@@ -86,7 +101,9 @@ static NSString *ip = nil;
 	@try
 	{
 		[fileHandle writeData:(NSData *)headerData];
-		[fileHandle writeData:fileData];
+        if (fileData) {
+            [fileHandle writeData:fileData];
+        }
 	}
 	@catch (NSException *exception)
 	{
@@ -98,13 +115,6 @@ static NSString *ip = nil;
 		CFRelease(headerData);
 		[server closeHandler:self];
 	}
-}
-
-+ (void)setIP:(NSString*)_ip
-{
-    if (ip)
-        [ip release];
-    ip = [_ip copy];
 }
 
 #if 0
