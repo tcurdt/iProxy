@@ -25,9 +25,6 @@
 @synthesize pacLabel;
 @synthesize uploadLabel;
 @synthesize downloadLabel;
-@synthesize currentIp;
-@synthesize proxyPort;
-@synthesize pacURL;
 
 - (IBAction)showInstructions
 {
@@ -40,56 +37,11 @@
     [viewController release];
 }
 
-- (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section
+- (void)pacURLAction:(id)sender
 {
-	return 3;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	UITableViewCell *cell;
-    NSString *identifier;
-    
-    if (indexPath.row == 2) {
-    	identifier = @"selectable";
-    } else {
-    	identifier = @"non selectable";
-    }
-	cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier] autorelease];
-        cell.textLabel.font = [UIFont systemFontOfSize:16];
-        cell.textLabel.textAlignment = UITextAlignmentRight;
-        if (indexPath.row != 2) {
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-    }
-    switch(indexPath.row) {
-    	case 0:
-        	cell.textLabel.text = currentIp;
-        	break;
-    	case 1:
-        	cell.textLabel.text = proxyPort;
-        	break;
-    	case 2:
-        	cell.textLabel.text = pacURL;
-        	break;
-    }
-    return cell;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	return NO;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	[tableView selectRowAtIndexPath:nil animated:YES scrollPosition:UITableViewScrollPositionNone];
-    
     UIActionSheet *test;
     
-    test = [[UIActionSheet alloc] initWithTitle:@"Pac URL" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Send by Email", @"Copy URL", nil];
+    test = [[UIActionSheet alloc] initWithTitle:@"Pac URL Action" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Send by Email", @"Copy URL", nil];
     [test showInView:self.view];
     [test release];
 }
@@ -105,7 +57,7 @@
                     messageController.modalPresentationStyle = UIModalPresentationFormSheet;
                     
                 messageController.mailComposeDelegate = self;
-                [messageController setMessageBody:[NSString stringWithFormat:@"pac url : %@\n", pacURL] isHTML:NO];
+                [messageController setMessageBody:[NSString stringWithFormat:@"pac url : %@\n", pacLabel.text] isHTML:NO];
                 [self presentModalViewController:messageController animated:YES];
                 [messageController release];
             }
@@ -114,7 +66,7 @@
         	{
 				NSDictionary *items;
                 
-				items = [NSDictionary dictionaryWithObjectsAndKeys:pacURL, kUTTypePlainText, pacURL, kUTTypeText, pacURL, kUTTypeUTF8PlainText, [NSURL URLWithString:pacURL], kUTTypeURL, nil];
+				items = [NSDictionary dictionaryWithObjectsAndKeys:pacLabel.text, kUTTypePlainText, pacLabel.text, kUTTypeText, pacLabel.text, kUTTypeUTF8PlainText, [NSURL URLWithString:pacLabel.text], kUTTypeURL, nil];
                 [UIPasteboard generalPasteboard].items = [NSArray arrayWithObjects:items, nil];
             }
         	break;

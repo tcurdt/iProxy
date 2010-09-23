@@ -120,15 +120,9 @@ int local_main(int ac, char **av);
         return;
     }
     
-    [AppTextFileResponse setIP:ip];
-    
     // NSLog(@"ip = %@", ip);
     // NSLog(@"port = %d", port);
 
-	statusViewController.currentIp = ip;
-	statusViewController.proxyPort = [NSString stringWithFormat:@"%d", [HTTPServer sharedHTTPServer].proxyPort];
-	statusViewController.pacURL = [NSString stringWithFormat:@"http://%@:%d/socks.pac", ip, [HTTPServer sharedHTTPServer].httpPort];
-    
     statusViewController.ipLabel.text = ip;
     statusViewController.portLabel.text = [NSString stringWithFormat:@"%d", [HTTPServer sharedHTTPServer].proxyPort];
 
