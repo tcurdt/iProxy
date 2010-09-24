@@ -31,6 +31,7 @@
     [self startBrowsingServices];
     [self addObserver:self forKeyPath:@"proxyServiceList" options:NSKeyValueObservingOptionNew context:nil];
     [self addObserver:self forKeyPath:@"interfaceList" options:NSKeyValueObservingOptionNew context:nil];
+    [self addObserver:self forKeyPath:@"resolvingServiceCount" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification
@@ -71,7 +72,7 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	if (object == self) {
-    	if ([keyPath isEqualToString:@"proxyServiceList"] || [keyPath isEqualToString:@"interfaceList"]) {
+    	if ([keyPath isEqualToString:@"proxyServiceList"] || [keyPath isEqualToString:@"interfaceList"] || [keyPath isEqualToString:@"resolvingServiceCount"]) {
         	[self _updateAutomatic];
         }
     }
