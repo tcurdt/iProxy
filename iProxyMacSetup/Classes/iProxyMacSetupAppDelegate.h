@@ -21,8 +21,8 @@
     NSUInteger resolvingServiceCount;
     
     NSString *defaultInterface;
-    NSString *defaultProxy;
     NSString *proxyEnabledInterfaceName;
+    BOOL proxyEnabled;
 }
 
 @property(readonly) BOOL browsing;
@@ -32,7 +32,6 @@
 @property(readonly) NSArray *proxyServiceList;
 @property(readonly) NSArray *interfaceList;
 @property(retain, nonatomic) NSString *defaultInterface;
-@property(retain, nonatomic) NSString *defaultProxy;
 
 - (void)startBrowsingServices;
 - (void)enableForInterface:(NSString *)interfaceName withProxy:(NSNetService *)proxy;

@@ -28,24 +28,26 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if ([keyPath isEqualToString:@"browsing"]) {
-    	[self updateProgressIndicator];
-    } else if ([keyPath isEqualToString:@"resolvingServiceCount"]) {
-    	[self updateProgressIndicator];
-    } else if ([keyPath isEqualToString:@"proxyServiceList"]) {
-    	[self updateStartButton];
-        [self updateProxyPopUpButton];
-    } else if ([keyPath isEqualToString:@"interfaceList"]) {
-    	[self updateStartButton];
-        [self updateInterfacePopUpButton];
-    } else if ([keyPath isEqualToString:@"proxyEnabled"]) {
-    	[self updateStartButton];
-        [self updateInterfacePopUpButton];
-        [self updateProxyPopUpButton];
-    } else if ([keyPath isEqualToString:@"automatic"]) {
-    	[self updateStartButton];
-        [self updateInterfacePopUpButton];
-        [self updateProxyPopUpButton];
+	if (object == appDelegate) {
+		if ([keyPath isEqualToString:@"browsing"]) {
+    		[self updateProgressIndicator];
+	    } else if ([keyPath isEqualToString:@"resolvingServiceCount"]) {
+    		[self updateProgressIndicator];
+	    } else if ([keyPath isEqualToString:@"proxyServiceList"]) {
+    		[self updateStartButton];
+        	[self updateProxyPopUpButton];
+	    } else if ([keyPath isEqualToString:@"interfaceList"]) {
+    		[self updateStartButton];
+        	[self updateInterfacePopUpButton];
+	    } else if ([keyPath isEqualToString:@"proxyEnabled"]) {
+    		[self updateStartButton];
+        	[self updateInterfacePopUpButton];
+	        [self updateProxyPopUpButton];
+	    } else if ([keyPath isEqualToString:@"automatic"]) {
+    		[self updateStartButton];
+    	    [self updateInterfacePopUpButton];
+        	[self updateProxyPopUpButton];
+        }
     }
 }
 
@@ -74,8 +76,6 @@
 
 - (void)updateProxyPopUpButton
 {
-	NSString *defaultProxy = appDelegate.defaultProxy;
-    
 	[proxyPopUpButton removeAllItems];
     for (NSNetService *service in appDelegate.proxyServiceList) {
     	NSString *title;
@@ -85,9 +85,6 @@
             [proxyPopUpButton addItemWithTitle:title];
         } else {
             [proxyPopUpButton addItemWithTitle:[NSString stringWithFormat:@"%@ (disabled)", title]];
-        }
-        if ([defaultProxy isEqualToString:title]) {
-        	[proxyPopUpButton selectItem:[proxyPopUpButton lastItem]];
         }
         [title release];
     }
@@ -137,7 +134,6 @@
 
 - (IBAction)proxyPopUpButtonAction:(id)sender
 {
-	appDelegate.defaultProxy = [appDelegate.proxyServiceList objectAtIndex:[proxyPopUpButton indexOfSelectedItem]];
 }
 
 @end

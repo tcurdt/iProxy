@@ -29,12 +29,51 @@
     self.automatic = [[[NSUserDefaults standardUserDefaults] valueForKey:@"AUTOMATIC"] boolValue];
     [self fetchInterfaceList];
     [self startBrowsingServices];
+    [self addObserver:self forKeyPath:@"proxyServiceList" options:NSKeyValueObservingOptionNew context:nil];
+    [self addObserver:self forKeyPath:@"interfaceList" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification
 {
 	if (proxyEnabledInterfaceName) {
         [self disableProxyForInterface:proxyEnabledInterfaceName];
+    }
+}
+
+- (void)_updateAutomatic
+{
+	if (automatic) {
+        NSNetService *proxy = nil;
+        NSDictionary *currentInterface = nil;
+        NSUInteger ii, count = [proxyServiceList count];
+        
+        for (ii = 0; ii < count; ii++) {
+        	if ([(NSNetService *)[proxyServiceList objectAtIndex:ii] port] != -1) {
+				proxy = [proxyServiceList objectAtIndex:ii];
+                break;
+            }
+        }
+        for (NSDictionary *interface in interfaceList) {
+        	if ([self.defaultInterface isEqualToString:[interface objectForKey:INTERFACE_NAME]]) {
+            	currentInterface = interface;
+            	break;
+            }
+        }
+        if ((!proxy || !currentInterface) && self.proxyEnabled) {
+        	[self disableProxyForInterface:proxyEnabledInterfaceName];
+        }
+        if (proxy && currentInterface && !self.proxyEnabled) {
+        	[self enableForInterface:[currentInterface objectForKey:INTERFACE_NAME] withProxy:proxy];
+        }
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if (object == self) {
+    	if ([keyPath isEqualToString:@"proxyServiceList"] || [keyPath isEqualToString:@"interfaceList"]) {
+        	[self _updateAutomatic];
+        }
     }
 }
 
@@ -46,11 +85,18 @@
 - (void)setAutomatic:(BOOL)value
 {
 	if (automatic != value) {
+    	BOOL shouldStop = automatic;
+        
     	[self willChangeValueForKey:@"automatic"];
         automatic = value;
         [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:automatic] forKey:@"AUTOMATIC"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     	[self didChangeValueForKey:@"automatic"];
+        
+        if (shouldStop && self.proxyEnabled) {
+        	[self disableProxyForInterface:proxyEnabledInterfaceName];
+        }
+        [self _updateAutomatic];
     }
 }
 
@@ -222,22 +268,6 @@ NSString *parseInterface(NSString *line, BOOL *enabled)
 	[defaultInterface release];
     defaultInterface = [interface retain];
     [[NSUserDefaults standardUserDefaults] setObject:defaultInterface forKey:@"DEFAULT_INTERFACE"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-- (NSString *)defaultProxy
-{
-	if (!defaultProxy) {
-    	defaultProxy = [[[NSUserDefaults standardUserDefaults] objectForKey:@"DEFAULT_PROXY"] retain];
-    }
-    return defaultProxy;
-}
-
-- (void)setDefaultProxy:(NSString *)proxy
-{
-	[defaultProxy release];
-    defaultProxy = [proxy retain];
-    [[NSUserDefaults standardUserDefaults] setObject:defaultProxy forKey:@"DEFAULT_PROXY"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
