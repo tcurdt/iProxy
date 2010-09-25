@@ -14,7 +14,7 @@
 
 #import "HTTPResponseHandler.h"
 #import "HTTPServer.h"
-#import "AppTextFileResponse.h"
+#import "PacFileResponse.h"
 
 @implementation HTTPResponseHandler
 

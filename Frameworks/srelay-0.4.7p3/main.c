@@ -99,7 +99,7 @@ void usage()
   exit(1);
 }
 
-int local_main(int ac, char **av)
+int srelay_main(int ac, char **av)
 {
   int     ch, i=0;
 //  pid_t   pid;

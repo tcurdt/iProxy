@@ -21,8 +21,6 @@
 #endif
 #import "HTTPResponseHandler.h"
 
-#define HTTP_SERVER_PORT 8080
-
 NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateChanged";
 
 //

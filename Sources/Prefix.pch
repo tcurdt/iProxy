@@ -1,10 +1,40 @@
 #ifdef __OBJC__
     #import <Foundation/Foundation.h>
     #import <UIKit/UIKit.h>
+
+    #import <AVFoundation/AVFoundation.h>
+    #import <QuartzCore/QuartzCore.h>
+
+    #import "UIDeviceAdditions.h"
+    #import "UIViewAdditions.h"
+    #import "NSStringAdditions.h"
 #endif
 
+// polipo
+#define HAS_STDINT_H
+
+// srelay
 #define HAVE_SOCKADDR_DL_STRUCT
 #define MACOSX
 #define HAVE_UINT32_T
 #define HAVE_SOCKLEN_T
-#define USE_THREAD 1
+// #define USE_THREAD 1
+
+// color macros
+#define RGB(r,g,b) [UIColor colorWithRed:(float)r/0xff green:(float)g/0xff blue:(float)b/0xff alpha:1.0]
+#define RGBA(r,g,b,a) [UIColor colorWithRed:(float)r/0xff green:(float)g/0xff blue:(float)b/0xff alpha:a]
+
+// defaults keys
+#define KEY_SOCKS_ON    @"socks.on"
+#define KEY_HTTP_ON     @"http.on"
+
+// ports
+#define PROXY_PORT_HTTP   8888
+#define PROXY_PORT_SOCKS  1080
+#define HTTP_SERVER_PORT  8000
+
+// urls
+#define URL_HELP    @"http://github.com/tcurdt/iProxy/wiki/Configuring-iProxy"
+#define URL_ISSUES  @"http://github.com/tcurdt/iProxy/issues"
+#define URL_LIKE    @"http://vafer.org/log/iproxy?%@"
+#define URL_DONATE  @"https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=tcurdt%40vafer.org&item_name=Thanks%20for%20iProxy&currency_code=EUR&lc=US"

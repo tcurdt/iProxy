@@ -14,15 +14,11 @@
 
 #import "HTTPResponseHandler.h"
 
-@interface AppTextFileResponse : HTTPResponseHandler
+@interface PacFileResponse : HTTPResponseHandler
 {
 
 }
 
 + (void)setIP:(NSString*)_ip;
-
-#if 0
-+ (NSString *)pathForFile;
-#endif
 
 @end
