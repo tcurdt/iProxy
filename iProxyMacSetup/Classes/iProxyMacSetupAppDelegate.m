@@ -173,6 +173,7 @@ NSString *parseInterface(NSString *line, BOOL *enabled)
         index = endLine + 1;
     };
     [self didChangeValueForKey:@"interfaceList"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notification object]];
 }
 
 - (void)_setBrowsing:(BOOL)value
