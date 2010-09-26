@@ -9,6 +9,7 @@
 #import "iProxyMacSetupAppDelegate.h"
 
 #define NETWORKSETUP_PATH @"/usr/sbin/networksetup"
+#define ROUTE_PATH @"/sbin/route"
 
 @interface iProxyMacSetupAppDelegate ()
 
@@ -317,6 +318,36 @@ NSString *parseInterface(NSString *line, BOOL *enabled)
         proxyEnabledInterfaceName = nil;
         [self didChangeValueForKey:@"proxyEnabled"];
     }
+}
+
+- (NSString *)_getInterfaceNameForIP:(NSString *)ip
+{
+	NSTask *task;
+    NSString *result = nil;
+    NSData *data;
+    NSFileHandle *outputFileHandle;
+    
+    task = [self taskWithLaunchPath:ROUTE_PATH arguments:[NSArray arrayWithObjects:@"get", ip, nil]];
+	outputFileHandle = [[task standardOutput] fileHandleForReading];
+    [task launch];
+    
+    data = [outputFileHandle readDataToEndOfFile];
+    NSString *allLines = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSUInteger index = 0;
+    NSUInteger endOfData = 0;
+    NSUInteger endLine = 0;
+    while (index < [allLines length]) {
+        NSString *line;
+        
+    	[allLines getLineStart:&index end:&endLine contentsEnd:&endOfData forRange:NSMakeRange(index, 1)];
+        line = [[allLines substringWithRange:NSMakeRange(index, endOfData - index)] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if ([line hasPrefix:@"interface:"]) {
+        	result = [[line substringFromIndex:[@"interface:" length]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            break;
+        }
+        index = endLine + 1;
+    };
+    return result;
 }
 
 @end
