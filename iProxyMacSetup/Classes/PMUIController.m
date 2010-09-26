@@ -77,11 +77,13 @@
 - (void)updateProxyPopUpButton
 {
 	[proxyPopUpButton removeAllItems];
-    for (NSNetService *service in appDelegate.proxyServiceList) {
+    for (NSDictionary *proxy in appDelegate.proxyServiceList) {
     	NSString *title;
+        NSNetService *proxyService;
         
-        title = [[NSString alloc] initWithFormat:@"%@.%@", [service name], [service domain]];
-    	if ([service port] != -1) {
+        proxyService = [proxy objectForKey:PROXY_SERVICE_KEY];
+        title = [[NSString alloc] initWithFormat:@"%@.%@", [proxyService name], [proxyService domain]];
+    	if ([proxyService port] != -1 || [proxyService port] != 0) {
             [proxyPopUpButton addItemWithTitle:title];
         } else {
             [proxyPopUpButton addItemWithTitle:[NSString stringWithFormat:@"%@ (disabled)", title]];
@@ -114,7 +116,7 @@
 - (IBAction)startButtonAction:(id)sender
 {
     NSDictionary *interfaceInfo;
-    NSNetService *proxy;
+    NSDictionary *proxy;
 	
     [self updateProxyPopUpButton];
     [self updateInterfacePopUpButton];

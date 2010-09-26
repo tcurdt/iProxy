@@ -45,12 +45,15 @@
 - (void)_updateAutomatic
 {
 	if (automatic) {
-        NSNetService *proxy = nil;
+        NSDictionary *proxy = nil;
         NSDictionary *currentInterface = nil;
         NSUInteger ii, count = [proxyServiceList count];
         
         for (ii = 0; ii < count; ii++) {
-        	if ([(NSNetService *)[proxyServiceList objectAtIndex:ii] port] != -1 && [(NSNetService *)[proxyServiceList objectAtIndex:ii] port] != 0) {
+        	NSNetService *proxyService;
+            
+            proxyService = [[proxyServiceList objectAtIndex:ii] objectForKey:PROXY_SERVICE_KEY];
+        	if ([proxyService port] != -1 && [proxyService port] != 0) {
 				proxy = [proxyServiceList objectAtIndex:ii];
                 break;
             }
@@ -222,7 +225,10 @@ NSString *parseInterface(NSString *line, BOOL *enabled)
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didFindService:(NSNetService *)aNetService moreComing:(BOOL)moreComing
 {
 	[self willChangeValueForKey:@"proxyServiceList"];
-    [proxyServiceList addObject:aNetService];
+    NSMutableDictionary *proxy = [[NSMutableDictionary alloc] init];
+    [proxy setObject:aNetService forKey:PROXY_SERVICE_KEY];
+    [proxyServiceList addObject:proxy];
+    [proxy release];
 	[self didChangeValueForKey:@"proxyServiceList"];
 	[aNetService setDelegate:self];
     [aNetService resolveWithTimeout:20.0];
@@ -286,12 +292,15 @@ NSString *parseInterface(NSString *line, BOOL *enabled)
     [task waitUntilExit];
 }
 
-- (void)enableForInterface:(NSString *)interfaceName withProxy:(NSNetService *)proxy
+- (void)enableForInterface:(NSString *)interfaceName withProxy:(NSDictionary *)proxy
 {
 	if (!proxyEnabled) {
+    	NSNetService *proxyService;
+        
         [self willChangeValueForKey:@"proxyEnabled"];
-        if ([proxy port] != -1) {
-            [self _enableProxyForInterface:interfaceName server:[NSString stringWithFormat:@"%@.%@", [proxy name], [proxy domain]] port:[proxy port]];
+        proxyService = [proxy objectForKey:PROXY_SERVICE_KEY];
+        if ([proxyService port] != -1) {
+            [self _enableProxyForInterface:interfaceName server:[NSString stringWithFormat:@"%@.%@", [proxyService name], [proxyService domain]] port:[proxyService port]];
             proxyEnabled = YES;
             proxyEnabledInterfaceName = [interfaceName retain];
         }
