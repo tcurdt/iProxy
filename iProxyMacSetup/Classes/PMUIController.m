@@ -64,13 +64,13 @@
 {
 	if ([appDelegate.proxyServiceList count] > 0 && [appDelegate.interfaceList count] > 0) {
     	[startButton setEnabled:!appDelegate.automatic];
-        if (appDelegate.proxyEnabled) {
-        	[startButton setTitle:@"Stop"];
-        } else {
-        	[startButton setTitle:@"Start"];
-        }
     } else {
     	[startButton setEnabled:NO];
+    }
+    if (appDelegate.proxyEnabled) {
+        [startButton setTitle:@"Stop"];
+    } else {
+        [startButton setTitle:@"Start"];
     }
 }
 
