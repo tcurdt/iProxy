@@ -49,7 +49,7 @@
         NSUInteger ii, count = [proxyServiceList count];
         
         for (ii = 0; ii < count; ii++) {
-        	if ([(NSNetService *)[proxyServiceList objectAtIndex:ii] port] != -1) {
+        	if ([(NSNetService *)[proxyServiceList objectAtIndex:ii] port] != -1 && [(NSNetService *)[proxyServiceList objectAtIndex:ii] port] != 0) {
 				proxy = [proxyServiceList objectAtIndex:ii];
                 break;
             }
