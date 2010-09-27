@@ -12,6 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="6"/>
 			<integer value="31"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -269,7 +270,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="774585933">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -378,6 +379,7 @@ ayBvciBjcmVhdGUgYW4gYWQtaG9jIG5ldHdvcmsgZm9yIHRoZW0uA</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 460}</string>
+				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
 					<bytes key="NSRGB">MC44MTU2ODYyNzQ1IDAuNzA1ODgyMzUyOSAwLjE0MTE3NjQ3MDYAA</bytes>
@@ -507,6 +509,22 @@ ayBvciBjcmVhdGUgYW4gYWQtaG9jIG5ldHdvcmsgZm9yIHRoZW0uA</string>
 						<int key="IBEventType">7</int>
 					</object>
 					<int key="connectionID">67</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">httpPacButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="939138619"/>
+					</object>
+					<int key="connectionID">68</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">socksPacButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="529301683"/>
+					</object>
+					<int key="connectionID">69</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -785,7 +803,7 @@ ayBvciBjcmVhdGUgYW4gYWQtaG9jIG5ldHdvcmsgZm9yIHRoZW0uA</string>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">67</int>
+			<int key="maxID">69</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -852,10 +870,12 @@ ayBvciBjcmVhdGUgYW4gYWQtaG9jIG5ldHdvcmsgZm9yIHRoZW0uA</string>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>connectView</string>
 							<string>httpAddressLabel</string>
+							<string>httpPacButton</string>
 							<string>httpPacLabel</string>
 							<string>httpSwitch</string>
 							<string>runningView</string>
 							<string>socksAddressLabel</string>
+							<string>socksPacButton</string>
 							<string>socksPacLabel</string>
 							<string>socksSwitch</string>
 						</object>
@@ -863,10 +883,12 @@ ayBvciBjcmVhdGUgYW4gYWQtaG9jIG5ldHdvcmsgZm9yIHRoZW0uA</string>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIView</string>
 							<string>UILabel</string>
+							<string>UIButton</string>
 							<string>UILabel</string>
 							<string>UISwitch</string>
 							<string>UIView</string>
 							<string>UILabel</string>
+							<string>UIButton</string>
 							<string>UILabel</string>
 							<string>UISwitch</string>
 						</object>
@@ -877,10 +899,12 @@ ayBvciBjcmVhdGUgYW4gYWQtaG9jIG5ldHdvcmsgZm9yIHRoZW0uA</string>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>connectView</string>
 							<string>httpAddressLabel</string>
+							<string>httpPacButton</string>
 							<string>httpPacLabel</string>
 							<string>httpSwitch</string>
 							<string>runningView</string>
 							<string>socksAddressLabel</string>
+							<string>socksPacButton</string>
 							<string>socksPacLabel</string>
 							<string>socksSwitch</string>
 						</object>
@@ -893,6 +917,10 @@ ayBvciBjcmVhdGUgYW4gYWQtaG9jIG5ldHdvcmsgZm9yIHRoZW0uA</string>
 							<object class="IBToOneOutletInfo">
 								<string key="name">httpAddressLabel</string>
 								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">httpPacButton</string>
+								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">httpPacLabel</string>
@@ -909,6 +937,10 @@ ayBvciBjcmVhdGUgYW4gYWQtaG9jIG5ldHdvcmsgZm9yIHRoZW0uA</string>
 							<object class="IBToOneOutletInfo">
 								<string key="name">socksAddressLabel</string>
 								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">socksPacButton</string>
+								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">socksPacLabel</string>

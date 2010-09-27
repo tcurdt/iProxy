@@ -99,12 +99,14 @@ void srelay_exit();
 
             httpAddressLabel.alpha = 1.0;
             httpPacLabel.alpha = 1.0;
+            httpPacButton.enabled = YES;
 
         } else {
             [self proxyHttpStop];
 
             httpAddressLabel.alpha = 0.1;
             httpPacLabel.alpha = 0.1;
+            httpPacButton.enabled = NO;
         }
 
         if (socksSwitch.on) {
@@ -112,12 +114,14 @@ void srelay_exit();
 
             socksAddressLabel.alpha = 1.0;
             socksPacLabel.alpha = 1.0;
+            socksPacButton.enabled = YES;
 
         } else {
             [self proxySocksStop];
 
             socksAddressLabel.alpha = 0.1;
             socksPacLabel.alpha = 0.1;
+            socksPacButton.enabled = NO;
         }
         
         if (httpSwitch.on || socksSwitch.on) {

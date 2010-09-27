@@ -20,10 +20,12 @@
     IBOutlet UISwitch *httpSwitch;
     IBOutlet UILabel *httpAddressLabel;
     IBOutlet UILabel *httpPacLabel;
+    IBOutlet UIButton *httpPacButton;
 
     IBOutlet UISwitch *socksSwitch;
     IBOutlet UILabel *socksAddressLabel;
     IBOutlet UILabel *socksPacLabel;
+    IBOutlet UIButton *socksPacButton;
 
     IBOutlet UIView *connectView;
     IBOutlet UIView *runningView;
