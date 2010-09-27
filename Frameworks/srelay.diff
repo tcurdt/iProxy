@@ -1,7 +1,6 @@
-Only in srelay-0.4.7p3: .git
 diff -u srelay-0.4.7p3.orig/get-bind.c srelay-0.4.7p3/get-bind.c
 --- srelay-0.4.7p3.orig/get-bind.c	2009-12-09 05:07:53.000000000 +0100
-+++ srelay-0.4.7p3/get-bind.c	2010-01-08 02:11:46.000000000 +0100
++++ srelay-0.4.7p3/get-bind.c	2010-09-23 21:24:27.000000000 +0200
 @@ -39,7 +39,7 @@
  #include <sys/ioctl.h>
  #include <sys/sockio.h>
@@ -21,7 +20,7 @@ diff -u srelay-0.4.7p3.orig/get-bind.c srelay-0.4.7p3/get-bind.c
  
 diff -u srelay-0.4.7p3.orig/init.c srelay-0.4.7p3/init.c
 --- srelay-0.4.7p3.orig/init.c	2009-12-09 05:07:53.000000000 +0100
-+++ srelay-0.4.7p3/init.c	2010-01-08 02:44:15.000000000 +0100
++++ srelay-0.4.7p3/init.c	2010-09-23 21:24:27.000000000 +0200
 @@ -55,6 +55,9 @@
    char   tmp_str_serv_sock[NI_MAXHOST+NI_MAXSERV+1];
    const  int on = 1;
@@ -34,13 +33,13 @@ diff -u srelay-0.4.7p3.orig/init.c srelay-0.4.7p3/init.c
      if (str_serv_sock == NULL)
 diff -u srelay-0.4.7p3.orig/main.c srelay-0.4.7p3/main.c
 --- srelay-0.4.7p3.orig/main.c	2009-12-17 15:57:16.000000000 +0100
-+++ srelay-0.4.7p3/main.c	2010-01-19 14:23:53.000000000 +0100
++++ srelay-0.4.7p3/main.c	2010-09-25 23:03:33.000000000 +0200
 @@ -99,10 +99,10 @@
    exit(1);
  }
  
 -int main(int ac, char **av)
-+int local_main(int ac, char **av)
++int srelay_main(int ac, char **av)
  {
    int     ch, i=0;
 -  pid_t   pid;
@@ -161,7 +160,7 @@ diff -u srelay-0.4.7p3.orig/main.c srelay-0.4.7p3/main.c
      setsignal(SIGCHLD, reapchild);
 diff -u srelay-0.4.7p3.orig/readconf.c srelay-0.4.7p3/readconf.c
 --- srelay-0.4.7p3.orig/readconf.c	2009-12-17 15:49:50.000000000 +0100
-+++ srelay-0.4.7p3/readconf.c	2010-01-19 01:18:35.000000000 +0100
++++ srelay-0.4.7p3/readconf.c	2010-09-23 21:24:27.000000000 +0200
 @@ -242,7 +242,7 @@
    }
  
@@ -173,8 +172,16 @@ diff -u srelay-0.4.7p3.orig/readconf.c srelay-0.4.7p3/readconf.c
      tmp_tbl[0].port_l = PORT_MIN; tmp_tbl[0].port_h = PORT_MAX;
 diff -u srelay-0.4.7p3.orig/relay.c srelay-0.4.7p3/relay.c
 --- srelay-0.4.7p3.orig/relay.c	2009-12-17 15:49:50.000000000 +0100
-+++ srelay-0.4.7p3/relay.c	2010-01-14 04:14:42.000000000 +0100
-@@ -422,26 +422,29 @@
++++ srelay-0.4.7p3/relay.c	2010-09-25 23:03:33.000000000 +0200
+@@ -339,6 +339,7 @@
+             break;
+           case 'T': /* sigterm */
+             cleanup();
++            return 0;
+             break;
+           default:
+             break;
+@@ -422,26 +423,29 @@
        blocksignal(SIGCHLD);
        pid = fork();
        switch (pid) {
@@ -211,19 +218,19 @@ diff -u srelay-0.4.7p3.orig/relay.c srelay-0.4.7p3/relay.c
 +              close(cs);  /* may already be closed */
 +              exit(1);
 +            }
-+            printf("\nrelaying\n");
++            // printf("\nrelaying\n");
 +            relay(cs, ss);
 +            exit(0);
        default: /* may be parent */
 -	proclist_add(pid);
 -	break;
-+            printf("\nadding proc\n");
++            // printf("\nadding proc\n");
 +            proclist_add(pid);
 +            break;
        }
        close(cs);
        releasesignal(SIGHUP);
-@@ -450,8 +453,8 @@
+@@ -450,8 +454,8 @@
      } else {
        ss = proto_socks(cs);
        if ( ss == -1 ) {
@@ -237,12 +244,12 @@ diff -u srelay-0.4.7p3.orig/relay.c srelay-0.4.7p3/relay.c
 Common subdirectories: srelay-0.4.7p3.orig/scripts and srelay-0.4.7p3/scripts
 diff -u srelay-0.4.7p3.orig/util.c srelay-0.4.7p3/util.c
 --- srelay-0.4.7p3.orig/util.c	2009-12-09 05:07:53.000000000 +0100
-+++ srelay-0.4.7p3/util.c	2010-01-19 01:13:55.000000000 +0100
++++ srelay-0.4.7p3/util.c	2010-09-25 23:03:33.000000000 +0200
 @@ -53,28 +53,34 @@
  
  void msg_out(int severity, const char *fmt, ...)
  {
-+    if (severity == norm) return;
++  if (severity == norm) return;
 +
    va_list ap;
 -  int priority;
@@ -291,3 +298,24 @@ diff -u srelay-0.4.7p3.orig/util.c srelay-0.4.7p3/util.c
    va_end(ap);
  }
  
+@@ -273,7 +279,7 @@
+     setreuid(0, PROCUID);
+   }
+   msg_out(norm, "sig TERM received. exitting...");
+-  exit(0);
++  // exit(0);
+ }
+ 
+ void reload()
+@@ -412,3 +418,10 @@
+   if (cur_child < 0)
+     cur_child = 0;
+ }
++
++// ----------------
++
++void srelay_exit()
++{
++  feed_sig('T');
++}
+\ No newline at end of file

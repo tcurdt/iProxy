@@ -53,7 +53,7 @@ int forcesyslog = 0;
 
 void msg_out(int severity, const char *fmt, ...)
 {
-    if (severity == norm) return;
+  if (severity == norm) return;
 
   va_list ap;
 //  int priority;
@@ -279,7 +279,7 @@ void cleanup()
     setreuid(0, PROCUID);
   }
   msg_out(norm, "sig TERM received. exitting...");
-  exit(0);
+  // exit(0);
 }
 
 void reload()
@@ -417,4 +417,11 @@ void proclist_probe()
   }
   if (cur_child < 0)
     cur_child = 0;
+}
+
+// ----------------
+
+void srelay_exit()
+{
+  feed_sig('T');
 }

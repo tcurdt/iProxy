@@ -14,29 +14,15 @@
  * limitations under the License.
  */
  
-#import <UIKit/UIKit.h>
+@class MainViewController;
 
-@class StatusViewController;
-
-@interface AppDelegate : NSObject <UIApplicationDelegate> {
+@interface AppDelegate : NSObject <UIApplicationDelegate, AVAudioSessionDelegate> {
 
     IBOutlet UIWindow *window;
-    IBOutlet StatusViewController *statusViewController;
-
-    unsigned long long upBytes;
-    unsigned long long downBytes;
-
-    NSTimer *bytesTransferredUpdater;
+    IBOutlet MainViewController *statusViewController;
 }
 
 @property (nonatomic, retain) UIWindow *window;
-@property (nonatomic, retain) StatusViewController *statusViewController;
-
-@property unsigned long long upBytes;
-@property unsigned long long downBytes;
-
-- (void)setUploadLabel:(NSNumber*)amount;
-- (void)setDownloadLabel:(NSNumber*)amount;
+@property (nonatomic, retain) MainViewController *statusViewController;
 
 @end
-

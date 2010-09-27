@@ -14,7 +14,13 @@
 
 #import "HTTPResponseHandler.h"
 #import "HTTPServer.h"
-#import "AppTextFileResponse.h"
+#import "PacFileResponse.h"
+#import <ifaddrs.h>
+#import <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 @implementation HTTPResponseHandler
 
@@ -274,6 +280,20 @@ static NSMutableArray *registeredHandlers = nil;
 		CFRelease(response);
 		[server closeHandler:self];
 	}
+}
+
+- (NSString *)serverIPForRequest
+{
+	int socket = [fileHandle fileDescriptor];
+    struct sockaddr_in address;
+    socklen_t address_len;
+	NSString *result = nil;
+	
+    address_len = sizeof(address);
+    if (getsockname(socket, (struct sockaddr *)&address, &address_len) == 0) {
+        result = [NSString stringWithFormat:@"%s", inet_ntoa(address.sin_addr)];
+    }
+	return result;
 }
 
 //

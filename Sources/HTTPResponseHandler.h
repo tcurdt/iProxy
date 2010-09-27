@@ -45,6 +45,7 @@
 	fileHandle:(NSFileHandle *)requestFileHandle
 	server:(HTTPServer *)aServer;
 - (void)startResponse;
+- (NSString *)serverIPForRequest;
 - (void)endResponse;
 
 @end

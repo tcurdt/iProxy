@@ -21,9 +21,6 @@
 #endif
 #import "HTTPResponseHandler.h"
 
-#define HTTP_SERVER_PORT 8080
-#define PROXY_SERVER_PORT 8888
-
 NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateChanged";
 
 //
@@ -394,7 +391,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 
 - (UInt32)proxyPort
 {
-	return PROXY_SERVER_PORT;
+	return PROXY_PORT_HTTP;
 }
 
 @end

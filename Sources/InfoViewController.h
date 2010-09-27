@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+@interface InfoViewController : UIViewController {
 
-
-@interface InstructionsViewController : UIViewController {
 }
+
+- (IBAction) actionLike;
+- (IBAction) actionHelp;
+- (IBAction) actionIssues;
+- (IBAction) actionDonate;
 
 @end

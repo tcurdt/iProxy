@@ -14,13 +14,9 @@
 
 #import "HTTPResponseHandler.h"
 
-@interface AppTextFileResponse : HTTPResponseHandler
+@interface PacFileResponse : HTTPResponseHandler
 {
 
 }
-
-#if 0
-+ (NSString *)pathForFile;
-#endif
 
 @end

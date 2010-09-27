@@ -1,0 +1,13 @@
+Release 2.0.0 (2010-09-26)
+ - added background support
+ - added http proxy
+ - added IP change detection
+ - added switches to turn on/off proxies
+ - updated for iOS 4.1
+ - updated for HD
+
+Release 1.0.1 (2010-01-19)
+ - fixed srelay issue
+
+Release 1.0 (2010-01-19)
+ - initial relase
