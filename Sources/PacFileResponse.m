@@ -66,13 +66,13 @@
     if ([@"/http.pac" isEqualToString:requestPath]) {
         fileData = [[NSString stringWithFormat:
             @"function FindProxyForURL(url, host) { return \"PROXY %@:%d\"; }",
-            [self serverIPForRequest], PROXY_PORT_HTTP] dataUsingEncoding:NSUTF8StringEncoding];
+            [self serverIPForRequest], HTTP_PROXY_PORT] dataUsingEncoding:NSUTF8StringEncoding];
     }
     
     if ([@"/socks.pac" isEqualToString:requestPath]) {
         fileData = [[NSString stringWithFormat:
             @"function FindProxyForURL(url, host) { return \"SOCKS %@:%d\"; }",
-            [self serverIPForRequest], PROXY_PORT_SOCKS] dataUsingEncoding:NSUTF8StringEncoding];
+            [self serverIPForRequest], SOCKS_PROXY_PORT] dataUsingEncoding:NSUTF8StringEncoding];
     }
     
     if (fileData) {

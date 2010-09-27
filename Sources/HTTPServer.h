@@ -42,8 +42,7 @@ typedef enum
 
 @property (nonatomic, readonly, retain) NSError *lastError;
 @property (readonly, assign) HTTPServerState state;
-@property (readonly) UInt32 httpPort;
-@property (readonly) UInt32 proxyPort;
+@property (readonly) UInt32 httpServerPort;
 
 + (HTTPServer *)sharedHTTPServer;
 

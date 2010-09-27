@@ -29,8 +29,8 @@
 #define KEY_HTTP_ON     @"http.on"
 
 // ports
-#define PROXY_PORT_HTTP   8888
-#define PROXY_PORT_SOCKS  1080
+#define HTTP_PROXY_PORT   8888
+#define SOCKS_PROXY_PORT  1080
 #define HTTP_SERVER_PORT  8000
 
 // urls

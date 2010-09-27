@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#import <MessageUI/MFMailComposeViewController.h>
 
-@interface MainViewController : UIViewController {
+@interface MainViewController : UIViewController <UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
 
     IBOutlet UISwitch *httpSwitch;
     IBOutlet UILabel *httpAddressLabel;
@@ -30,6 +31,9 @@
     BOOL proxyHttpRunning;
     BOOL proxySocksRunning;
     BOOL httpRunning;
+	
+	NSString *emailBody;
+	NSString *emailURL;
 
     NSString *ip;
 }
@@ -45,6 +49,8 @@
 
 - (IBAction) switchedHttp:(id)sender;
 - (IBAction) switchedSocks:(id)sender;
+- (IBAction) httpURLAction:(id)sender;
+- (IBAction) socksURLAction:(id)sender;
 - (IBAction) showInfo;
 
 @property (nonatomic, retain) UISwitch *httpSwitch;

@@ -18,6 +18,7 @@
 #import "InfoViewController.h"
 #import "HTTPServer.h"
 #import "PacFileResponse.h"
+#import <MobileCoreServices/MobileCoreServices.h>
 
 int polipo_main(int argc, char **argv);
 void polipo_exit();
@@ -87,11 +88,11 @@ void srelay_exit();
 
     if (self.ip != nil) {
         
-        httpAddressLabel.text = [NSString stringWithFormat:@"%@:%d", self.ip, PROXY_PORT_HTTP];
-        httpPacLabel.text = [NSString stringWithFormat:@"http://%@:%d/http.pac", self.ip, HTTP_SERVER_PORT];
+        httpAddressLabel.text = [NSString stringWithFormat:@"%@:%d", self.ip, HTTP_PROXY_PORT];
+        httpPacLabel.text = [NSString stringWithFormat:@"http://%@:%d/http.pac", self.ip, [HTTPServer sharedHTTPServer].httpServerPort];
 
-        socksAddressLabel.text = [NSString stringWithFormat:@"%@:%d", self.ip, PROXY_PORT_SOCKS];
-        socksPacLabel.text = [NSString stringWithFormat:@"http://%@:%d/socks.pac", self.ip, HTTP_SERVER_PORT];
+        socksAddressLabel.text = [NSString stringWithFormat:@"%@:%d", self.ip, SOCKS_PROXY_PORT];
+        socksPacLabel.text = [NSString stringWithFormat:@"http://%@:%d/socks.pac", self.ip, [HTTPServer sharedHTTPServer].httpServerPort];
 
         if (httpSwitch.on) {
             [self proxyHttpStart];
@@ -221,7 +222,7 @@ void srelay_exit();
         "-c",
         (char*)[configuration UTF8String],
         (char*)[[NSString stringWithFormat:@"proxyAddress=%@", ip] UTF8String],
-        (char*)[[NSString stringWithFormat:@"proxyPort=%d", PROXY_PORT_HTTP] UTF8String],
+        (char*)[[NSString stringWithFormat:@"proxyPort=%d", HTTP_PROXY_PORT] UTF8String],
     };
 
     polipo_main(5, args);
@@ -261,7 +262,7 @@ void srelay_exit();
 
     NSLog(@"socks proxy start");
 
-    NSString *connect = [NSString stringWithFormat:@"%@:%d", self.ip, PROXY_PORT_SOCKS];
+    NSString *connect = [NSString stringWithFormat:@"%@:%d", self.ip, SOCKS_PROXY_PORT];
 
     char *args[4] = {
         "srelay",
@@ -277,6 +278,67 @@ void srelay_exit();
     [pool drain];
 
     self.proxySocksRunning = NO;
+}
+
+- (void) httpURLAction:(id)sender
+{
+    UIActionSheet *test;
+    
+    test = [[UIActionSheet alloc] initWithTitle:@"HTTP Pac URL Action" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Send by Email", @"Copy URL", nil];
+	[emailBody release];
+	emailBody = [[NSString alloc] initWithFormat:@"http pac URL : %@\n", httpPacLabel.text];
+	[emailURL release];
+	emailURL = [httpPacLabel.text retain];
+    [test showInView:self.view];
+    [test release];
+}
+
+- (void) socksURLAction:(id)sender
+{
+    UIActionSheet *test;
+    
+    test = [[UIActionSheet alloc] initWithTitle:@"SOCKS Pac URL Action" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Send by Email", @"Copy URL", nil];
+	[emailBody release];
+	emailBody = [[NSString alloc] initWithFormat:@"socks pac URL : %@\n", socksPacLabel.text];
+	[emailURL release];
+	emailURL = [socksPacLabel.text retain];
+    [test showInView:self.view];
+    [test release];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	switch (buttonIndex) {
+        case 0:
+        	{
+                MFMailComposeViewController*	messageController = [[MFMailComposeViewController alloc] init];
+                
+                if ([messageController respondsToSelector:@selector(setModalPresentationStyle:)])	// XXX not available in 3.1.3
+                    messageController.modalPresentationStyle = UIModalPresentationFormSheet;
+                    
+                messageController.mailComposeDelegate = self;
+                [messageController setMessageBody:emailBody isHTML:NO];
+                [self presentModalViewController:messageController animated:YES];
+                [messageController release];
+            }
+            break;
+        case 1:
+        	{
+				NSDictionary *items;
+                
+				items = [NSDictionary dictionaryWithObjectsAndKeys:emailURL, kUTTypePlainText, emailURL, kUTTypeText, emailURL, kUTTypeUTF8PlainText, [NSURL URLWithString:emailURL], kUTTypeURL, nil];
+                [UIPasteboard generalPasteboard].items = [NSArray arrayWithObjects:items, nil];
+            }
+        	break;
+        default:
+            break;
+    }
+}
+
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
+{
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 @end

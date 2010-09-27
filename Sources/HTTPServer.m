@@ -67,11 +67,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 -(void)startBonjourServices
 {
     socks5NetService = [[NSNetService alloc] initWithDomain:@"" type:@"_socks5._tcp."
-        name:@"" port:self.proxyPort];
+        name:@"" port:SOCKS_PROXY_PORT];
     socks5NetService.delegate = self;
     [socks5NetService publish];
     pacFileServerNetService = [[NSNetService alloc] initWithDomain:@"" type:@"_pacfileserver._tcp."
-        name:@"" port:self.httpPort];
+        name:@"" port:self.httpServerPort];
     pacFileServerNetService.delegate = self;
     [pacFileServerNetService publish];
 }
@@ -188,7 +188,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 	address.sin_len = sizeof(address);
 	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = htonl(INADDR_ANY);
-	address.sin_port = htons(HTTP_SERVER_PORT);
+	address.sin_port = htons(self.httpServerPort);
 	CFDataRef addressData =
 		CFDataCreate(NULL, (const UInt8 *)&address, sizeof(address));
 	[(id)addressData autorelease];
@@ -384,14 +384,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 	[responseHandlers removeObject:aHandler];
 }
 
-- (UInt32)httpPort
+- (UInt32)httpServerPort
 {
 	return HTTP_SERVER_PORT;
-}
-
-- (UInt32)proxyPort
-{
-	return PROXY_PORT_HTTP;
 }
 
 @end
