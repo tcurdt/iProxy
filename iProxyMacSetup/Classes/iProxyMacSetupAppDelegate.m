@@ -14,6 +14,7 @@
 @interface iProxyMacSetupAppDelegate ()
 
 - (void)fetchInterfaceList;
+- (NSString *)_getInterfaceNameForIP:(NSString *)ip;
 
 @end
 
