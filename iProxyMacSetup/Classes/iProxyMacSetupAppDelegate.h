@@ -12,6 +12,9 @@
 #define INTERFACE_ENABLED @"enabled"
 
 #define PROXY_SERVICE_KEY @"service"
+#define PROXY_IP_KEY @"ip"
+#define PROXY_INTERFACE_KEY @"interface"
+#define PROXY_RESOLVING_KEY @"resolving"
 
 @interface iProxyMacSetupAppDelegate : NSObject <NSApplicationDelegate, NSNetServiceBrowserDelegate, NSNetServiceDelegate>
 {
@@ -38,5 +41,7 @@
 - (void)startBrowsingServices;
 - (void)enableForInterface:(NSString *)interfaceName withProxy:(NSDictionary *)proxy;
 - (void)disableProxyForInterface:(NSString *)interface;
+
++ (BOOL)isProxyEnabled:(NSDictionary *)proxy;
 
 @end

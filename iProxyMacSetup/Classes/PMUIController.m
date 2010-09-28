@@ -83,7 +83,7 @@
         
         proxyService = [proxy objectForKey:PROXY_SERVICE_KEY];
         title = [[NSString alloc] initWithFormat:@"%@.%@", [proxyService name], [proxyService domain]];
-    	if ([proxyService port] != -1 || [proxyService port] != 0) {
+    	if ([iProxyMacSetupAppDelegate isProxyEnabled:proxy]) {
             [proxyPopUpButton addItemWithTitle:title];
         } else {
             [proxyPopUpButton addItemWithTitle:[NSString stringWithFormat:@"%@ (disabled)", title]];

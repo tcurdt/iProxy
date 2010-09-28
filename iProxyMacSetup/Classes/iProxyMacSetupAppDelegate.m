@@ -51,10 +51,7 @@
         NSUInteger ii, count = [proxyServiceList count];
         
         for (ii = 0; ii < count; ii++) {
-        	NSNetService *proxyService;
-            
-            proxyService = [[proxyServiceList objectAtIndex:ii] objectForKey:PROXY_SERVICE_KEY];
-        	if ([proxyService port] != -1 && [proxyService port] != 0) {
+        	if ([iProxyMacSetupAppDelegate isProxyEnabled:[proxyServiceList objectAtIndex:ii]]) {
 				proxy = [proxyServiceList objectAtIndex:ii];
                 break;
             }
@@ -213,7 +210,7 @@ NSString *parseInterface(NSString *line, BOOL *enabled)
 	NSUInteger i, count = [proxyServiceList count];
     
     for (i = 0; i < count; i++) {
-      	NSNetService *service = [proxyServiceList objectAtIndex:i];
+      	NSNetService *service = [[proxyServiceList objectAtIndex:i] objectForKey:PROXY_SERVICE_KEY];
       	
         if ([[service domain] isEqualToString:domain] && [[service name] isEqualToString:name] && [[service type] isEqualToString:type]) {
         	result = i;
@@ -225,13 +222,20 @@ NSString *parseInterface(NSString *line, BOOL *enabled)
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didFindService:(NSNetService *)aNetService moreComing:(BOOL)moreComing
 {
-	[self willChangeValueForKey:@"proxyServiceList"];
-    NSMutableDictionary *proxy = [[NSMutableDictionary alloc] init];
+	NSString *ip;
+    NSMutableDictionary *proxy;
+    
+    [self willChangeValueForKey:@"proxyServiceList"];
+    proxy = [[NSMutableDictionary alloc] init];
     [proxy setObject:aNetService forKey:PROXY_SERVICE_KEY];
+    ip = [[NSString alloc] initWithFormat:@"%@.%@", [aNetService name], [aNetService domain]];
+    [proxy setObject:ip forKey:PROXY_IP_KEY];
+    [proxy setObject:[NSNumber numberWithBool:YES] forKey:PROXY_RESOLVING_KEY];
     [proxyServiceList addObject:proxy];
     [proxy release];
-	[self didChangeValueForKey:@"proxyServiceList"];
-	[aNetService setDelegate:self];
+    [ip release];
+    [self didChangeValueForKey:@"proxyServiceList"];
+    [aNetService setDelegate:self];
     [aNetService resolveWithTimeout:20.0];
     [self _changeResolvingServiceWithOffset:1];
     [self _setBrowsing:moreComing];
@@ -242,19 +246,33 @@ NSString *parseInterface(NSString *line, BOOL *enabled)
 	NSUInteger index = [self indexForDomain:[aNetService domain] name:[aNetService name] type:[aNetService type]];
     
     if (index != NSNotFound) {
+    	if ([[[proxyServiceList objectAtIndex:index] objectForKey:PROXY_RESOLVING_KEY] boolValue]) {
+            [self _changeResolvingServiceWithOffset:-1];
+        }
         [self willChangeValueForKey:@"proxyServiceList"];
     	[proxyServiceList removeObjectAtIndex:index];
         [self didChangeValueForKey:@"proxyServiceList"];
     }
 }
 
-- (void)netServiceWillResolve:(NSNetService *)sender
-{
-}
-
 - (void)netServiceDidResolveAddress:(NSNetService *)sender
 {
-	[self _changeResolvingServiceWithOffset:-1];
+	NSUInteger index = [self indexForDomain:[sender domain] name:[sender name] type:[sender type]];
+    
+    if (index != NSNotFound) {
+        NSString *interface;
+        NSMutableDictionary *proxy;
+        
+        [self willChangeValueForKey:@"proxyServiceList"];
+        proxy = [proxyServiceList objectAtIndex:index];
+        [proxy removeObjectForKey:PROXY_RESOLVING_KEY];
+        interface = [self _getInterfaceNameForIP:[proxy objectForKey:PROXY_IP_KEY]];
+        if (interface) {
+            [proxy setObject:interface forKey:PROXY_INTERFACE_KEY];
+        }
+        [self didChangeValueForKey:@"proxyServiceList"];
+        [self _changeResolvingServiceWithOffset:-1];
+    }
 }
 
 - (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict
@@ -301,7 +319,7 @@ NSString *parseInterface(NSString *line, BOOL *enabled)
         [self willChangeValueForKey:@"proxyEnabled"];
         proxyService = [proxy objectForKey:PROXY_SERVICE_KEY];
         if ([proxyService port] != -1) {
-            [self _enableProxyForInterface:interfaceName server:[NSString stringWithFormat:@"%@.%@", [proxyService name], [proxyService domain]] port:[proxyService port]];
+            [self _enableProxyForInterface:interfaceName server:[proxy objectForKey:PROXY_IP_KEY] port:[proxyService port]];
             proxyEnabled = YES;
             proxyEnabledInterfaceName = [interfaceName retain];
         }
@@ -357,7 +375,16 @@ NSString *parseInterface(NSString *line, BOOL *enabled)
         }
         index = endLine + 1;
     };
+    [allLines release];
     return result;
+}
+
++ (BOOL)isProxyEnabled:(NSDictionary *)proxy
+{
+	NSNetService *proxyService;
+    
+    proxyService = [proxy objectForKey:PROXY_SERVICE_KEY];
+	return ([proxyService port] != -1 || [proxyService port] != 0) && [proxy objectForKey:PROXY_INTERFACE_KEY];
 }
 
 @end
