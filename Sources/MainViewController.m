@@ -199,6 +199,9 @@ void srelay_exit();
         return;
     }
 
+    httpProxyNetService = [[NSNetService alloc] initWithDomain:@"" type:@"_iproxyhttpproxy._tcp." name:@"" port:HTTP_PROXY_PORT];
+    httpProxyNetService.delegate = self;
+    [httpProxyNetService publish];
     [NSThread detachNewThreadSelector:@selector(proxyHttpRun) toTarget:self withObject:nil];
 }
 
@@ -208,6 +211,9 @@ void srelay_exit();
         return;
     }
 
+    [httpProxyNetService stop];
+    [httpProxyNetService release];
+    httpProxyNetService = nil;
     polipo_exit();
 }
 
@@ -246,6 +252,9 @@ void srelay_exit();
         return;
     }
 
+    socksProxyNetService = [[NSNetService alloc] initWithDomain:@"" type:@"_iproxysocksproxy._tcp." name:@"" port:SOCKS_PROXY_PORT];
+    socksProxyNetService.delegate = self;
+    [socksProxyNetService publish];
     [NSThread detachNewThreadSelector:@selector(proxySocksRun) toTarget:self withObject:nil];
 }
 
@@ -255,6 +264,9 @@ void srelay_exit();
         return;
     }
 
+    [socksProxyNetService stop];
+    [socksProxyNetService release];
+    socksProxyNetService = nil;
     srelay_exit();
 }
 

@@ -200,7 +200,7 @@ NSString *parseInterface(NSString *line, BOOL *enabled)
      
     serviceBrowser = [[NSNetServiceBrowser alloc] init];
     [serviceBrowser setDelegate:self];
-    [serviceBrowser searchForServicesOfType:@"_socks5._tcp" inDomain:@""];
+    [serviceBrowser searchForServicesOfType:@"_iproxysocksproxy._tcp" inDomain:@""];
     [self _setBrowsing:YES];
 }
 

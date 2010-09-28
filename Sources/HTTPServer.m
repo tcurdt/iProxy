@@ -66,24 +66,16 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 
 -(void)startBonjourServices
 {
-    socks5NetService = [[NSNetService alloc] initWithDomain:@"" type:@"_socks5._tcp."
-        name:@"" port:SOCKS_PROXY_PORT];
-    socks5NetService.delegate = self;
-    [socks5NetService publish];
-    pacFileServerNetService = [[NSNetService alloc] initWithDomain:@"" type:@"_pacfileserver._tcp."
-        name:@"" port:self.httpServerPort];
-    pacFileServerNetService.delegate = self;
-    [pacFileServerNetService publish];
+    netService = [[NSNetService alloc] initWithDomain:@"" type:@"_iproxyhttpserver._tcp." name:@"" port:self.httpServerPort];
+    netService.delegate = self;
+    [netService publish];
 }
 
 -(void)stopBonjourServices
 {
-    [socks5NetService stop];
-    [socks5NetService release];
-    socks5NetService = nil;
-    [pacFileServerNetService stop];
-    [pacFileServerNetService release];
-    pacFileServerNetService = nil;
+    [netService stop];
+    [netService release];
+    netService = nil;
 }
 
 //

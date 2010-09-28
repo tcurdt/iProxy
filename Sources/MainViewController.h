@@ -15,7 +15,7 @@
  */
 #import <MessageUI/MFMailComposeViewController.h>
 
-@interface MainViewController : UIViewController <UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
+@interface MainViewController : UIViewController <UIActionSheetDelegate, MFMailComposeViewControllerDelegate, NSNetServiceDelegate> {
 
     IBOutlet UISwitch *httpSwitch;
     IBOutlet UILabel *httpAddressLabel;
@@ -38,6 +38,9 @@
 	NSString *emailURL;
 
     NSString *ip;
+    
+    NSNetService *socksProxyNetService;
+    NSNetService *httpProxyNetService;
 }
 
 - (void) proxyHttpStart;

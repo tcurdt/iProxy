@@ -36,8 +36,7 @@ typedef enum
 	HTTPServerState state;
 	CFMutableDictionaryRef incomingRequests;
 	NSMutableSet *responseHandlers;
-    NSNetService *socks5NetService;
-    NSNetService *pacFileServerNetService;
+    NSNetService *netService;
 }
 
 @property (nonatomic, readonly, retain) NSError *lastError;
