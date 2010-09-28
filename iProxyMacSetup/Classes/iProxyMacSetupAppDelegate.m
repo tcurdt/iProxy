@@ -13,33 +13,29 @@
 
 @interface iProxyMacSetupAppDelegate ()
 
-- (void)fetchInterfaceList;
 - (NSString *)_getInterfaceNameForIP:(NSString *)ip;
 
 @end
 
 @implementation iProxyMacSetupAppDelegate
 
-@synthesize browsing, resolvingServiceCount, proxyServiceList, interfaceList, proxyEnabled;
+@synthesize browsing, resolvingServiceCount, proxyServiceList, proxyEnabled;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	proxyServiceList = [[NSMutableArray alloc] init];
-    interfaceList = [[NSMutableArray alloc] init];
     browsing = NO;
     resolvingServiceCount = 0;
     self.automatic = [[[NSUserDefaults standardUserDefaults] valueForKey:@"AUTOMATIC"] boolValue];
-    [self fetchInterfaceList];
     [self startBrowsingServices];
     [self addObserver:self forKeyPath:@"proxyServiceList" options:NSKeyValueObservingOptionNew context:nil];
-    [self addObserver:self forKeyPath:@"interfaceList" options:NSKeyValueObservingOptionNew context:nil];
     [self addObserver:self forKeyPath:@"resolvingServiceCount" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification
 {
 	if (proxyEnabledInterfaceName) {
-        [self disableProxyForInterface:proxyEnabledInterfaceName];
+        [self disableCurrentProxy];
     }
 }
 
@@ -47,26 +43,19 @@
 {
 	if (automatic) {
         NSDictionary *proxy = nil;
-        NSDictionary *currentInterface = nil;
         NSUInteger ii, count = [proxyServiceList count];
         
         for (ii = 0; ii < count; ii++) {
-        	if ([iProxyMacSetupAppDelegate isProxyEnabled:[proxyServiceList objectAtIndex:ii]]) {
+        	if ([[self class] isProxyReady:[proxyServiceList objectAtIndex:ii]]) {
 				proxy = [proxyServiceList objectAtIndex:ii];
                 break;
             }
         }
-        for (NSDictionary *interface in interfaceList) {
-        	if ([self.defaultInterface isEqualToString:[interface objectForKey:INTERFACE_NAME]]) {
-            	currentInterface = interface;
-            	break;
-            }
+        if (!proxy && self.proxyEnabled) {
+        	[self disableCurrentProxy];
         }
-        if ((!proxy || !currentInterface) && self.proxyEnabled) {
-        	[self disableProxyForInterface:proxyEnabledInterfaceName];
-        }
-        if (proxy && currentInterface && !self.proxyEnabled) {
-        	[self enableForInterface:[currentInterface objectForKey:INTERFACE_NAME] withProxy:proxy];
+        if (proxy && !self.proxyEnabled) {
+        	[self enableProxy:proxy];
         }
     }
 }
@@ -74,7 +63,7 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	if (object == self) {
-    	if ([keyPath isEqualToString:@"proxyServiceList"] || [keyPath isEqualToString:@"interfaceList"] || [keyPath isEqualToString:@"resolvingServiceCount"]) {
+    	if ([keyPath isEqualToString:@"proxyServiceList"] || [keyPath isEqualToString:@"resolvingServiceCount"]) {
         	[self _updateAutomatic];
         }
     }
@@ -97,7 +86,7 @@
     	[self didChangeValueForKey:@"automatic"];
         
         if (shouldStop && self.proxyEnabled) {
-        	[self disableProxyForInterface:proxyEnabledInterfaceName];
+        	[self disableCurrentProxy];
         }
         [self _updateAutomatic];
     }
@@ -115,67 +104,6 @@
     [task setStandardOutput:outputPipe];
     [outputPipe release];
     return task;
-}
-
-- (void)fetchInterfaceList
-{
-	NSTask *task;
-    
-    task = [self taskWithLaunchPath:NETWORKSETUP_PATH arguments:[NSArray arrayWithObjects:@"-listnetworkserviceorder", nil]];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(servicesFromTask:) name:NSFileHandleReadToEndOfFileCompletionNotification object:[[task standardOutput] fileHandleForReading]];
-    [task launch];
-}
-
-NSString *parseInterface(NSString *line, BOOL *enabled)
-{
-	assert(enabled != NULL);
-    NSUInteger ii, charCount = [line length];
-    
-    if ([line characterAtIndex:0] != '(') {
-    	return NULL;
-    }
-    for (ii = 1; ii < charCount; ii++) {
-    	if ([line characterAtIndex:ii] == ')') {
-        	break;
-        } else if (([line characterAtIndex:ii] < '0' || [line characterAtIndex:ii] > '9') && [line characterAtIndex:ii] != '*') {
-        	return NULL;
-        }
-    }
-    if (ii == charCount) {
-    	return NULL;
-    }
-    *enabled = ![[line substringWithRange:NSMakeRange(1, ii - 1)] isEqualToString:@"*"];
-    return [[line substringFromIndex:ii + 1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-}
-
-- (void)servicesFromTask:(NSNotification *)notification
-{
-    NSData *data = [[notification userInfo] objectForKey:NSFileHandleNotificationDataItem];
-    NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    
-    [self willChangeValueForKey:@"interfaceList"];
-    NSUInteger index = 0;
-    NSUInteger endOfData = 0;
-    NSUInteger endLine = 0;
-    while (index < [result length]) {
-    	BOOL enabled;
-        NSString *interfaceName;
-        
-    	[result getLineStart:&index end:&endLine contentsEnd:&endOfData forRange:NSMakeRange(index, 1)];
-        interfaceName = parseInterface([result substringWithRange:NSMakeRange(index, endOfData - index)], &enabled);
-        if (interfaceName) {
-            NSMutableDictionary *interfaceInfo;
-            
-            interfaceInfo = [[NSMutableDictionary alloc] init];
-            [interfaceInfo setObject:interfaceName forKey:INTERFACE_NAME];
-            [interfaceInfo setObject:[NSNumber numberWithBool:enabled] forKey:INTERFACE_ENABLED];
-            [interfaceList addObject:interfaceInfo];
-            [interfaceInfo release];
-        }
-        index = endLine + 1;
-    };
-    [self didChangeValueForKey:@"interfaceList"];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notification object]];
 }
 
 - (void)_setBrowsing:(BOOL)value
@@ -280,25 +208,6 @@ NSString *parseInterface(NSString *line, BOOL *enabled)
 	[self _changeResolvingServiceWithOffset:-1];
 }
 
-- (NSString *)defaultInterface
-{
-	if (!defaultInterface) {
-    	defaultInterface = [[[NSUserDefaults standardUserDefaults] objectForKey:@"DEFAULT_INTERFACE"] retain];
-        if (!defaultInterface) {
-        	defaultInterface = [@"AirPort" retain];
-        }
-    }
-    return defaultInterface;
-}
-
-- (void)setDefaultInterface:(NSString *)interface
-{
-	[defaultInterface release];
-    defaultInterface = [interface retain];
-    [[NSUserDefaults standardUserDefaults] setObject:defaultInterface forKey:@"DEFAULT_INTERFACE"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
 - (void)_enableProxyForInterface:(NSString *)interface server:(NSString *)server port:(NSUInteger)port
 {
 	NSTask *task;
@@ -311,17 +220,17 @@ NSString *parseInterface(NSString *line, BOOL *enabled)
     [task waitUntilExit];
 }
 
-- (void)enableForInterface:(NSString *)interfaceName withProxy:(NSDictionary *)proxy
+- (void)enableProxy:(NSDictionary *)proxy
 {
-	if (!proxyEnabled) {
+	if (!proxyEnabled && [[self class] isProxyReady:proxy]) {
     	NSNetService *proxyService;
         
         [self willChangeValueForKey:@"proxyEnabled"];
         proxyService = [proxy objectForKey:PROXY_SERVICE_KEY];
         if ([proxyService port] != -1) {
-            [self _enableProxyForInterface:interfaceName server:[proxy objectForKey:PROXY_IP_KEY] port:[proxyService port]];
+            [self _enableProxyForInterface:[proxy objectForKey:PROXY_INTERFACE_KEY] server:[proxy objectForKey:PROXY_IP_KEY] port:[proxyService port]];
             proxyEnabled = YES;
-            proxyEnabledInterfaceName = [interfaceName retain];
+            proxyEnabledInterfaceName = [[proxy objectForKey:PROXY_INTERFACE_KEY] retain];
         }
         [self didChangeValueForKey:@"proxyEnabled"];
     }
@@ -336,11 +245,11 @@ NSString *parseInterface(NSString *line, BOOL *enabled)
     [task waitUntilExit];
 }
 
-- (void)disableProxyForInterface:(NSString *)interface
+- (void)disableCurrentProxy
 {
 	if (proxyEnabled) {
         [self willChangeValueForKey:@"proxyEnabled"];
-        [self _disableProxyForInterface:interface];
+        [self _disableProxyForInterface:proxyEnabledInterfaceName];
         proxyEnabled = NO;
         [proxyEnabledInterfaceName release];
         proxyEnabledInterfaceName = nil;
@@ -379,7 +288,7 @@ NSString *parseInterface(NSString *line, BOOL *enabled)
     return result;
 }
 
-+ (BOOL)isProxyEnabled:(NSDictionary *)proxy
++ (BOOL)isProxyReady:(NSDictionary *)proxy
 {
 	NSNetService *proxyService;
     

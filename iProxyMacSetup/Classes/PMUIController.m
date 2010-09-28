@@ -21,7 +21,6 @@
     [appDelegate addObserver:self forKeyPath:@"browsing" options:NSKeyValueObservingOptionNew context:nil];
     [appDelegate addObserver:self forKeyPath:@"resolvingServiceCount" options:NSKeyValueObservingOptionNew context:nil];
     [appDelegate addObserver:self forKeyPath:@"proxyServiceList" options:NSKeyValueObservingOptionNew context:nil];
-    [appDelegate addObserver:self forKeyPath:@"interfaceList" options:NSKeyValueObservingOptionNew context:nil];
     [appDelegate addObserver:self forKeyPath:@"proxyEnabled" options:NSKeyValueObservingOptionNew context:nil];
     [appDelegate addObserver:self forKeyPath:@"automatic" options:NSKeyValueObservingOptionNew context:nil];
 }
@@ -36,16 +35,11 @@
 	    } else if ([keyPath isEqualToString:@"proxyServiceList"]) {
     		[self updateStartButton];
         	[self updateProxyPopUpButton];
-	    } else if ([keyPath isEqualToString:@"interfaceList"]) {
-    		[self updateStartButton];
-        	[self updateInterfacePopUpButton];
 	    } else if ([keyPath isEqualToString:@"proxyEnabled"]) {
     		[self updateStartButton];
-        	[self updateInterfacePopUpButton];
 	        [self updateProxyPopUpButton];
 	    } else if ([keyPath isEqualToString:@"automatic"]) {
     		[self updateStartButton];
-    	    [self updateInterfacePopUpButton];
         	[self updateProxyPopUpButton];
         }
     }
@@ -62,7 +56,7 @@
 
 - (void)updateStartButton
 {
-	if ([appDelegate.proxyServiceList count] > 0 && [appDelegate.interfaceList count] > 0) {
+	if ([appDelegate.proxyServiceList count] > 0) {
     	[startButton setEnabled:!appDelegate.automatic];
     } else {
     	[startButton setEnabled:NO];
@@ -83,7 +77,7 @@
         
         proxyService = [proxy objectForKey:PROXY_SERVICE_KEY];
         title = [[NSString alloc] initWithFormat:@"%@.%@", [proxyService name], [proxyService domain]];
-    	if ([iProxyMacSetupAppDelegate isProxyEnabled:proxy]) {
+    	if ([[appDelegate class] isProxyReady:proxy]) {
             [proxyPopUpButton addItemWithTitle:title];
         } else {
             [proxyPopUpButton addItemWithTitle:[NSString stringWithFormat:@"%@ (disabled)", title]];
@@ -94,44 +88,17 @@
     [self updateStartButton];
 }
 
-- (void)updateInterfacePopUpButton
-{
-	NSString *defaultInterface = appDelegate.defaultInterface;
-    
-	[interfacePopUpButton removeAllItems];
-    for (NSDictionary *service in appDelegate.interfaceList) {
-    	if ([[service objectForKey:INTERFACE_ENABLED] boolValue]) {
-            [interfacePopUpButton addItemWithTitle:[service objectForKey:INTERFACE_NAME]];
-        } else {
-            [interfacePopUpButton addItemWithTitle:[NSString stringWithFormat:@"%@ (disabled)", [service objectForKey:INTERFACE_NAME]]];
-        }
-        if ([defaultInterface isEqualToString:[service objectForKey:INTERFACE_NAME]]) {
-        	[interfacePopUpButton selectItem:[interfacePopUpButton lastItem]];
-        }
-    }
-    [interfacePopUpButton setEnabled:!appDelegate.proxyEnabled && !appDelegate.automatic];
-    [self updateStartButton];
-}
-
 - (IBAction)startButtonAction:(id)sender
 {
-    NSDictionary *interfaceInfo;
     NSDictionary *proxy;
 	
     [self updateProxyPopUpButton];
-    [self updateInterfacePopUpButton];
-    interfaceInfo = [appDelegate.interfaceList objectAtIndex:[interfacePopUpButton indexOfSelectedItem]];
     proxy = [appDelegate.proxyServiceList objectAtIndex:[proxyPopUpButton indexOfSelectedItem]];
 	if (appDelegate.proxyEnabled) {
-    	[appDelegate disableProxyForInterface:[interfaceInfo objectForKey:INTERFACE_NAME]];
+    	[appDelegate disableCurrentProxy];
     } else {
-    	[appDelegate enableForInterface:[interfaceInfo objectForKey:INTERFACE_NAME] withProxy:proxy];
+    	[appDelegate enableProxy:proxy];
     }
-}
-
-- (IBAction)interfacePopUpButtonAction:(id)sender
-{
-	appDelegate.defaultInterface = [[appDelegate.interfaceList objectAtIndex:[interfacePopUpButton indexOfSelectedItem]] objectForKey:INTERFACE_NAME];
 }
 
 - (IBAction)proxyPopUpButtonAction:(id)sender

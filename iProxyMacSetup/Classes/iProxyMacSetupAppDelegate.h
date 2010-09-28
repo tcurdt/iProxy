@@ -8,9 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define INTERFACE_NAME @"name"
-#define INTERFACE_ENABLED @"enabled"
-
 #define PROXY_SERVICE_KEY @"service"
 #define PROXY_IP_KEY @"ip"
 #define PROXY_INTERFACE_KEY @"interface"
@@ -19,13 +16,11 @@
 @interface iProxyMacSetupAppDelegate : NSObject <NSApplicationDelegate, NSNetServiceBrowserDelegate, NSNetServiceDelegate>
 {
 	NSMutableArray *proxyServiceList;
-    NSMutableArray *interfaceList;
     
     BOOL browsing;
     BOOL automatic;
     NSUInteger resolvingServiceCount;
     
-    NSString *defaultInterface;
     NSString *proxyEnabledInterfaceName;
     BOOL proxyEnabled;
 }
@@ -35,13 +30,11 @@
 @property(readonly) BOOL proxyEnabled;
 @property(readonly) NSUInteger resolvingServiceCount;
 @property(readonly) NSArray *proxyServiceList;
-@property(readonly) NSArray *interfaceList;
-@property(retain, nonatomic) NSString *defaultInterface;
 
 - (void)startBrowsingServices;
-- (void)enableForInterface:(NSString *)interfaceName withProxy:(NSDictionary *)proxy;
-- (void)disableProxyForInterface:(NSString *)interface;
+- (void)enableProxy:(NSDictionary *)proxy;
+- (void)disableCurrentProxy;
 
-+ (BOOL)isProxyEnabled:(NSDictionary *)proxy;
++ (BOOL)isProxyReady:(NSDictionary *)proxy;
 
 @end
