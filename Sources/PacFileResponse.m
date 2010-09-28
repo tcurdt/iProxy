@@ -60,19 +60,20 @@
 - (void)startResponse
 {
     NSData *fileData = nil;
+    NSString *currentIP = [self serverIPForRequest];
     
     NSString *requestPath = [url path];
     
-    if ([@"/http.pac" isEqualToString:requestPath]) {
+    if ([@"/http.pac" isEqualToString:requestPath] && currentIP) {
         fileData = [[NSString stringWithFormat:
             @"function FindProxyForURL(url, host) { return \"PROXY %@:%d\"; }",
-            [self serverIPForRequest], HTTP_PROXY_PORT] dataUsingEncoding:NSUTF8StringEncoding];
+            currentIP, HTTP_PROXY_PORT] dataUsingEncoding:NSUTF8StringEncoding];
     }
     
-    if ([@"/socks.pac" isEqualToString:requestPath]) {
+    if ([@"/socks.pac" isEqualToString:requestPath] && currentIP) {
         fileData = [[NSString stringWithFormat:
             @"function FindProxyForURL(url, host) { return \"SOCKS %@:%d\"; }",
-            [self serverIPForRequest], SOCKS_PROXY_PORT] dataUsingEncoding:NSUTF8StringEncoding];
+            currentIP, SOCKS_PROXY_PORT] dataUsingEncoding:NSUTF8StringEncoding];
     }
     
     if (fileData) {
@@ -110,7 +111,7 @@
         }
     } else {
         CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 
-                                    404, 
+                                    currentIP ? 404 : 500, 
                                     NULL, 
                                     kCFHTTPVersion1_1);
 
