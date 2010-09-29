@@ -13,7 +13,8 @@
 
 @interface iProxyMacSetupAppDelegate ()
 
-- (NSString *)_getInterfaceNameForIP:(NSString *)ip;
+- (NSString *)_getDeviceNameForIP:(NSString *)ip;
+- (void)fetchDeviceList;
 
 @end
 
@@ -24,10 +25,12 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	proxyServiceList = [[NSMutableArray alloc] init];
+    deviceList = [[NSMutableDictionary alloc] init];
     browsing = NO;
     resolvingServiceCount = 0;
     self.automatic = [[[NSUserDefaults standardUserDefaults] valueForKey:@"AUTOMATIC"] boolValue];
     [self startBrowsingServices];
+    [self fetchDeviceList];
     [self addObserver:self forKeyPath:@"proxyServiceList" options:NSKeyValueObservingOptionNew context:nil];
     [self addObserver:self forKeyPath:@"resolvingServiceCount" options:NSKeyValueObservingOptionNew context:nil];
 }
@@ -97,6 +100,7 @@
 	NSTask *task;
     NSPipe *outputPipe = [[NSPipe alloc] init];
     
+    NSLog(@"%@ %@", launchPath, arguments);
     [[outputPipe fileHandleForReading] readToEndOfFileInBackgroundAndNotify];
     task = [[NSTask alloc] init];
     [task setLaunchPath:launchPath];
@@ -104,6 +108,99 @@
     [task setStandardOutput:outputPipe];
     [outputPipe release];
     return task;
+}
+
+- (void)fetchDeviceList
+{
+	NSTask *task;
+    
+    task = [self taskWithLaunchPath:NETWORKSETUP_PATH arguments:[NSArray arrayWithObjects:@"-listnetworkserviceorder", nil]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(servicesFromTask:) name:NSFileHandleReadToEndOfFileCompletionNotification object:[[task standardOutput] fileHandleForReading]];
+    [task launch];
+}
+
+NSString *parseInterface(NSString *line, BOOL *enabled)
+{
+	assert(enabled != NULL);
+    NSUInteger ii, charCount = [line length];
+    
+    if ([line characterAtIndex:0] != '(') {
+    	return NULL;
+    }
+    for (ii = 1; ii < charCount; ii++) {
+    	if ([line characterAtIndex:ii] == ')') {
+        	break;
+        } else if (([line characterAtIndex:ii] < '0' || [line characterAtIndex:ii] > '9') && [line characterAtIndex:ii] != '*') {
+        	return NULL;
+        }
+    }
+    if (ii == charCount) {
+    	return NULL;
+    }
+    *enabled = ![[line substringWithRange:NSMakeRange(1, ii - 1)] isEqualToString:@"*"];
+    return [[line substringFromIndex:ii + 1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+}
+
+NSString *parseDevice(NSString *line)
+{
+	NSRange range;
+    NSString *result = nil;
+    
+	range = [line rangeOfString:@"Device:"];
+    if (range.location != NSNotFound) {
+    	NSUInteger ii, charCount;
+        NSCharacterSet *deviceCharacters;
+        
+        deviceCharacters = [NSCharacterSet characterSetWithCharactersInString:@"qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890-"];
+    	line = [[line substringFromIndex:range.location + range.length] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        charCount = [line length];
+        for (ii = 0; ii < charCount; ii++) {
+        	if (![deviceCharacters characterIsMember:[line characterAtIndex:ii]]) {
+            	break;
+            }
+        }
+        if (ii > 0) {
+        	result = [line substringToIndex:ii];
+        }
+    }
+    return result;
+}
+
+- (void)servicesFromTask:(NSNotification *)notification
+{
+    NSData *data = [[notification userInfo] objectForKey:NSFileHandleNotificationDataItem];
+    NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+    [self willChangeValueForKey:@"devicelist"];
+    NSUInteger index = 0;
+    NSUInteger endOfData = 0;
+    NSUInteger endLine = 0;
+    while (index < [result length]) {
+    	BOOL enabled;
+        NSString *interfaceName;
+        
+    	[result getLineStart:&index end:&endLine contentsEnd:&endOfData forRange:NSMakeRange(index, 1)];
+        interfaceName = parseInterface([result substringWithRange:NSMakeRange(index, endOfData - index)], &enabled);
+        index = endLine + 1;
+        if (interfaceName) {
+            NSMutableDictionary *interfaceInfo;
+            NSString *deviceName = nil;
+            
+            [result getLineStart:&index end:&endLine contentsEnd:&endOfData forRange:NSMakeRange(index, 1)];
+            deviceName = parseDevice([result substringWithRange:NSMakeRange(index, endOfData - index)]);
+            index = endLine + 1;
+            if (deviceName) {
+                interfaceInfo = [[NSMutableDictionary alloc] init];
+                [interfaceInfo setObject:interfaceName forKey:INTERFACE_NAME];
+                [interfaceInfo setObject:[NSNumber numberWithBool:enabled] forKey:INTERFACE_ENABLED];
+                [interfaceInfo setObject:deviceName forKey:INTERFACE_DEVICE_NAME];
+                [deviceList setObject:interfaceInfo forKey:deviceName];
+                [interfaceInfo release];
+            }
+        }
+    };
+    [self didChangeValueForKey:@"devicelist"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:[notification object]];
 }
 
 - (void)_setBrowsing:(BOOL)value
@@ -188,15 +285,15 @@
 	NSUInteger index = [self indexForDomain:[sender domain] name:[sender name] type:[sender type]];
     
     if (index != NSNotFound) {
-        NSString *interface;
+        NSString *device;
         NSMutableDictionary *proxy;
         
         [self willChangeValueForKey:@"proxyServiceList"];
         proxy = [proxyServiceList objectAtIndex:index];
         [proxy removeObjectForKey:PROXY_RESOLVING_KEY];
-        interface = [self _getInterfaceNameForIP:[proxy objectForKey:PROXY_IP_KEY]];
-        if (interface) {
-            [proxy setObject:interface forKey:PROXY_INTERFACE_KEY];
+        device = [self _getDeviceNameForIP:[proxy objectForKey:PROXY_IP_KEY]];
+        if (device) {
+            [proxy setObject:device forKey:PROXY_DEVICE_KEY];
         }
         [self didChangeValueForKey:@"proxyServiceList"];
         [self _changeResolvingServiceWithOffset:-1];
@@ -224,15 +321,17 @@
 {
 	if (!proxyEnabled && [[self class] isProxyReady:proxy]) {
     	NSNetService *proxyService;
+        NSString *interfaceName;
         
-        [self willChangeValueForKey:@"proxyEnabled"];
         proxyService = [proxy objectForKey:PROXY_SERVICE_KEY];
-        if ([proxyService port] != -1) {
-            [self _enableProxyForInterface:[proxy objectForKey:PROXY_INTERFACE_KEY] server:[proxy objectForKey:PROXY_IP_KEY] port:[proxyService port]];
+        interfaceName = [[deviceList objectForKey:[proxy objectForKey:PROXY_DEVICE_KEY]] objectForKey:INTERFACE_NAME];
+        if ([proxyService port] != -1 && interfaceName) {
+            [self willChangeValueForKey:@"proxyEnabled"];
+            [self _enableProxyForInterface:interfaceName server:[proxy objectForKey:PROXY_IP_KEY] port:[proxyService port]];
             proxyEnabled = YES;
-            proxyEnabledInterfaceName = [[proxy objectForKey:PROXY_INTERFACE_KEY] retain];
+            proxyEnabledInterfaceName = [interfaceName retain];
+            [self didChangeValueForKey:@"proxyEnabled"];
         }
-        [self didChangeValueForKey:@"proxyEnabled"];
     }
 }
 
@@ -257,7 +356,7 @@
     }
 }
 
-- (NSString *)_getInterfaceNameForIP:(NSString *)ip
+- (NSString *)_getDeviceNameForIP:(NSString *)ip
 {
 	NSTask *task;
     NSString *result = nil;
@@ -293,7 +392,7 @@
 	NSNetService *proxyService;
     
     proxyService = [proxy objectForKey:PROXY_SERVICE_KEY];
-	return ([proxyService port] != -1 || [proxyService port] != 0) && [proxy objectForKey:PROXY_INTERFACE_KEY];
+	return ([proxyService port] != -1 || [proxyService port] != 0) && [proxy objectForKey:PROXY_DEVICE_KEY];
 }
 
 @end

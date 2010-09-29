@@ -8,14 +8,19 @@
 
 #import <Cocoa/Cocoa.h>
 
+#define INTERFACE_NAME @"name"
+#define INTERFACE_DEVICE_NAME @"device"
+#define INTERFACE_ENABLED @"enabled"
+
 #define PROXY_SERVICE_KEY @"service"
 #define PROXY_IP_KEY @"ip"
-#define PROXY_INTERFACE_KEY @"interface"
+#define PROXY_DEVICE_KEY @"device"
 #define PROXY_RESOLVING_KEY @"resolving"
 
 @interface iProxyMacSetupAppDelegate : NSObject <NSApplicationDelegate, NSNetServiceBrowserDelegate, NSNetServiceDelegate>
 {
 	NSMutableArray *proxyServiceList;
+    NSMutableDictionary *deviceList;
     
     BOOL browsing;
     BOOL automatic;
