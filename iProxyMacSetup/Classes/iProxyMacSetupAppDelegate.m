@@ -49,7 +49,7 @@
         NSUInteger ii, count = [proxyServiceList count];
         
         for (ii = 0; ii < count; ii++) {
-        	if ([[self class] isProxyReady:[proxyServiceList objectAtIndex:ii]]) {
+        	if ([self isProxyReady:[proxyServiceList objectAtIndex:ii]]) {
 				proxy = [proxyServiceList objectAtIndex:ii];
                 break;
             }
@@ -319,7 +319,7 @@ NSString *parseDevice(NSString *line)
 
 - (void)enableProxy:(NSDictionary *)proxy
 {
-	if (!proxyEnabled && [[self class] isProxyReady:proxy]) {
+	if (!proxyEnabled && [self isProxyReady:proxy]) {
     	NSNetService *proxyService;
         NSString *interfaceName;
         
@@ -387,12 +387,12 @@ NSString *parseDevice(NSString *line)
     return result;
 }
 
-+ (BOOL)isProxyReady:(NSDictionary *)proxy
+- (BOOL)isProxyReady:(NSDictionary *)proxy
 {
 	NSNetService *proxyService;
     
     proxyService = [proxy objectForKey:PROXY_SERVICE_KEY];
-	return ([proxyService port] != -1 || [proxyService port] != 0) && [proxy objectForKey:PROXY_DEVICE_KEY];
+	return ([proxyService port] != -1 || [proxyService port] != 0) && [proxy objectForKey:PROXY_DEVICE_KEY] && [deviceList objectForKey:[proxy objectForKey:PROXY_DEVICE_KEY]];
 }
 
 @end

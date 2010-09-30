@@ -40,6 +40,6 @@
 - (void)enableProxy:(NSDictionary *)proxy;
 - (void)disableCurrentProxy;
 
-+ (BOOL)isProxyReady:(NSDictionary *)proxy;
+- (BOOL)isProxyReady:(NSDictionary *)proxy;
 
 @end

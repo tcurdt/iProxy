@@ -77,7 +77,7 @@
         
         proxyService = [proxy objectForKey:PROXY_SERVICE_KEY];
         title = [[NSString alloc] initWithFormat:@"%@.%@", [proxyService name], [proxyService domain]];
-    	if ([[appDelegate class] isProxyReady:proxy]) {
+    	if ([appDelegate isProxyReady:proxy]) {
             [proxyPopUpButton addItemWithTitle:title];
         } else {
             [proxyPopUpButton addItemWithTitle:[NSString stringWithFormat:@"%@ (disabled)", title]];
