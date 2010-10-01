@@ -100,12 +100,12 @@
 	NSTask *task;
     NSPipe *outputPipe = [[NSPipe alloc] init];
     
-    NSLog(@"%@ %@", launchPath, arguments);
-    [[outputPipe fileHandleForReading] readToEndOfFileInBackgroundAndNotify];
     task = [[NSTask alloc] init];
     [task setLaunchPath:launchPath];
     [task setArguments:arguments];
     [task setStandardOutput:outputPipe];
+    [task setStandardInput:[NSFileHandle fileHandleWithNullDevice]];
+    [task setStandardError:[NSFileHandle fileHandleWithNullDevice]];
     [outputPipe release];
     return task;
 }
@@ -115,6 +115,7 @@
 	NSTask *task;
     
     task = [self taskWithLaunchPath:NETWORKSETUP_PATH arguments:[NSArray arrayWithObjects:@"-listnetworkserviceorder", nil]];
+	[[[task standardOutput] fileHandleForReading] readToEndOfFileInBackgroundAndNotify];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(servicesFromTask:) name:NSFileHandleReadToEndOfFileCompletionNotification object:[[task standardOutput] fileHandleForReading]];
     [task launch];
 }
@@ -360,15 +361,15 @@ NSString *parseDevice(NSString *line)
 {
 	NSTask *task;
     NSString *result = nil;
-    NSData *data;
     NSFileHandle *outputFileHandle;
     
     task = [self taskWithLaunchPath:ROUTE_PATH arguments:[NSArray arrayWithObjects:@"get", ip, nil]];
 	outputFileHandle = [[task standardOutput] fileHandleForReading];
+    [outputFileHandle waitForDataInBackgroundAndNotify];
     [task launch];
+    [task waitUntilExit];
     
-    data = [outputFileHandle readDataToEndOfFile];
-    NSString *allLines = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSString *allLines = [[NSString alloc] initWithData:[outputFileHandle readDataToEndOfFile] encoding:NSUTF8StringEncoding];
     NSUInteger index = 0;
     NSUInteger endOfData = 0;
     NSUInteger endLine = 0;
