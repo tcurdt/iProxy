@@ -17,6 +17,11 @@
 #import "AppDelegate.h"
 #import "MainViewController.h"
 
+@interface UIApplication (PrivateAPI)
+- (void)_terminateWithStatus:(int)status;
+@end
+
+
 @implementation AppDelegate
 
 @synthesize window;
@@ -90,6 +95,9 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+	if (!statusViewController.proxyHttpRunning && !statusViewController.proxySocksRunning) {
+    	[[UIApplication sharedApplication] _terminateWithStatus:0];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
