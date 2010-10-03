@@ -231,7 +231,7 @@ void srelay_exit();
         "test",
         "-c",
         (char*)[configuration UTF8String],
-        (char*)[[NSString stringWithFormat:@"proxyAddress=%@", ip] UTF8String],
+        "proxyAddress=0.0.0.0",
         (char*)[[NSString stringWithFormat:@"proxyPort=%d", HTTP_PROXY_PORT] UTF8String],
     };
 
