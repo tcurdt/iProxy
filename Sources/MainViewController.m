@@ -278,7 +278,7 @@ void srelay_exit();
 
     NSLog(@"socks proxy start");
 
-    NSString *connect = [NSString stringWithFormat:@"%@:%d", self.ip, SOCKS_PROXY_PORT];
+    NSString *connect = [NSString stringWithFormat:@":%d", SOCKS_PROXY_PORT];
 
     char *args[4] = {
         "srelay",
