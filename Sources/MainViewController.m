@@ -77,15 +77,7 @@ void srelay_exit();
 
 - (void) ping
 {
-#if TARGET_IPHONE_SIMULATOR
-    self.ip = [[UIDevice currentDevice] IPAddressForInterface:@"en1"];
-	if (!self.ip) {
-		self.ip = [[UIDevice currentDevice] IPAddressForInterface:@"en2"];
-	}
-#else
-    self.ip = [[UIDevice currentDevice] IPAddressForInterface:@"en0"];
-#endif
-
+	self.ip = [[NSProcessInfo processInfo] hostName];
     if (self.ip != nil) {
         
         httpAddressLabel.text = [NSString stringWithFormat:@"%@:%d", self.ip, HTTP_PROXY_PORT];
