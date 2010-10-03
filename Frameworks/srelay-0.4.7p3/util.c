@@ -272,6 +272,10 @@ void reapchild()
 
 void cleanup()
 {
+  int i;
+  for ( i = 0; i < serv_sock_ind; i++ ) {
+    close(serv_sock[i]);
+  }
   /* unlink PID file */
   if (pidfile != NULL) {
     setreuid(PROCUID, 0);
