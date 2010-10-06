@@ -8,12 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		020BC9CE124ADBD000E2E1F2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 020BC9CD124ADBD000E2E1F2 /* MobileCoreServices.framework */; };
-		0267229D12444EA000A2EACF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0267229C12444EA000A2EACF /* Cocoa.framework */; };
-		0267243E1245646C00A2EACF /* PMUIController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0267243D1245646C00A2EACF /* PMUIController.m */; };
-		0274FA8C12444D8300173784 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0274FA8A12444D8300173784 /* InfoPlist.strings */; };
-		0274FA8D12444D8300173784 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0274FA8B12444D8300173784 /* MainMenu.xib */; };
-		0274FA9012444D8F00173784 /* iProxyMacSetupAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0274FA8F12444D8F00173784 /* iProxyMacSetupAppDelegate.m */; };
-		0274FA9212444D9B00173784 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0274FA9112444D9B00173784 /* main.m */; };
 		0275613E124AD4AD00B64593 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0275613D124AD4AD00B64593 /* MessageUI.framework */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -85,15 +79,6 @@
 /* Begin PBXFileReference section */
 		020BC9CD124ADBD000E2E1F2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		0267229C12444EA000A2EACF /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		0267243C1245646C00A2EACF /* PMUIController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMUIController.h; sourceTree = "<group>"; };
-		0267243D1245646C00A2EACF /* PMUIController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMUIController.m; sourceTree = "<group>"; };
-		0274FA6312444A5D00173784 /* iProxyMacSetup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iProxyMacSetup.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		0274FA6512444A5D00173784 /* iProxyMacSetup-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iProxyMacSetup-Info.plist"; sourceTree = "<group>"; };
-		0274FA8A12444D8300173784 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
-		0274FA8B12444D8300173784 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
-		0274FA8E12444D8F00173784 /* iProxyMacSetupAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iProxyMacSetupAppDelegate.h; sourceTree = "<group>"; };
-		0274FA8F12444D8F00173784 /* iProxyMacSetupAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iProxyMacSetupAppDelegate.m; sourceTree = "<group>"; };
-		0274FA9112444D9B00173784 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0275613D124AD4AD00B64593 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* iProxy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iProxy.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -204,14 +189,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		0274FA6112444A5D00173784 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0267229D12444EA000A2EACF /* Cocoa.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		1D60588F0D05DD3D006BFB54 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -230,42 +207,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0274FA7E12444C3500173784 /* iProxyMacSetup */ = {
-			isa = PBXGroup;
-			children = (
-				0274FA9112444D9B00173784 /* main.m */,
-				0274FA8912444D1200173784 /* Resources */,
-				0274FA8312444C9C00173784 /* Classes */,
-			);
-			path = iProxyMacSetup;
-			sourceTree = "<group>";
-		};
-		0274FA8312444C9C00173784 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				0274FA8E12444D8F00173784 /* iProxyMacSetupAppDelegate.h */,
-				0274FA8F12444D8F00173784 /* iProxyMacSetupAppDelegate.m */,
-				0267243C1245646C00A2EACF /* PMUIController.h */,
-				0267243D1245646C00A2EACF /* PMUIController.m */,
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
-		0274FA8912444D1200173784 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				0274FA8A12444D8300173784 /* InfoPlist.strings */,
-				0274FA8B12444D8300173784 /* MainMenu.xib */,
-				0274FA6512444A5D00173784 /* iProxyMacSetup-Info.plist */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* iProxy.app */,
-				0274FA6312444A5D00173784 /* iProxyMacSetup.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -273,7 +218,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				0274FA7E12444C3500173784 /* iProxyMacSetup */,
 				9D63174410FEACBE0041EE37 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -479,23 +423,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		0274FA6212444A5D00173784 /* iProxyMacSetup */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0274FA6912444A5E00173784 /* Build configuration list for PBXNativeTarget "iProxyMacSetup" */;
-			buildPhases = (
-				0274FA5F12444A5D00173784 /* Resources */,
-				0274FA6012444A5D00173784 /* Sources */,
-				0274FA6112444A5D00173784 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = iProxyMacSetup;
-			productName = iProxyMacSetup;
-			productReference = 0274FA6312444A5D00173784 /* iProxyMacSetup.app */;
-			productType = "com.apple.product-type.application";
-		};
 		1D6058900D05DD3D006BFB54 /* iProxy */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "iProxy" */;
@@ -534,21 +461,11 @@
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* iProxy */,
-				0274FA6212444A5D00173784 /* iProxyMacSetup */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		0274FA5F12444A5D00173784 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0274FA8C12444D8300173784 /* InfoPlist.strings in Resources */,
-				0274FA8D12444D8300173784 /* MainMenu.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -592,16 +509,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		0274FA6012444A5D00173784 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0274FA9012444D8F00173784 /* iProxyMacSetupAppDelegate.m in Sources */,
-				0274FA9212444D9B00173784 /* main.m in Sources */,
-				0267243E1245646C00A2EACF /* PMUIController.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		1D60588E0D05DD3D006BFB54 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -655,79 +562,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		0274FA6612444A5E00173784 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				GCC_VERSION = 4.2;
-				INFOPLIST_FILE = "iProxyMacSetup/Resources/iProxyMacSetup-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				ONLY_ACTIVE_ARCH = YES;
-				PREBINDING = NO;
-				PRODUCT_NAME = iProxyMacSetup;
-				SDKROOT = macosx10.6;
-			};
-			name = Debug;
-		};
-		0274FA6712444A5E00173784 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "iProxyMacSetup/Resources/iProxyMacSetup-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = iProxyMacSetup;
-				SDKROOT = macosx10.6;
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
-		0274FA6812444A5E00173784 /* Ad-hoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "iProxyMacSetup/Resources/iProxyMacSetup-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = iProxyMacSetup;
-				SDKROOT = macosx10.6;
-			};
-			name = "Ad-hoc";
-		};
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -847,16 +681,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0274FA6912444A5E00173784 /* Build configuration list for PBXNativeTarget "iProxyMacSetup" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0274FA6612444A5E00173784 /* Debug */,
-				0274FA6712444A5E00173784 /* Release */,
-				0274FA6812444A5E00173784 /* Ad-hoc */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "iProxy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

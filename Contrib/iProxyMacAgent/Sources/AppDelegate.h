@@ -1,11 +1,3 @@
-//
-//  iProxyMacSetupAppDelegate.h
-//  iProxyMacSetup
-//
-//  Created by Jérôme Lebel on 18/09/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
-//
-
 #import <Cocoa/Cocoa.h>
 
 #define INTERFACE_NAME @"name"
@@ -17,7 +9,7 @@
 #define PROXY_DEVICE_KEY @"device"
 #define PROXY_RESOLVING_KEY @"resolving"
 
-@interface iProxyMacSetupAppDelegate : NSObject <NSApplicationDelegate, NSNetServiceBrowserDelegate, NSNetServiceDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate, NSNetServiceBrowserDelegate, NSNetServiceDelegate>
 {
 	NSMutableArray *proxyServiceList;
     NSMutableDictionary *deviceList;
