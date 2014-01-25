@@ -15,3 +15,5 @@ build/*
 *.psd
 *.orig
 *.mobileprovision
+*.xcworkspace
+xcuserdata

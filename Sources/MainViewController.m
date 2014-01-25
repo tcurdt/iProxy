@@ -244,7 +244,7 @@ void srelay_exit();
         return;
     }
 
-    socksProxyNetService = [[NSNetService alloc] initWithDomain:@"" type:@"_iproxysocksproxy._tcp." name:@"" port:SOCKS_PROXY_PORT];
+    socksProxyNetService = [[NSNetService alloc] initWithDomain:@"" type:@"_iproxysocks._tcp." name:@"" port:SOCKS_PROXY_PORT];
     socksProxyNetService.delegate = self;
     [socksProxyNetService publish];
     [NSThread detachNewThreadSelector:@selector(proxySocksRun) toTarget:self withObject:nil];
