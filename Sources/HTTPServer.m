@@ -66,7 +66,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 
 -(void)startBonjourServices
 {
-    netService = [[NSNetService alloc] initWithDomain:@"" type:@"_iproxyhttpserver._tcp." name:@"" port:self.httpServerPort];
+    netService = [[NSNetService alloc] initWithDomain:@"" type:@"_iproxyhttp._tcp." name:@"" port:self.httpServerPort];
     netService.delegate = self;
     [netService publish];
 }

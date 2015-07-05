@@ -1,3 +1,11 @@
+This is a fork of the original iProxy project with a few small tweaks that allow it to function on iOS 7. The project is in need of a major update, but at least these few changes will keep it on life support as iOS progresses forward.
+
+Note that if you are running OS X Mavericks (the only OS tested) you will need to perform an additional setup step: Add the IP address of your iOS device running iProxy (as listed in the iOS Wi-Fi settings) into the "DNS Servers" field of the OS X Network Preferences Pane for the Wi-Fi connection.
+
+Original README below:
+
+----------------
+
 At least when you don't want to jailbreak your iPhone so far you've had only one option if you want to connect from your laptop via iPhone to the internet. And that's paying an additional fee to your mobile carrier to provide you with the signed tethering profile.
 
 iProxy does not give you tethering - it just gives you the next best thing. A http and a socks proxy on your iPhone. Similar to the famous netshare app did before it got pulled from the App Store.
