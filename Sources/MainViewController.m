@@ -96,8 +96,8 @@ void srelay_exit();
         } else {
             [self proxyHttpStop];
 
-            httpAddressLabel.alpha = 0.1;
-            httpPacLabel.alpha = 0.1;
+            httpAddressLabel.alpha = 0.5;
+            httpPacLabel.alpha = 0.5;
             httpPacButton.enabled = NO;
         }
 
@@ -111,8 +111,8 @@ void srelay_exit();
         } else {
             [self proxySocksStop];
 
-            socksAddressLabel.alpha = 0.1;
-            socksPacLabel.alpha = 0.1;
+            socksAddressLabel.alpha = 0.5;
+            socksPacLabel.alpha = 0.5;
             socksPacButton.enabled = NO;
         }
         

@@ -29,7 +29,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [window addSubview:statusViewController.view];
+    [window setRootViewController:statusViewController];
     [window makeKeyAndVisible];
 
     application.idleTimerDisabled = YES;
